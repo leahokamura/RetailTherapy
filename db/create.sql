@@ -28,15 +28,7 @@ CREATE TABLE Purchases (
     order_page VARCHAR(2048)
 );
 
---Public_View(uid, firstname, seller, email, address, reviews)
-CREATE TABLE Public_View (
-    uid INT NOT NULL PRIMARY KEY REFERENCES Users(uid),
-    firstname VARCHAR(255) NOT NULL REFERENCES Users(firstname)
-    --seller BOOLEAN DEFAULT FALSE,
-    --address VARCHAR(255) NOT NULL REFERENCES Users(address)
-    --reviews TYPE REFERENCES Seller_Reviews()
-);
-
+--PublicView(uid, firstname, seller, email, address, reviews)
 CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
     SELECT uid, firstname, email, address, reviews
     FROM Users, Seller_Reviews
