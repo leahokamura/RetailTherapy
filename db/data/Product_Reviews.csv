@@ -1,16 +1,5 @@
-CREATE TABLE Product_Reviews (
-    uid REFERENCES Users(uid),
-    pid REFERENCES Products(id),
-    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    rating INT NOT NULL,
-    comments VARCHAR(2048),
-    votes INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (uid, pid)
-);
-
-1,1,2021-09-10 13:12:58,4,'Pretty good but the ice cream tastes a little artificial'
-2,2,2021-09-11 13:12:58,3,'Have had better chocolate ice cream'
-3,3,2021-09-12 13:12:58,2,'Tastes like medicine'
-4,4,2021-09-13 13:12:58,4,'Better than an IPA'
-5,5,2021-09-14 13:12:58,1,'Way overpriced. Some of them broke during shipping'
-5,6,2021-09-15 13:12:58,5,'What a steal!'
+1,1,2021-09-10 14:12:58,3,vanilla is way better than chocolate,0
+2,1,2021-09-13 16:44:38,2,vanilla for the win,2
+3,1,2021-09-15 17:01:33,0,"melted too soon, rip",2
+4,3,2021-09-16 08:54:11,3,strawberry is my favorite,23
+5,4,2021-09-14 10:11:53,1,why so expensive???,1111

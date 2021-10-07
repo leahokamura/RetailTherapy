@@ -1,3 +1,11 @@
+--Retail Therapy
+--Jonathan Browning (Products Guru), Piper Hampsch (Users Guru), Lucas Lynn (Social Guru), Connor Murphy (Sellers Guru), Leah Okamura (Cart Guru)
+--CS 316
+--Code is arranged by what it pertains to
+--There are 5 categories: (Users, Products, Carts, Sellers, Social)
+
+
+--USERS--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --Users(uid, email, firstname, lastname, address, password)
 CREATE TABLE Users (
@@ -33,62 +41,33 @@ CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
     WHERE Users.uid = Seller_Reviews.id
 ;
 
+--PRODUCTS
+
+--Product_Categories(category)
 CREATE TABLE Product_Categories (
     category VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
+--Products(id, name, price, available, img)
 CREATE TABLE Products (
     id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE
+    img IMAGE NOT NULL
 );
 
-CREATE TABLE Product_Reviews (
-    uid REFERENCES Users(uid),
-    pid REFERENCES Products(id),
-    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    rating INT NOT NULL,
-    comments VARCHAR(2048),
-    votes INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (uid, pid)
-);
+--CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-CREATE TABLE Sellers (
-    id REFERENCES Users(id),
-    PRIMARY KEY (id)
-    --seller_name: how to deal with this if sellers are also users
-);
-
-CREATE TABLE Inventory (
-    seller_id REFERENCES Sellers(id),
-    pid REFERENCES Products(id),
-    in_stock INT NOT NULL
-);
-
-CREATE TABLE Seller_Reviews (
-    uid REFERENCES Users(uid),
-    seller_id REFERENCES Sellers(id),
-    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    rating INT NOT NULL,
-    comments VARCHAR(2048),
-    votes INT NOT NULL DEFAULT 0,
-    PRIMARY KEY (uid, seller_id)
-);
-
-CREATE TABLE Images_Reviews (
-    uid REFERENCES Users(uid),
-    pid REFERENCES Products(id), 
-    img INT NOT NULL
-);
-
+--Cart(cid)
 CREATE TABLE Cart(
     cid INT NOT NULL PRIMARY KEY
 );
 
+--InCart(cid, p_quantity, unit_price, total_price, pid, uid)
 CREATE TABLE InCart (
     cid REFERENCES Cart(cid),
-    p_quantity INT NOT NULL,
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price REFERENCES Products(price),
     total_price FLOAT NOT NULL,
     pid REFERENCES Products(id),
@@ -96,9 +75,10 @@ CREATE TABLE InCart (
     PRIMARY KEY(cid)
 );
 
+--SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 CREATE TABLE SaveForLater (
     cid REFERENCES Cart(cid),
-    p_quantity INT NOT NULL,
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price REFERENCES Products(price),
     total_price FLOAT NOT NULL,
     pid REFERENCES Products(id),
@@ -106,6 +86,7 @@ CREATE TABLE SaveForLater (
     PRIMARY KEY(cid)
 );
 
+--Orders(cid, oid, order_totalPrice, fulfilled)
 CREATE TABLE Orders (
     cid REFERENCES Cart(cid),
     oid INT NOT NULL,
@@ -114,6 +95,7 @@ CREATE TABLE Orders (
     PRIMARY KEY(oid)
 );
 
+--UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
 CREATE TABLE Update_Submission(
     buyer_balance FLOAT NOT NULL,
     seller_balance FLOAT NOT NULL,
@@ -122,6 +104,61 @@ CREATE TABLE Update_Submission(
     cid REFERENCES Cart(cid),
     seller_id REFERENCES Sellers(id),
     bid REFERENCES Buyers(id),
-    PRIMARY KEY(oid, seller_id, bid)
+    total_price REFERENCES InCart(total_price),
+    PRIMARY KEY(oid, seller_id, bid, cid),
+    CHECK(buyer_balance >= total_price)
 );
 
+--SELLERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--Sellers(id)
+CREATE TABLE Sellers (
+    id REFERENCES Users(id),
+    PRIMARY KEY (id)
+    --seller_name: how to deal with this if sellers are also users
+);
+
+--Inventory(seller_id, pid, in_stock)
+CREATE TABLE Inventory (
+    seller_id REFERENCES Sellers(id),
+    pid REFERENCES Products(id),
+    in_stock INT NOT NULL
+);
+
+--SellerOrders(seller_id, order_id, uid)
+CREATE TABLE SellerOrders (
+	seller_id REFERENCES Sellers(id),
+	order_id REFERENCES Orders(oid) PRIMARY KEY,
+	uid REFERENCES Users(uid)
+);
+
+--SOCIAL--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--Product_Reviews(uid, pid, time_reviewed, rating, comments, votes)
+CREATE TABLE Product_Reviews (
+    uid REFERENCES Users(uid),
+    pid REFERENCES Products(id),
+    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
+    comments VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, pid)
+);
+
+--Seller_Reviews(uid, seller_id, time_reviewed, rating, comments, votes)
+CREATE TABLE Seller_Reviews (
+    uid REFERENCES Users(uid),
+    seller_id REFERENCES Sellers(id),
+    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
+    comments VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, seller_id)
+);
+
+--Images_Reviews(uid, pid, img)
+CREATE TABLE Images_Reviews (
+    uid REFERENCES Users(uid),
+    pid REFERENCES Products(id), 
+    img IMAGE NOT NULL
+);
