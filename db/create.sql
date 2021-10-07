@@ -82,4 +82,48 @@ CREATE TABLE Images_Reviews (
     uid REFERENCES Users(uid),
     pid REFERENCES Products(id), 
     img INT NOT NULL
+)
+
+CREATE TABLE Cart(
+    cid INT NOT NULL PRIMARY KEY
 );
+
+CREATE TABLE InCart (
+    cid REFERENCES Cart(cid),
+    p_quantity INT NOT NULL,
+    unit_price REFERENCES Products(price),
+    total_price FLOAT NOT NULL,
+    pid REFERENCES Products(id),
+    uid REFERENCES Users(uid),
+    PRIMARY KEY(cid)
+);
+
+CREATE TABLE SaveForLater (
+    cid REFERENCES Cart(cid),
+    p_quantity INT NOT NULL,
+    unit_price REFERENCES Products(price),
+    total_price FLOAT NOT NULL,
+    pid REFERENCES Products(id),
+    uid REFERENCES Users(uid),
+    PRIMARY KEY(cid)
+);
+
+CREATE TABLE Orders (
+    cid REFERENCES Cart(cid),
+    oid INT NOT NULL,
+    order_totalPrice FLOAT NOT NULL,
+    fulfilled BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY(oid)
+);
+
+CREATE TABLE Update_Submission(
+    buyer_balance FLOAT NOT NULL,
+    seller_balance FLOAT NOT NULL,
+    fulfilled_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    oid REFERENCES Orders(id),
+    cid REFERENCES Cart(cid),
+    seller_id REFERENCES Sellers(id),
+    bid REFERENCES Buyers(id),
+    PRIMARY KEY(oid, seller_id, bid)
+);
+
