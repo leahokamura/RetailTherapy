@@ -35,13 +35,16 @@ CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
     WHERE Users.uid = Seller_Reviews.id
 ;
 
+CREATE TABLE Product_Categories (
+    category VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
 CREATE TABLE Products (
     id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE
 );
-
 
 CREATE TABLE Product_Reviews (
     uid REFERENCES Users(uid),
@@ -51,7 +54,19 @@ CREATE TABLE Product_Reviews (
     comments VARCHAR(2048),
     votes INT NOT NULL DEFAULT 0,
     PRIMARY KEY (uid, pid)
-)
+);
+
+CREATE TABLE Sellers (
+    id REFERENCES Users(id),
+    PRIMARY KEY (id)
+    --seller_name: how to deal with this if sellers are also users
+);
+
+CREATE TABLE Inventory (
+    seller_id REFERENCES Sellers(id),
+    pid REFERENCES Products(id),
+    in_stock INT NOT NULL
+);
 
 CREATE TABLE Seller_Reviews (
     uid REFERENCES Users(uid),
@@ -61,10 +76,10 @@ CREATE TABLE Seller_Reviews (
     comments VARCHAR(2048),
     votes INT NOT NULL DEFAULT 0,
     PRIMARY KEY (uid, seller_id)
-)
+);
 
 CREATE TABLE Images_Reviews (
     uid REFERENCES Users(uid),
     pid REFERENCES Products(id), 
     img INT NOT NULL
-)
+);
