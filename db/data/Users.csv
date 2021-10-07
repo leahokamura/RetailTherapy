@@ -1,1 +1,5 @@
-0,icecream@tastes.good,pbkdf2:sha256:260000$1GvmeoAkcWb89TyU$5f711eafb243c1c1a884715dd9bd6d185f29ccd3dab59ad19cc201a7260091cb,Joey,Shmoey
+1,icecream@tastes.good,Joey,Shmoey,123 Rocky Road Durham NC,password123
+2,macaroni@and.cheese,Sally,Smith,800 Pasta Lane Denver CO,password456
+3,salt@and.pepper,Suzie,Jones,4 Seasons Drive Boston MA,password789
+4,helloworld@good.bye,Gina,Smiles,123 Rocky Road Durham NC,notpassword123
+5,email@sample.com,Doug,Williams,20 Slippery Ave New York NY,notpassword456
