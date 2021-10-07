@@ -104,7 +104,9 @@ CREATE TABLE Update_Submission(
     cid REFERENCES Cart(cid),
     seller_id REFERENCES Sellers(id),
     bid REFERENCES Buyers(id),
-    PRIMARY KEY(oid, seller_id, bid)
+    total_price REFERENCES Orders(order_totalPrice)
+    PRIMARY KEY(oid, seller_id, bid),
+    CHECK(buyer_balance >= total_price)
 );
 
 --SELLERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
