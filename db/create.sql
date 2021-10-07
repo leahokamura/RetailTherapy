@@ -82,7 +82,7 @@ CREATE TABLE Images_Reviews (
     uid REFERENCES Users(uid),
     pid REFERENCES Products(id), 
     img INT NOT NULL
-)
+);
 
 CREATE TABLE Cart(
     cid INT NOT NULL PRIMARY KEY
