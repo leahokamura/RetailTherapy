@@ -5,6 +5,7 @@
 \COPY Product_Reviews FROM 'data/Product_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Sellers FROM 'data/Sellers.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Inventory FROM 'data/Inventory.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY SellerOrders FROM 'data/SellerOrders.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Seller_Reviews FROM 'data/Seller_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Cart FROM 'data/Cart.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY InCart FROM 'data/InCart.csv' WITH DELIMITER ',' NULL '' CSV
