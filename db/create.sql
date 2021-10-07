@@ -67,7 +67,7 @@ CREATE TABLE Cart(
 --InCart(cid, p_quantity, unit_price, total_price, pid, uid)
 CREATE TABLE InCart (
     cid REFERENCES Cart(cid),
-    p_quantity INT NOT NULL,
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price REFERENCES Products(price),
     total_price FLOAT NOT NULL,
     pid REFERENCES Products(id),
@@ -78,7 +78,7 @@ CREATE TABLE InCart (
 --SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 CREATE TABLE SaveForLater (
     cid REFERENCES Cart(cid),
-    p_quantity INT NOT NULL,
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price REFERENCES Products(price),
     total_price FLOAT NOT NULL,
     pid REFERENCES Products(id),
