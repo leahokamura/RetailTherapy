@@ -125,3 +125,8 @@ CREATE TABLE Update_Submission(
     PRIMARY KEY(oid, seller_id, bid)
 );
 
+CREATE TABLE SellerOrders (
+	seller_id REFERENCES Sellers(id),
+	order_id REFERENCES Orders(oid) PRIMARY KEY,
+	uid REFERENCES Users(uid)
+);
