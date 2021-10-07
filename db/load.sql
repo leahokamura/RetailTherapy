@@ -2,3 +2,7 @@
 \COPY Products FROM 'data/Products.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Purchases FROM 'data/Purchases.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Account FROM 'data/Account.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Product_Reviews FROM 'data/Product_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Sellers FROM 'data\Sellers.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Inventory FROM 'data\Inventory.csv' WITH DELIMITER ',' NULL '' CSV
+
