@@ -48,9 +48,9 @@ CREATE TABLE Product_Reviews (
     uid REFERENCES Users(uid),
     pid REFERENCES Products(id),
     time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    rating INT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
+    rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
     comments VARCHAR(2048),
-    votes INT NOT NULL DEFAULT 0 CHECK (votes >= 0),
+    votes INT NOT NULL DEFAULT 0,
     PRIMARY KEY (uid, pid)
 );
 
@@ -70,9 +70,9 @@ CREATE TABLE Seller_Reviews (
     uid REFERENCES Users(uid),
     seller_id REFERENCES Sellers(id),
     time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    rating INT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
+    rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
     comments VARCHAR(2048),
-    votes INT NOT NULL DEFAULT 0 CHECK (votes >= 0),
+    votes INT NOT NULL DEFAULT 0,
     PRIMARY KEY (uid, seller_id)
 );
 
