@@ -37,6 +37,12 @@ CREATE TABLE Public_View (
     --reviews TYPE REFERENCES Seller_Reviews()
 );
 
+CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
+    SELECT uid, firstname, email, address, reviews
+    FROM Users, Seller_Reviews
+    WHERE Users.uid = Seller_Reviews.id
+;
+
 CREATE TABLE Products (
     id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
