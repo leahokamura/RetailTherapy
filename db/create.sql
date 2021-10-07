@@ -1,5 +1,3 @@
--- Feel free to modify this file to match your development goal.
--- Here we only create 3 tables for demo purpose.
 
 --Users(uid, email, firstname, lastname, address, password)
 CREATE TABLE Users (
@@ -20,7 +18,7 @@ CREATE TABLE Account (
 --Purchases(uid, oid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)
 CREATE TABLE Purchases (
     oid INT NOT NULL PRIMARY KEY,
-    uid NOT NULL REFERENCES Users(uid),
+    uid INT NOT NULL REFERENCES Users(uid),
     time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     total_amount FLOAT NOT NULL,
     item_quantity INT NOT NULL,
