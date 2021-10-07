@@ -95,7 +95,7 @@ CREATE TABLE Orders (
     PRIMARY KEY(oid)
 );
 
---UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid)
+--UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
 CREATE TABLE Update_Submission(
     buyer_balance FLOAT NOT NULL,
     seller_balance FLOAT NOT NULL,
