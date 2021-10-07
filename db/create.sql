@@ -43,3 +43,30 @@ CREATE TABLE Products (
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE
 );
+
+
+CREATE TABLE Product_Reviews (
+    uid REFERENCES Users(uid),
+    pid REFERENCES Products(id),
+    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    rating INT NOT NULL,
+    comments VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, pid)
+)
+
+CREATE TABLE Seller_Reviews (
+    uid REFERENCES Users(uid),
+    seller_id REFERENCES Sellers(id),
+    time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    rating INT NOT NULL,
+    comments VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, seller_id)
+)
+
+CREATE TABLE Images_Reviews (
+    uid REFERENCES Users(uid),
+    pid REFERENCES Products(id), 
+    img INT NOT NULL
+)
