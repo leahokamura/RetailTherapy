@@ -47,7 +47,7 @@ CREATE TABLE Products (
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE,
-    img IMAGE NOT NULL
+    img BYTEA NOT NULL --apparently psql prefers BYTEA to IMAGE
 );
 
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -153,7 +153,7 @@ CREATE TABLE Seller_Reviews (
 CREATE TABLE Images_Reviews (
     uid REFERENCES Users(uid),
     pid REFERENCES Products(id), 
-    img IMAGE NOT NULL
+    img BYTEA NOT NULL
 );
 
 --PublicView(uid, firstname, seller, email, address, reviews)
