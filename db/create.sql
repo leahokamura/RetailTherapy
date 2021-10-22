@@ -34,13 +34,6 @@ CREATE TABLE Purchases (
     order_page VARCHAR(2048)
 );
 
---PublicView(uid, firstname, seller, email, address, reviews)
-CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
-    SELECT uid, firstname, email, address, reviews
-    FROM Users, Seller_Reviews
-    WHERE Users.uid = Seller_Reviews.id
-;
-
 --PRODUCTS
 
 --Product_Categories(category)
@@ -162,3 +155,11 @@ CREATE TABLE Images_Reviews (
     pid REFERENCES Products(id), 
     img IMAGE NOT NULL
 );
+
+--PublicView(uid, firstname, seller, email, address, reviews)
+CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
+    SELECT uid, firstname, email, address, reviews
+    FROM Users, Seller_Reviews
+    WHERE Users.uid = Seller_Reviews.id
+;
+-- moved this one down here b/c sql got mad that Seller_Reviews hadn't been declared yet
