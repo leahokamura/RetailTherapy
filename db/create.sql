@@ -46,7 +46,7 @@ CREATE TABLE Products (
     id INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
-    available BOOLEAN DEFAULT TRUE
+    available BOOLEAN DEFAULT TRUE,
     img IMAGE NOT NULL
 );
 
