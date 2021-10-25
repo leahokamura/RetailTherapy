@@ -63,19 +63,19 @@ CREATE TABLE InCart (
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price FLOAT NOT NULL REFERENCES Products(price),
     total_price FLOAT NOT NULL,
-    pid INT NOT NULL REFERENCES Products(id),
+    pid INT UNIQUE NOT NULL REFERENCES Products(id),
     uid INT REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
 
 --SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 CREATE TABLE SaveForLater (
-    cid INT NOT NULL REFERENCES Cart(cid),
+    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price FLOAT NOT NULL REFERENCES Products(price),
     total_price FLOAT NOT NULL,
-    pid INT NOT NULL REFERENCES Products(id),
-    uid INT REFERENCES Users(uid),
+    pid INT UNIQUE NOT NULL REFERENCES Products(id),
+    uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
 
@@ -98,7 +98,7 @@ CREATE TABLE Update_Submission(
     seller_id INT NOT NULL REFERENCES Sellers(id),
     --bid INT NOT NULL REFERENCES Buyers(id), --commenting this out bc we have no buyers table
     total_price FLOAT NOT NULL REFERENCES InCart(total_price),
-    PRIMARY KEY(oid, seller_id, bid, cid),
+    PRIMARY KEY(oid, seller_id, cid), --bid
     CHECK(buyer_balance >= total_price)
 );
 
@@ -106,7 +106,7 @@ CREATE TABLE Update_Submission(
 
 --Sellers(id)
 CREATE TABLE Sellers (
-    id INT NOT NULL REFERENCES Users(id),
+    id INT UNIQUE NOT NULL REFERENCES Users(uid),
     PRIMARY KEY (id)
     --seller_name: how to deal with this if sellers are also users
 );
