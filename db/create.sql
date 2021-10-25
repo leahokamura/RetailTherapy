@@ -59,12 +59,12 @@ CREATE TABLE Cart(
 
 --InCart(cid, p_quantity, unit_price, total_price, pid, uid)
 CREATE TABLE InCart (
-    cid INT NOT NULL REFERENCES Cart(cid),
+    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
-    unit_price FLOAT NOT NULL REFERENCES Products(price),
+    unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
     total_price FLOAT NOT NULL,
     pid INT UNIQUE NOT NULL REFERENCES Products(id),
-    uid INT REFERENCES Users(uid),
+    uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
 
@@ -72,7 +72,7 @@ CREATE TABLE InCart (
 CREATE TABLE SaveForLater (
     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
-    unit_price FLOAT NOT NULL REFERENCES Products(price),
+    unit_price FLOAT UNIQUE NOT NULL, --REFERENCES Products(price), --see above
     total_price FLOAT NOT NULL,
     pid INT UNIQUE NOT NULL REFERENCES Products(id),
     uid INT UNIQUE REFERENCES Users(uid),
@@ -86,20 +86,6 @@ CREATE TABLE Orders (
     order_totalPrice FLOAT NOT NULL,
     fulfilled BOOLEAN DEFAULT FALSE,
     PRIMARY KEY(oid)
-);
-
---UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
-CREATE TABLE Update_Submission(
-    buyer_balance FLOAT NOT NULL,
-    seller_balance FLOAT NOT NULL,
-    fulfilled_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    oid INT NOT NULL REFERENCES Orders(id),
-    cid INT NOT NULL REFERENCES Cart(cid),
-    seller_id INT NOT NULL REFERENCES Sellers(id),
-    --bid INT NOT NULL REFERENCES Buyers(id), --commenting this out bc we have no buyers table
-    total_price FLOAT NOT NULL REFERENCES InCart(total_price),
-    PRIMARY KEY(oid, seller_id, cid), --bid
-    CHECK(buyer_balance >= total_price)
 );
 
 --SELLERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -123,6 +109,21 @@ CREATE TABLE SellerOrders (
 	seller_id INT NOT NULL REFERENCES Sellers(id),
 	order_id INT NOT NULL REFERENCES Orders(oid) PRIMARY KEY,
 	uid INT NOT NULL REFERENCES Users(uid)
+);
+
+--UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
+--moved here to be below Sellers
+CREATE TABLE Update_Submission(
+    buyer_balance FLOAT NOT NULL,
+    seller_balance FLOAT NOT NULL,
+    fulfilled_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    oid INT UNIQUE NOT NULL REFERENCES Orders(oid),
+    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
+    seller_id INT UNIQUE NOT NULL REFERENCES Sellers(id),
+    --bid INT NOT NULL REFERENCES Buyers(id), --commenting this out bc we have no buyers table
+    total_price FLOAT UNIQUE NOT NULL,  --REFERENCES InCart(total_price), --see above note about REFERENCES
+    PRIMARY KEY(oid, seller_id, cid), --bid
+    CHECK(buyer_balance >= total_price)
 );
 
 --SOCIAL--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -158,8 +159,8 @@ CREATE TABLE Images_Reviews (
 
 --PublicView(uid, firstname, seller, email, address, reviews)
 CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
-    SELECT uid, firstname, email, address, reviews
+    SELECT Users.uid, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
     FROM Users, Seller_Reviews
-    WHERE Users.uid = Seller_Reviews.id
+    WHERE Users.uid = Seller_Reviews.seller_id
 ;
 -- moved this one down here b/c sql got mad that Seller_Reviews hadn't been declared yet
