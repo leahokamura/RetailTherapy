@@ -72,7 +72,7 @@ CREATE TABLE InCart (
 CREATE TABLE SaveForLater (
     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
-    unit_price FLOAT UNIQUE NOT NULL, --REFERENCES Products(price), --see above
+    unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
     total_price FLOAT NOT NULL,
     pid INT UNIQUE NOT NULL REFERENCES Products(id),
     uid INT UNIQUE REFERENCES Users(uid),
