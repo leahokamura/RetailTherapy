@@ -1,5 +1,5 @@
 --Retail Therapy
---Jonathan Browning (Products Guru), Piper Hampsch (Users Guru), Lucas Lynn (Social Guru), Connor Murphy (Sellers Guru), Leah Okamura (Cart Guru)
+--Jonathan Browning (Products Guru), Piper Hampsch (Users Guru), Lucas Lynn (Social Guru), Connor Murphy (Sellers Guru), Leah Okamura (Carts Guru)
 --CS 316
 --Code is arranged by what it pertains to
 --There are 5 categories: (Users, Products, Carts, Sellers, Social)
