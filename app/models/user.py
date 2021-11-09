@@ -61,9 +61,9 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname
+SELECT id, email, firstname, lastname
 FROM Users
-WHERE uid = :id
+WHERE id = :id
 """,
-                              uid=id)
+                              id=id)
         return User(*(rows[0])) if rows else None
