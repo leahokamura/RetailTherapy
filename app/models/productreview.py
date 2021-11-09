@@ -3,11 +3,11 @@ from flask import current_app as app
 class ProductReviews:
     def __init__(self, pid, uid, time_reviewed, rating, comments, votes):
         self.pid = pid
-	    self.uid = uid
+        self.uid = uid
         self.time_reviewed = time_reviewed
         self.rating = rating
         self.comments = comments
-	    self.votes = votes
+        self.votes = votes
 
     @staticmethod
     def get_all_product_reviews_for_product(pid):
@@ -18,7 +18,7 @@ WHERE pid = :pid
 ORDER By votes DESC
 ''',
                               pid=pid)
-        return Product_Reviews(*(rows[0])) if rows is not None else None
+        return ProductReviews(*(rows[0])) if rows is not None else None
 
     @staticmethod
     def get_all_product_reviews_by_user(uid):
@@ -29,4 +29,4 @@ WHERE uid = :uid
 ORDER BY votes DESC
 ''',
                               uid=uid)
-        return [Product(*row) for row in rows]
+        return [ProductReviews(*row) for row in rows]
