@@ -29,6 +29,16 @@ WHERE pid = :pid
                               pid=pid)
         return ProductReview(*(rows[0])) if rows else None
 
+@staticmethod
+    def get_stats(pid):
+        rows = app.db.execute('''
+SELECT MAX(uid), COUNT(pid) AS count, MAX(time_reviewed), AVG(rating)::numeric(10,2) AS avg, MAX(comments), MAX(votes)
+FROM Product_Reviews
+WHERE pid = :pid
+''',
+                              pid=pid)
+        return ProductReview(*(rows[0])) if rows else None
+
     @staticmethod
     def get_all_product_reviews_by_user(uid):
         rows = app.db.execute('''
