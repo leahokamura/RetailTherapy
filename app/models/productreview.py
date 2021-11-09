@@ -1,6 +1,6 @@
 from flask import current_app as app
 
-class ProductReviews:
+class ProductReview:
     def __init__(self, pid, uid, time_reviewed, rating, comments, votes):
         self.pid = pid
         self.uid = uid
