@@ -7,6 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
+from .models.productreviews import ProductReviews
 
 
 from flask import Blueprint
@@ -70,7 +71,7 @@ def register():
 
 @bp.route('/register1', methods=['GET', 'POST'])
 def register1():
-    return render_template('register1.html', title='Register', form=form)
+    return render_template('ProductReviews.html', title = 'Product_Reviews')
 
 @bp.route('/logout')
 def logout():
