@@ -11,7 +11,7 @@ bp = Blueprint('ProductReviews', __name__)
 @bp.route('/ProductReviews')
 def ProductReviews():
     # get all reviews for a certain product:
-    productreviews = Product.get_all_product_reviews_for_product(1)
+    productreviews = ProductReviews.get_all_product_reviews_for_product(1)
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',
