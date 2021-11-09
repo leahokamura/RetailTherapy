@@ -25,6 +25,7 @@ WHERE pid = :pid
 SELECT uid, pid, time_reviewed, rating, comments, votes, AVG(rating)::numeric(10,2)
 FROM Product_Reviews
 WHERE pid = :pid
+GROUP BY uid
 ''',
                               pid=pid)
         return ProductReview(*(rows[0])) if rows else None
