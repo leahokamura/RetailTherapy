@@ -8,7 +8,7 @@ class ProductReview:
         self.rating = rating
         self.comments = comments
         self.votes = votes
-
+        
     @staticmethod
     def get_all_product_reviews_for_product(pid):
         rows = app.db.execute('''
@@ -18,8 +18,8 @@ WHERE pid = :pid
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]
-
-@staticmethod
+        
+    @staticmethod
     def get_product_avg_rating(pid):
         rows = app.db.execute('''
 SELECT AVG(rating)::numeric(10,2)
@@ -28,7 +28,6 @@ WHERE pid = :pid
 ''',
                               pid=pid)
         return ProductReview(*(rows[0])) if rows else None
-
 
     @staticmethod
     def get_all_product_reviews_by_user(uid):
