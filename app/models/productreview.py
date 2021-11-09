@@ -12,7 +12,7 @@ class ProductReview:
     @staticmethod
     def get_all_product_reviews_for_product(pid):
         rows = app.db.execute('''
-SELECT uid, time_reviewed, rating, comments, votes
+SELECT uid, time_reviewed, rating, comments
 FROM Product_Reviews
 WHERE pid = :pid
 ''',
@@ -22,7 +22,7 @@ WHERE pid = :pid
     @staticmethod
     def get_all_product_reviews_by_user(uid):
         rows = app.db.execute('''
-SELECT pid, time_reviewed, rating, comments, votes
+SELECT pid, time_reviewed, rating, comments
 FROM Product_Reviews
 WHERE uid = :uid
 ''',
