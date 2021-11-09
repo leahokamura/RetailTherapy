@@ -44,7 +44,7 @@ WHERE email = :email
             rows = app.db.execute("""
 INSERT INTO Users(email, password, firstname, lastname)
 VALUES(:email, :password, :firstname, :lastname)
-RETURNING uid
+RETURNING id
 """,
                                   email=email,
                                   password=generate_password_hash(password),
@@ -65,5 +65,5 @@ SELECT uid, email, firstname, lastname
 FROM Users
 WHERE uid = :id
 """,
-                              id=id)
+                              uid=id)
         return User(*(rows[0])) if rows else None
