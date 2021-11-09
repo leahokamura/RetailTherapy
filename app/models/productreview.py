@@ -32,7 +32,7 @@ WHERE pid = :pid
     @staticmethod
     def get_stats(pid):
         rows = app.db.execute('''
-SELECT COUNT(uid) AS count, MAX(pid) AS pid, MAX(time_reviewed), AVG(rating)::numeric(10,2) AS avg, MAX(comments), MAX(votes)
+SELECT COUNT(uid) AS number, MAX(pid) AS pid, MAX(time_reviewed), AVG(rating)::numeric(10,2) AS average, MAX(comments), MAX(votes)
 FROM Product_Reviews
 WHERE pid = :pid
 ''',
