@@ -44,7 +44,7 @@ WHERE email = :email
             rows = app.db.execute("""
 INSERT INTO Users(email, password, firstname, lastname)
 VALUES(:email, :password, :firstname, :lastname)
-RETURNING id
+RETURNING uid
 """,
                                   email=email,
                                   password=generate_password_hash(password),
