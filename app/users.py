@@ -71,7 +71,10 @@ def register():
 
 @bp.route('/register1', methods=['GET', 'POST'])
 def register1():
-    return render_template('ProductReviews.html', title = 'Product_Reviews')
+    productreviews = Product.get_all_product_reviews_for_product(1)
+    return render_template('ProductReviews.html', 
+                            title = 'Product_Reviews',
+                            Product_Reviews = productreviews)
 
 @bp.route('/logout')
 def logout():
