@@ -6,8 +6,8 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname):
-        self.uid = uid
+    def __init__(self, id, email, firstname, lastname):
+        self.id = id
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
@@ -15,7 +15,7 @@ class User(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, uid, email, firstname, lastname
+SELECT password, id, email, firstname, lastname
 FROM Users
 WHERE email = :email
 """,
@@ -44,14 +44,14 @@ WHERE email = :email
             rows = app.db.execute("""
 INSERT INTO Users(email, password, firstname, lastname)
 VALUES(:email, :password, :firstname, :lastname)
-RETURNING uid
+RETURNING id
 """,
                                   email=email,
                                   password=generate_password_hash(password),
                                   firstname=firstname,
                                   lastname=lastname)
-            uid = rows[0][0]
-            return User.get(uid)
+            id = rows[0][0]
+            return User.get(id)
         except Exception:
             # likely email already in use; better error checking and
             # reporting needed
@@ -59,11 +59,11 @@ RETURNING uid
 
     @staticmethod
     @login.user_loader
-    def get(uid):
+    def get(id):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname
+SELECT id, email, firstname, lastname
 FROM Users
-WHERE uid = :uid
+WHERE id = :id
 """,
-                              uid=uid)
+                              id=id)
         return User(*(rows[0])) if rows else None
