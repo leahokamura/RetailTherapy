@@ -27,7 +27,7 @@ FROM Product_Reviews
 WHERE pid = :pid
 ''',
                               pid=pid)
-        return ProductReview(*(rows[0][0])) if rows else None
+        return ProductReview(*(rows[0])) if rows else None
 
 
     @staticmethod
