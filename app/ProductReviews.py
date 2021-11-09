@@ -8,7 +8,7 @@ from flask import Blueprint
 bp = Blueprint('ProductReviews', __name__)
 
 
-@bp.route('/')
+@bp.route('/ProductReviews')
 def ProductReviews():
     # get all reviews for a certain product:
     productreviews = Product.get_all_product_reviews_for_product(pid)
