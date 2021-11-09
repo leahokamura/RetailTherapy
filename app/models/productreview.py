@@ -18,7 +18,7 @@ WHERE pid = :pid
 ORDER By votes DESC
 ''',
                               pid=pid)
-        return ProductReviews(*(rows[0])) if rows is not None else None
+        return ProductReview(*(rows[0])) if rows is not None else None
 
     @staticmethod
     def get_all_product_reviews_by_user(uid):
@@ -29,4 +29,4 @@ WHERE uid = :uid
 ORDER BY votes DESC
 ''',
                               uid=uid)
-        return [ProductReviews(*row) for row in rows]
+        return [ProductReview(*row) for row in rows]
