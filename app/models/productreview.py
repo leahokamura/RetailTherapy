@@ -22,7 +22,7 @@ WHERE pid = :pid
     @staticmethod
     def get_product_avg_rating(pid):
         rows = app.db.execute('''
-SELECT AVG(rating)::numeric(10,2)
+SELECT uid, pid, time_reviewed, rating, comments, votes, AVG(rating)::numeric(10,2)
 FROM Product_Reviews
 WHERE pid = :pid
 ''',
