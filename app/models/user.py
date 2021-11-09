@@ -15,7 +15,7 @@ class User(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname
+SELECT password, uid, email, firstname, lastname
 FROM Users
 WHERE email = :email
 """,
@@ -61,9 +61,9 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname
+SELECT uid, email, firstname, lastname
 FROM Users
-WHERE id = :id
+WHERE uid = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
