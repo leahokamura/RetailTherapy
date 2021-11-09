@@ -7,7 +7,7 @@ class ProductReviews:
         self.time_reviewed = time_reviewed
         self.rating = rating
         self.comments = comments
-	    self.votes = votes
+        self.votes = votes
 
     @staticmethod
     def get_all_product_reviews_for_product(pid):
