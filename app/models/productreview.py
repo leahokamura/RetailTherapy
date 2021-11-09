@@ -3,11 +3,11 @@ from flask import current_app as app
 class ProductReviews:
     def __init__(self, pid, uid, time_reviewed, rating, comments, votes):
         self.pid = pid
-	self.uid = uid
+	    self.uid = uid
         self.time_reviewed = time_reviewed
         self.rating = rating
         self.comments = comments
-	self.votes = votes
+	    self.votes = votes
 
     @staticmethod
     def get_all_product_reviews_for_product(pid):
