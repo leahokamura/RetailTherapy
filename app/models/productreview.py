@@ -29,4 +29,4 @@ WHERE uid = :uid
 ORDER BY votes DESC
 ''',
                               uid=uid)
-        return [Product(*row) for row in rows]
+        return [Product_Reviews(*row) for row in rows]
