@@ -14,7 +14,7 @@ class ProductReview:
         rows = app.db.execute('''
 SELECT pid, uid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
-WHERE pid = :pid
+WHERE pid = 1
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]
