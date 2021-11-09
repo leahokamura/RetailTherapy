@@ -19,6 +19,17 @@ WHERE pid = :pid
                               pid=pid)
         return [ProductReview(*row) for row in rows]
 
+@staticmethod
+    def get_product_avg_rating(pid):
+        rows = app.db.execute('''
+SELECT AVG(rating)::numeric(10,2)
+FROM Product_Reviews
+WHERE pid = :pid
+''',
+                              pid=pid)
+        return [ProductReview(*row) for row in rows]
+
+
     @staticmethod
     def get_all_product_reviews_by_user(uid):
         rows = app.db.execute('''
