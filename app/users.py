@@ -70,16 +70,6 @@ def register():
 
 @bp.route('/register1', methods=['GET', 'POST'])
 def register1():
-    if current_user.is_authenticated:
-        return redirect(url_for('index.index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        if User.register(form.email.data,
-                         form.password.data,
-                         form.firstname.data,
-                         form.lastname.data):
-            flash('Congratulations, you are now a registered user!')
-            return redirect(url_for('users.login'))
     return render_template('register1.html', title='Register', form=form)
 
 @bp.route('/logout')
