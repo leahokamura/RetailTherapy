@@ -15,7 +15,6 @@ class ProductReview:
 SELECT uid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
-ORDER By votes DESC
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]
@@ -26,7 +25,6 @@ ORDER By votes DESC
 SELECT pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE uid = :uid
-ORDER BY votes DESC
 ''',
                               uid=uid)
         return [ProductReview(*row) for row in rows]
