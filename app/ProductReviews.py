@@ -15,4 +15,4 @@ def ProductReviews():
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',
-                           Product_Reviews=productreviews)
+                           Product_Reviews = productreviews)
