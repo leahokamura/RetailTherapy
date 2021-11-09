@@ -10,7 +10,7 @@ class ProductReviews:
 	self.votes = votes
 
     @staticmethod
-    def get_all_product_reviews(id):
+    def get_all_product_reviews_for_product(pid):
         rows = app.db.execute('''
 SELECT uid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
