@@ -2,26 +2,26 @@ from flask import current_app as app
 
 
 class Product:
-    def __init__(self, id, name, price, available):
-        self.id = id
+    def __init__(self, pid, name, price, available):
+        self.pid = pid
         self.name = name
         self.price = price
         self.available = available
 
     @staticmethod
-    def get(id):
+    def get(pid):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT pid, name, price, available
 FROM Products
-WHERE id = :id
+WHERE pid = :pid
 ''',
-                              id=id)
+                              pid=pid)
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT pid, name, price, available
 FROM Products
 WHERE available = :available
 ''',

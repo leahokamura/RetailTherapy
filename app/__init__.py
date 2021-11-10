@@ -27,4 +27,7 @@ def create_app():
     from .ProductReviews import bp as review_bp
     app.register_blueprint(review_bp)
 
+    from .OneProduct import bp as product_bp
+    app.register_blueprint(product_bp)
+
     return app

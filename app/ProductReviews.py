@@ -1,3 +1,4 @@
+# from __future__ import print_function # In python 2.7
 from flask import render_template
 from flask_login import current_user
 import datetime
@@ -5,6 +6,7 @@ import datetime
 from .models.productreview import ProductReview
 
 from flask import Blueprint
+# import sys
 bp = Blueprint('productreviews', __name__)
 
 
@@ -12,6 +14,8 @@ bp = Blueprint('productreviews', __name__)
 def ProductReviews():
     # get all reviews for a certain product:
     p_reviews = ProductReview.get_all_product_reviews_for_product(1)
+    # print(p_reviews, file=sys.stderr)
+
     #p_r_avg = ProductReview.get_product_avg_rating(1)
     product_review_stats = ProductReview.get_stats(1)
     

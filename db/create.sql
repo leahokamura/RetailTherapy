@@ -43,7 +43,7 @@ CREATE TABLE Product_Categories (
 
 --Products(id, name, price, available, img)
 CREATE TABLE Products (
-    id INT NOT NULL PRIMARY KEY,
+    pid INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE,
@@ -63,7 +63,7 @@ CREATE TABLE InCart (
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
     total_price FLOAT NOT NULL,
-    pid INT UNIQUE NOT NULL REFERENCES Products(id),
+    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
     uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
@@ -74,7 +74,7 @@ CREATE TABLE SaveForLater (
     p_quantity INT NOT NULL CHECK(p_quantity >=1),
     unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
     total_price FLOAT NOT NULL,
-    pid INT UNIQUE NOT NULL REFERENCES Products(id),
+    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
     uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
@@ -100,7 +100,7 @@ CREATE TABLE Sellers (
 --Inventory(seller_id, pid, in_stock)
 CREATE TABLE Inventory (
     seller_id INT NOT NULL REFERENCES Sellers(id),
-    pid INT NOT NULL REFERENCES Products(id),
+    pid INT NOT NULL REFERENCES Products(pid),
     in_stock INT NOT NULL
 );
 
@@ -131,7 +131,7 @@ CREATE TABLE Update_Submission(
 --Product_Reviews(uid, pid, time_reviewed, rating, comments, votes)
 CREATE TABLE Product_Reviews (
     uid INT NOT NULL REFERENCES Users(uid),
-    pid INT NOT NULL REFERENCES Products(id),
+    pid INT NOT NULL REFERENCES Products(pid),
     time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
     comments VARCHAR(2048),
@@ -153,7 +153,7 @@ CREATE TABLE Seller_Reviews (
 --Images_Reviews(uid, pid, img)
 CREATE TABLE Images_Reviews (
     uid INT NOT NULL REFERENCES Users(uid),
-    pid INT NOT NULL REFERENCES Products(id), 
+    pid INT NOT NULL REFERENCES Products(pid), 
     img BYTEA NOT NULL
 );
 
