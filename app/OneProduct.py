@@ -12,10 +12,12 @@ from flask import Blueprint
 import sys
 bp = Blueprint('oneproduct', __name__)
 
-@bp.route('/oneproduct')
-def OneProducts():
+@bp.route('/oneproduct/<int:product_number>', methods=['GET', 'POST'])
+def OneProducts(product_number):
     #get all info for a certain product
-    p_info = Product.get(2)
+    print("this is the product number", file=sys.stderr)
+    print(product_number, file=sys.stderr)
+    p_info = Product.get(product_number)
     print(p_info, file=sys.stderr)
     # render the page by adding information to the ind-product-page.html file
     return render_template('ind-product-page.html',
