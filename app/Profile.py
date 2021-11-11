@@ -11,7 +11,7 @@ from flask import Blueprint
 import sys
 bp = Blueprint('Profile', __name__)
 
-@bp.route('/profile/<int:uid>', methods=['GET', 'POST'])
+@bp.route('/profile/<int:current_user.uid>', methods=['GET', 'POST'])
 def profile():
     #get profile info
     print("this is your profile", file=sys.stderr)

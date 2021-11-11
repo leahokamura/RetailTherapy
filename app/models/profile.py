@@ -2,7 +2,6 @@ from __future__ import print_function # In python 2.7
 import sys
 from flask_login import UserMixin
 from flask import current_app as app
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import login
 
