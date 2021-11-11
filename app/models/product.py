@@ -8,22 +8,22 @@ class Product:
         self.price = price
         self.available = available
 
-#     @staticmethod
-#     def get(pid):
-#         rows = app.db.execute('''
-# SELECT pid, name, price, available
-# FROM Products
-# WHERE pid = :pid
-# ''',
-#                               pid=pid)
-#         return Product(*(rows[0])) if rows is not None else None
+    @staticmethod
+    def get(pid):
+        rows = app.db.execute('''
+SELECT pid, name, price, available
+FROM Products
+WHERE pid = :pid
+''',
+                              pid=pid)
+        return Product(*(rows[0])) if rows is not None else None
 
-#     @staticmethod
-#     def get_all(available=True):p
-#         rows = app.db.execute('''
-# SELECT pid, name, price, available
-# FROM Products
-# WHERE available = :available
-# ''',
-#                               available=available)
-#         return [Product(*row) for row in rows]
+    @staticmethod
+    def get_all(available=True):p
+        rows = app.db.execute('''
+SELECT pid, name, price, available
+FROM Products
+WHERE available = :available
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
