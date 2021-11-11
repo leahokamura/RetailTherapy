@@ -1,3 +1,5 @@
+from __future__ import print_function # In python 2.7
+import sys
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
@@ -59,12 +61,15 @@ def register():
         return redirect(url_for('index.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
+        print('made it this far', file=sys.stderr)
         if User.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
+        else: 
+            print('something fucked up', file=sys.stderr)
     return render_template('register.html', title='Register', form=form)
 
 @bp.route('/logout')
