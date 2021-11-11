@@ -5,6 +5,8 @@ import datetime
 
 from .models.productreview import ProductReview
 
+from flask import current_app as app
+
 from flask import Blueprint
 # import sys
 bp = Blueprint('productreviews', __name__)
@@ -33,9 +35,18 @@ def ProductReviews(product_number):
 
     #p_r_avg = ProductReview.get_product_avg_rating(1)
     product_review_stats = ProductReview.get_stats(product_number)
+
+    product_name = app.db.execute(
+        """
+        SELECT name
+        FROM Products, Product_Reviews
+        WHERE Products.pid = Product_Reviews.pid
+        """
+    )[0][0]
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',
                             productreviews = p_reviews,
-                            productreviewstats = product_review_stats)
+                            productreviewstats = product_review_stats,
+                            productname = product_name)
                             #avg_rating = p_r_avg)
