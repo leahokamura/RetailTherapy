@@ -76,3 +76,18 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+
+from .models.profile import Profile
+nbp = Blueprint('profile', __name__)
+
+@nbp.route('/profile/<int:uid>', methods=['GET', 'POST'])
+def get_profile(uid):
+    #get profile info
+    print("this is your profile", file=sys.stderr)
+    print(uid, file=sys.stderr)
+    profile_info = Profile.get(uid)
+    print(profile_info, file=sys.stderr)
+    # render the page by adding information to the profile.html file
+    return render_template('profile.html',
+                            profileinfo = profile_info)       
