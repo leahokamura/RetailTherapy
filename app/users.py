@@ -79,7 +79,7 @@ def logout():
 
 
 @bp.route('/profile', methods=['GET', 'POST'])
-def get_profile(uid):
+def profile(uid):
     #get profile info
     print("this is your profile", file=sys.stderr)
     print(uid, file=sys.stderr)
