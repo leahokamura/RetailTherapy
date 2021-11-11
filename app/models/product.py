@@ -13,7 +13,7 @@ class Product:
         rows = app.db.execute('''
 SELECT id, name, price, available
 FROM Products
-WHERE pid = :pid
+WHERE id = :id
 ''',
                               pid=pid)
         return Product(*(rows[0])) if rows is not None else None
