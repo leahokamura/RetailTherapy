@@ -124,7 +124,7 @@ def gen_in_cart(num_carts):
             pid = fake.random_int(min=0, max=num_products-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity)*int(unit_price)))
+            total_price = str(int(p_quantity)*int(unit_price))
             writer.writerow([cid, p_quantity, unit_price, total_price, pid, uid])
         print(f'{num_purchases} generated')
     return
