@@ -56,6 +56,14 @@
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">LOG IN</a>
         {% endif %}
       </div>
+      <div class="container">
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('index.index') }}">Products</a></li>
+            <li><a href="{{ url_for('Profile.profile') }}">Profile</a></li>
+          </ul>
+        </nav></strong>
+      </div>
     {% endblock %}
   </div>
   <div class="main">

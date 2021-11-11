@@ -87,7 +87,7 @@ SELECT uid, email, firstname, lastname, password, address
 FROM Users
 WHERE uid = :uid
 """,
-        uid=uid)
+                            uid=uid)
         return User(*(rows[0])) if rows else None
 
 
@@ -99,5 +99,5 @@ SELECT uid, firstname
 FROM Users
 WHERE uid = :uid
 """,
-        uid=uid)
+                            uid=uid)
         return User(*(rows[0])) if rows else None

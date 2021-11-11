@@ -2,17 +2,18 @@
 
 {% block content %}
 
-<h1>Hello {{current_user.firstname}}!</h1>
-<br></br>
-<h2>Profile</h2>
-<article>
-  <h3>User ID: {{current_user.uid}}</h3>
-  <h3>Email: {{current_user.email}}</h3>
-  <h3>Name: {{current_user.{firstname+lastname}}}</h3>
-  <h3>Address: {{current_user.address}}</h3>
-  <h3>Password: {{current_user.password}}</h3>
-</article>
+<div class="profile">
+  <h1>Hello {{current_user.firstname}}!</h1>
+  <br></br>
+  <h2>Profile</h2>
+  <article>
+    <h3>User ID: {{current_user.uid}}</h3>
+    <h3>Email: {{current_user.email}}</h3>
+    <h3>Name: {{current_user.{firstname+lastname}}}</h3>
+    <h3>Address: {{current_user.address}}</h3>
+    <h3>Password: {{current_user.password}}</h3>
+</article> 
+</div>
+
 
 {% endblock %}
-
-<!-- profileinfo links to users.py info (instead of current_user) -->
