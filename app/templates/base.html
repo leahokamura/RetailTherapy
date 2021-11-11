@@ -52,10 +52,18 @@
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">LOG OUT</a>
+          <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">MY PROFILE</a> <!--fix index.index to be Profile.profile-->
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">LOG IN</a>
         {% endif %}
         <a href="{{ url_for('cart.cart') }}" type="button" class="btn btn-light">Cart</a>
+      </div>
+      <div class="container">
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="{{ url_for('index.index') }}">Products</a></li>
+          </ul>
+        </nav></strong>
       </div>
     {% endblock %}
   </div>
