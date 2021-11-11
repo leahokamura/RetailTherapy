@@ -4,6 +4,7 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.profile import Profile
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -24,3 +25,11 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases)
+
+@bp.route('/profile')
+def profile():
+    # get all profile info:
+    profile = Profile.get_all(True)
+    # render the page by adding information to the profile.html file
+    return render_template('profile.html',
+                           current_user = profile)
