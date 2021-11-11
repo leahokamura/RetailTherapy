@@ -9,7 +9,7 @@ from .. import login
 
 class User(UserMixin):
     def __init__(self, uid, email, firstname, lastname, password=None, address=None):
-        self.id = uid
+        self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
