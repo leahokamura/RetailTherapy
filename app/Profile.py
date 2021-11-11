@@ -9,14 +9,14 @@ from .models.user import User
 from flask import Blueprint
 
 import sys
-bp = Blueprint('profile', __name__)
+bp = Blueprint('Profile', __name__)
 
 @bp.route('/profile/<int:uid>', methods=['GET', 'POST'])
-def profile(uid):
+def profile():
     #get profile info
     print("this is your profile", file=sys.stderr)
-    print(uid, file=sys.stderr)
-    profile_info = User.get_profile(uid)
+    print(current_user.uid, file=sys.stderr)
+    profile_info = User.get_profile(current_user.uid)
     print(profile_info, file=sys.stderr)
     # render the page by adding information to the profile.html file
     return render_template('profile.html',

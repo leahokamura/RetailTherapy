@@ -18,7 +18,7 @@ class User(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, uid, email, firstname, lastname, address
+SELECT password, uid, email, firstname, lastname
 FROM Users
 WHERE email = :email
 """,
@@ -76,28 +76,4 @@ FROM Users
 WHERE uid = :uid
 """,
                               uid=uid)
-        return User(*(rows[0])) if rows else None
-
-
-    @staticmethod
-    @login.user_loader
-    def get_profile(uid):
-        rows = app.db.execute("""
-SELECT uid, email, firstname, lastname, password, address
-FROM Users
-WHERE uid = :uid
-""",
-                            uid=uid)
-        return User(*(rows[0])) if rows else None
-
-
-    @staticmethod
-    @login.user_loader
-    def get_public(uid):
-        rows = app.db.execute("""
-SELECT uid, firstname
-FROM Users
-WHERE uid = :uid
-""",
-                            uid=uid)
         return User(*(rows[0])) if rows else None
