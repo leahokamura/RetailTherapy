@@ -26,11 +26,3 @@ def index():
                            avail_products=products,
                            purchase_history=purchases)
 
-
-@bp.route('/profile')
-def profile():
-    # get all profile info:
-    profile = User.get_profile(True)
-    # render the page by adding information to the profile.html file
-    return render_template('profile.html',
-                           current_user = profile)
