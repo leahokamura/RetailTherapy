@@ -27,8 +27,6 @@ def index():
                            purchase_history=purchases)
 
 
-bp = Blueprint('profile', __name__)
-
 @bp.route('/profile')
 def profile():
     # get all profile info:
