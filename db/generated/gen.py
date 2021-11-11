@@ -124,7 +124,7 @@ def gen_in_cart(num_carts):
             pid = fake.random_int(min=0, max=num_products-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity)*int(unit_price)))
+            total_price = str((int(p_quantity))*float(unit_price))
             writer.writerow([cid, p_quantity, unit_price, total_price, pid, uid])
         print(f'{num_purchases} generated')
     return
@@ -141,7 +141,7 @@ def gen_save_for_later(num_carts, num_products):
             pid = fake.random_int(min=0, max=num_products-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity)*int(unit_price)))
+            total_price = str((int(p_quantity))*float(unit_price))
             writer.writerow([cid, p_quantity, unit_price, total_price, pid])
         print(f'{num_purchases} generated')
     return
@@ -158,7 +158,7 @@ def gen_orders(num_purchases, num_carts):
             oid = fake.random_int(min=0, max=num_purchases-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            order_totalPrice = str((int(p_quantity)*int(unit_price)))
+            order_totalPrice = str((int(p_quantity))*float(unit_price))
             fulfilled = fake.random_element(elements=('true', 'false'))
             writer.writerow([cid, oid, order_totalPrice, fulfilled])
         print(f'{num_purchases} generated')
@@ -220,7 +220,7 @@ def gen_update_submission(num_purchases):
             bid = fake.random_int(min=0, max=num_accounts-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity)*int(unit_price)))
+            total_price = str((int(p_quantity))*float(unit_price))
             fulfilled_time = fake.date_time()
             buyer_balance = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
             seller_balance = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
