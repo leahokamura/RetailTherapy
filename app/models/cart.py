@@ -35,3 +35,7 @@ WHERE uid = :uid
 # ''',
 #                               available=available)
 #         return [Product(*row) for row in rows]
+
+
+
+#rehuhsdihfgisdhiug
