@@ -106,7 +106,7 @@ CREATE TABLE Inventory (
 
 --SellerOrders(seller_id, order_id, uid)
 CREATE TABLE SellerOrders (
-	seller_id INT NOT NULL REFERENCES Sellers(iud),
+	seller_id INT NOT NULL REFERENCES Sellers(uid),
 	order_id INT NOT NULL REFERENCES Orders(oid) PRIMARY KEY,
 	uid INT NOT NULL REFERENCES Users(uid)
 );
