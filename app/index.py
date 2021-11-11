@@ -30,7 +30,7 @@ def index():
 @bp.route('/profile')
 def profile():
     # get all profile info:
-    profile = Profile.get_all(True)
+    profile = Profile.get_profile(True)
     # render the page by adding information to the profile.html file
     return render_template('profile.html',
                            current_user = profile)
