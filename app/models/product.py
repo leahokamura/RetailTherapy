@@ -19,7 +19,7 @@ WHERE pid = :pid
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(available=True):p
+    def get_all(available=True):
         rows = app.db.execute('''
 SELECT pid, name, price, available
 FROM Products
