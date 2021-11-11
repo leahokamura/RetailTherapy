@@ -37,7 +37,8 @@ FROM Product_Reviews
 WHERE pid = :pid
 ''',
                               pid=pid)
-        return ProductReview(*(rows[0])) if rows else None
+        print(rows[0][3])
+        return (rows[0]) if rows else None
 
     @staticmethod
     def get_all_product_reviews_by_user(uid):
