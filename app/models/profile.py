@@ -12,13 +12,13 @@ class Profile:
 
 
     @staticmethod
-    def get_profile(email):
+    def get_profile(uid):
         rows = app.db.execute("""
 SELECT uid, email, firstname, lastname, password, address
 FROM Users
-WHERE email = :email
+WHERE uid = :uid
 """,
-        email=email)
+        uid=uid)
         return [Profile(*(rows[0])) if rows is not None else None]
 
     
