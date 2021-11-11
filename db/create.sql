@@ -19,14 +19,14 @@ CREATE TABLE Users (
 
 --Account(uid, balance)
 CREATE TABLE Account (
-    uid INT NOT NULL PRIMARY KEY REFERENCES Users(id),
+    uid INT NOT NULL PRIMARY KEY REFERENCES Users(uid),
     balance FLOAT NOT NULL DEFAULT 0.0 CHECK (balance >= 0.0)
 );
 
 --Purchases(uid, oid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)
 CREATE TABLE Purchases (
     oid INT NOT NULL PRIMARY KEY,
-    uid INT NOT NULL REFERENCES Users(id),
+    uid INT NOT NULL REFERENCES Users(uid),
     time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     total_amount FLOAT NOT NULL,
     item_quantity INT NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE Product_Categories (
     category VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
---Products(id, name, price, available, img)
+--Products(uid, name, price, available, img)
 CREATE TABLE Products (
     pid INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE InCart (
     unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
     total_price FLOAT NOT NULL,
     pid INT UNIQUE NOT NULL REFERENCES Products(pid),
-    uid INT UNIQUE REFERENCES Users(id),
+    uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE SaveForLater (
     unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
     total_price FLOAT NOT NULL,
     pid INT UNIQUE NOT NULL REFERENCES Products(pid),
-    uid INT UNIQUE REFERENCES Users(id),
+    uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
 
@@ -90,25 +90,25 @@ CREATE TABLE Orders (
 
 --SELLERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
---Sellers(id)
+--Sellers(uid)
 CREATE TABLE Sellers (
-    uid INT UNIQUE NOT NULL REFERENCES Users(id),
+    uid INT UNIQUE NOT NULL REFERENCES Users(uid),
     PRIMARY KEY (uid)
     --seller_name: how to deal with this if sellers are also users
 );
 
 --Inventory(seller_id, pid, in_stock)
 CREATE TABLE Inventory (
-    seller_id INT NOT NULL REFERENCES Sellers(id),
+    seller_id INT NOT NULL REFERENCES Sellers(uid),
     pid INT NOT NULL REFERENCES Products(pid),
     in_stock INT NOT NULL
 );
 
 --SellerOrders(seller_id, order_id, uid)
 CREATE TABLE SellerOrders (
-	seller_id INT NOT NULL REFERENCES Sellers(id),
+	seller_id INT NOT NULL REFERENCES Sellers(iud),
 	order_id INT NOT NULL REFERENCES Orders(oid) PRIMARY KEY,
-	uid INT NOT NULL REFERENCES Users(id)
+	uid INT NOT NULL REFERENCES Users(uid)
 );
 
 --UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
@@ -119,8 +119,8 @@ CREATE TABLE Update_Submission(
     fulfilled_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     oid INT UNIQUE NOT NULL REFERENCES Orders(oid),
     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
-    seller_id INT UNIQUE NOT NULL REFERENCES Sellers(id),
-    --bid INT NOT NULL REFERENCES Buyers(id), --commenting this out bc we have no buyers table
+    seller_id INT UNIQUE NOT NULL REFERENCES Sellers(uid),
+    --bid INT NOT NULL REFERENCES Buyers(uid), --commenting this out bc we have no buyers table
     total_price FLOAT UNIQUE NOT NULL,  --REFERENCES InCart(total_price), --see above note about REFERENCES
     PRIMARY KEY(oid, seller_id, cid), --bid
     CHECK(buyer_balance >= total_price)
@@ -130,7 +130,7 @@ CREATE TABLE Update_Submission(
 
 --Product_Reviews(uid, pid, time_reviewed, rating, comments, votes)
 CREATE TABLE Product_Reviews (
-    uid INT NOT NULL REFERENCES Users(id),
+    uid INT NOT NULL REFERENCES Users(uid),
     pid INT NOT NULL REFERENCES Products(pid),
     time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
@@ -141,8 +141,8 @@ CREATE TABLE Product_Reviews (
 
 --Seller_Reviews(uid, seller_id, time_reviewed, rating, comments, votes)
 CREATE TABLE Seller_Reviews (
-    uid INT NOT NULL REFERENCES Users(id),
-    seller_id INT NOT NULL REFERENCES Sellers(id),
+    uid INT NOT NULL REFERENCES Users(uid),
+    seller_id INT NOT NULL REFERENCES Sellers(uid),
     time_reviewed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     rating FLOAT NOT NULL DEFAULT 0.0 CHECK(rating >= 0.0 AND rating <= 5.0),
     comments VARCHAR(2048),
@@ -152,14 +152,14 @@ CREATE TABLE Seller_Reviews (
 
 --Images_Reviews(uid, pid, img)
 CREATE TABLE Images_Reviews (
-    uid INT NOT NULL REFERENCES Users(id),
+    uid INT NOT NULL REFERENCES Users(uid),
     pid INT NOT NULL REFERENCES Products(pid), 
     img BYTEA NOT NULL
 );
 
 --PublicView(uid, firstname, seller, email, address, reviews)
 CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
-    SELECT Users.id, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
+    SELECT Users.uid, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
     FROM Users, Seller_Reviews
     WHERE Users.uid = Seller_Reviews.seller_id
 ;
