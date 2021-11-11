@@ -26,3 +26,5 @@ def index():
                            avail_products=products,
                            purchase_history=purchases)
 
+
+ 

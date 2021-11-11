@@ -78,13 +78,13 @@ def logout():
     return redirect(url_for('index.index'))
 
 
-@bp.route('/profile', methods=['GET', 'POST'])
-def profile(uid):
-    #get profile info
-    print("this is your profile", file=sys.stderr)
-    print(uid, file=sys.stderr)
-    profile_info = User.get_profile(uid)
-    print(profile_info, file=sys.stderr)
-    # render the page by adding information to the profile.html file
-    return render_template('profile.html',
-                            current_user = profile_info)       
+#@bp.route('/profile', methods=['GET', 'POST'])
+#def profile(uid):
+    ## get profile info
+    #print("this is your profile", file=sys.stderr)
+    #print(uid, file=sys.stderr)
+    #profile_info = User.get_profile(uid)
+    #print(profile_info, file=sys.stderr)
+    ## render the page by adding information to the profile.html file
+    #return render_template('profile.html',
+                            #current_user = profile_info)       
