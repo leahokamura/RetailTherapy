@@ -78,7 +78,7 @@ def logout():
     return redirect(url_for('index.index'))
 
 
-@bp.route('/profile/<int:uid>', methods=['GET', 'POST'])
+@bp.route('/profile', methods=['GET', 'POST'])
 def get_profile(uid):
     #get profile info
     print("this is your profile", file=sys.stderr)
