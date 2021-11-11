@@ -93,7 +93,7 @@ CREATE TABLE Orders (
 --Sellers(id)
 CREATE TABLE Sellers (
     uid INT UNIQUE NOT NULL REFERENCES Users(id),
-    PRIMARY KEY (id)
+    PRIMARY KEY (uid)
     --seller_name: how to deal with this if sellers are also users
 );
 
