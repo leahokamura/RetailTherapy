@@ -44,10 +44,10 @@ WHERE email = :email
     @staticmethod
     def register(email, password, firstname, lastname):
         try:
-            print('this is the email' + email, file=sys.stderr)
-            print('this is the password' + password, file=sys.stderr)
-            print('this is the firstname' + firstname, file=sys.stderr)
-            print('this is the lastname' + lastname, file=sys.stderr)
+            print('this is the email: ' + email, file=sys.stderr)
+            print('this is the password: ' + password, file=sys.stderr)
+            print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the lastname: ' + lastname, file=sys.stderr)
             rows = app.db.execute("""
 INSERT INTO Users(email, firstname, lastname, password)
 VALUES(:email, :firstname, :lastname, :password)
