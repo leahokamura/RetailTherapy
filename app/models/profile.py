@@ -16,7 +16,7 @@ class Profile:
         rows = app.db.execute("""
 SELECT uid, email, firstname, lastname, password, address
 FROM Users
-WHERE email = :email AND password = :password
+WHERE email = :email
 """,
         email=email)
         return [Profile(*(rows[0])) if rows is not None else None]
