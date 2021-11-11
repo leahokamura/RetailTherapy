@@ -8,12 +8,14 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname):
-        self.uid = uid
+    def __init__(self, uid, email, firstname, lastname, password=None, address=None):
+        self.id = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-
+        self.password = password
+        self.address = address
+    
 
     @staticmethod
     def get_by_auth(email, password):
@@ -61,8 +63,8 @@ RETURNING uid
             uid = rows[0][0]
             # print('go wrong 2', file=sys.stderr)
             return User.get(uid)
-        except Exception:
-            print('made it to the exception', file=sys.stderr)
+        except Exception as e:
+            print(e)
             # likely email already in use; better error checking and
             # reporting needed
             return None
@@ -80,7 +82,6 @@ WHERE uid = :uid
 
 
     @staticmethod
-    @login.user_loader
     def get_profile(uid):
         rows = app.db.execute("""
 SELECT uid, email, firstname, lastname, password, address
@@ -92,10 +93,9 @@ WHERE uid = :uid
 
 
     @staticmethod
-    @login.user_loader
     def get_public(uid):
         rows = app.db.execute("""
-SELECT uid, firstname
+SELECT uid, email, firstname, lastname, password, address
 FROM Users
 WHERE uid = :uid
 """,
