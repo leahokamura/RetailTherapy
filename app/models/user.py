@@ -44,6 +44,10 @@ WHERE email = :email
     @staticmethod
     def register(email, password, firstname, lastname):
         try:
+            print('this is the email' + email, file=sys.stderr)
+            print('this is the password' + password, file=sys.stderr)
+            print('this is the firstname' + firstname, file=sys.stderr)
+            print('this is the lastname' + lastname, file=sys.stderr)
             rows = app.db.execute("""
 INSERT INTO Users(email, firstname, lastname, password)
 VALUES(:email, :firstname, :lastname, :password)
@@ -53,7 +57,9 @@ RETURNING id
                                   firstname=firstname,
                                   lastname=lastname,
                                   password=generate_password_hash(password))
+            # print('go wrong 1', file=sys.stderr)
             id = rows[0][0]
+            # print('go wrong 2', file=sys.stderr)
             return User.get(id)
         except Exception:
             print('made it to the exception', file=sys.stderr)

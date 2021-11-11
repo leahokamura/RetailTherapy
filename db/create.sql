@@ -13,7 +13,7 @@ CREATE TABLE Users (
     email VARCHAR UNIQUE NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
-    -- address VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
     password VARCHAR(255) NOT NULL
 );
 
@@ -159,7 +159,7 @@ CREATE TABLE Images_Reviews (
 
 --PublicView(uid, firstname, seller, email, address, reviews)
 CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
-    SELECT Users.uid, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
+    SELECT Users.id, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
     FROM Users, Seller_Reviews
     WHERE Users.uid = Seller_Reviews.seller_id
 ;
