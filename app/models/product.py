@@ -3,7 +3,7 @@ from flask import current_app as app
 
 class Product:
     def __init__(self, pid, name, price, available):
-        self.pid = pid
+        self.pid = id
         self.name = name
         self.price = price
         self.available = available
@@ -11,7 +11,7 @@ class Product:
     @staticmethod
     def get(pid):
         rows = app.db.execute('''
-SELECT pid, name, price, available
+SELECT id, name, price, available
 FROM Products
 WHERE pid = :pid
 ''',
@@ -21,7 +21,7 @@ WHERE pid = :pid
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT pid, name, price, available
+SELECT id, name, price, available
 FROM Products
 WHERE available = :available
 ''',
