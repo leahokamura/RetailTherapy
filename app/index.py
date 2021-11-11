@@ -4,6 +4,7 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.user import User
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
@@ -24,3 +25,6 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases)
+
+
+ 
