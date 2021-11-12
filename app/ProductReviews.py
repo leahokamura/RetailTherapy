@@ -42,7 +42,7 @@ def ProductReviews(product_number):
         FROM Products, Product_Reviews
         WHERE Products.pid = Product_Reviews.pid
         """
-    )[0][0]
+    )[product_number][0]
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',
