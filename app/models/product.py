@@ -27,3 +27,13 @@ WHERE available = :available
 ''',
                               available=available)
         return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_name(pid):
+        rows = app.db.execute('''
+SELECT pid, name
+FROM Products
+WHERE pid = :pid
+''',
+                            pid=pid)
+        return (rows[0]) if rows else None

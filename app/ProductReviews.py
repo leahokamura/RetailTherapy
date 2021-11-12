@@ -4,6 +4,7 @@ from flask_login import current_user
 import datetime
 
 from .models.productreview import ProductReview
+from .models.product import Product
 
 from flask import current_app as app
 
@@ -36,13 +37,7 @@ def ProductReviews(product_number):
     #p_r_avg = ProductReview.get_product_avg_rating(1)
     product_review_stats = ProductReview.get_stats(product_number)
 
-    product_name = app.db.execute(
-        """
-        SELECT name
-        FROM Products, Product_Reviews
-        WHERE Products.pid = Product_Reviews.pid
-        """
-    )[product_number][0]
+    product_name = Product.get_name(product_number)
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',

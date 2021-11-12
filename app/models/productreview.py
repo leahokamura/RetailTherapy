@@ -1,5 +1,8 @@
 from flask import current_app as app
 
+
+
+
 class ProductReview:
     def __init__(self, uid, pid, time_reviewed, rating, comments, votes):
         self.uid = uid
@@ -49,3 +52,4 @@ WHERE uid = :uid
 ''',
                               uid=uid)
         return [ProductReview(*row) for row in rows]
+
