@@ -23,7 +23,7 @@ CREATE TABLE Account (
     balance FLOAT NOT NULL DEFAULT 0.0 CHECK (balance >= 0.0)
 );
 
---Purchases(uid, oid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)
+--Purchases(oid, uid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)
 CREATE TABLE Purchases (
     oid INT NOT NULL PRIMARY KEY,
     uid INT NOT NULL REFERENCES Users(uid),
@@ -41,13 +41,13 @@ CREATE TABLE Product_Categories (
     category VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
---Products(uid, name, price, available, img)
+--Products(pid, name, price, available, img)
 CREATE TABLE Products (
     pid INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE,
-    img BYTEA NOT NULL --apparently psql prefers BYTEA to IMAGE
+    img VARCHAR(255) NOT NULL --apparently psql prefers BYTEA to IMAGE
 );
 
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -111,7 +111,7 @@ CREATE TABLE SellerOrders (
 	uid INT NOT NULL REFERENCES Users(uid)
 );
 
---UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, bid, total_price)
+--UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, total_price)
 --moved here to be below Sellers
 CREATE TABLE Update_Submission(
     buyer_balance FLOAT NOT NULL,
@@ -154,7 +154,8 @@ CREATE TABLE Seller_Reviews (
 CREATE TABLE Images_Reviews (
     uid INT NOT NULL REFERENCES Users(uid),
     pid INT NOT NULL REFERENCES Products(pid), 
-    img BYTEA NOT NULL
+    img VARCHAR(255) NOT NULL
+
 );
 
 --PublicView(uid, firstname, seller, email, address, reviews)
