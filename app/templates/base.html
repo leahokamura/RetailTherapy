@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
   <style>
     body {
-        font-family: "Lato", sans-serif;
+        font-family: "CenturyGothic", "AppleGothic" sans-serif;
     }
 
     .main-head {
@@ -19,9 +19,14 @@
 
     .sidenav {
         height: 100%;
-        background-color: #000;
+        background-image: url('https://www.kuoni.co.uk/upload/inspiration/usaheader.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
         overflow-x: hidden;
         padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .main {
@@ -61,7 +66,8 @@
       <div class="container">
         <strong><nav>
           <ul class="menu">
-            <li><a href="{{ url_for('index.index') }}">Products</a></li>
+            <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">PRODUCTS</a>
+            <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ' type="button" class="btn btn-light">CLICK HERE FOR BREATHING EXERCISE</a>
           </ul>
         </nav></strong>
       </div>
