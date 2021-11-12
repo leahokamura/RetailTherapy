@@ -51,8 +51,8 @@ WHERE email = :email
             print('this is the firstname: ' + firstname, file=sys.stderr)
             print('this is the lastname: ' + lastname, file=sys.stderr)
             rows = app.db.execute("""
-INSERT INTO Users(email, firstname, lastname, password)
-VALUES(:email, :firstname, :lastname, :password)
+INSERT INTO Users(uid, email, firstname, lastname, password)
+VALUES(DEFAULT, :email, :firstname, :lastname, :password)
 RETURNING uid
 """,
                                   email=email,
