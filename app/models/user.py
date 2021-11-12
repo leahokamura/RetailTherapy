@@ -16,6 +16,8 @@ class User(UserMixin):
         self.password = password
         self.address = address
     
+    def get_id(self):
+        return (self.uid)
 
     @staticmethod
     def get_by_auth(email, password):
