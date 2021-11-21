@@ -1,5 +1,5 @@
 from flask import current_app as app
-
+from sqlalchemy import text
 
 class Product:
     def __init__(self, pid, name, price, available, description, category):
@@ -56,3 +56,14 @@ WHERE category = :category
 SELECT DISTINCT category FROM products      
 ''')
         return [(row[0]) for row in rows] if rows else None
+
+    @staticmethod
+    def get_by_keyword(word):
+        rows = app.db.execute('''
+SELECT pid, name, price, available, description, category 
+FROM Products 
+WHERE name LIKE :word
+OR description LIKE :word
+''',
+                            word = '%' + word + '%')
+        return [Product(*row) for row in rows] if rows else None
