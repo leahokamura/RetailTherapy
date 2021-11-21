@@ -3,11 +3,11 @@
 {% block content %}
 
 <br><br>
-{% if products is none %}
-<h2>No results, please try again</h2>
+{% if not products%}
+<h2>No results for your search "{{category}}", please try again</h2>
 
 {% else %}
-<h2>Category: {{category}}</h2>
+<h2>Search: {{category}}</h2>
 <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">

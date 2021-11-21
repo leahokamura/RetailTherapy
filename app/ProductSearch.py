@@ -2,6 +2,7 @@ from __future__ import print_function # In python 2.7
 from flask import render_template
 from flask_login import current_user
 from sqlalchemy.sql.elements import Null
+from sqlalchemy.sql.expression import null
 
 from .models.product import Product
 
@@ -24,6 +25,7 @@ def ProductSearch(category):
 def ProductKeywordSearch(keywords):
     print('these are the keywords that we are searching for', file=sys.stderr)
     print(keywords, file=sys.stderr)
+    keywords_original = keywords
     keywords = keywords.strip()
     keywords = list(keywords.split(" "))
     print('these are the keywords that we are searching for again', file=sys.stderr)
@@ -33,15 +35,16 @@ def ProductKeywordSearch(keywords):
     prod_ids = []
     for word in keywords:
         tempList = Product.get_by_keyword(word)
-        for prod in tempList:
-            print('this is the product in question', file=sys.stderr)
-            print(prod.pid, file = sys.stderr)
-            if prod.pid not in prod_ids:
-                products.append(prod)
-                prod_ids.append(prod.pid)
+        if tempList is not None:
+            for prod in tempList:
+                print('this is the product in question', file=sys.stderr)
+                print(prod.pid, file = sys.stderr)
+                if prod.pid not in prod_ids:
+                    products.append(prod)
+                    prod_ids.append(prod.pid)
     # products = Product.get_by_keyword(keywords)
     print('these are the products ', file=sys.stderr)
     print(products, file=sys.stderr)
     return render_template('prod-search.html',
-                            category = 'none',
+                            category = keywords_original,
                             products = products)
