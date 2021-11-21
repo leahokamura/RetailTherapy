@@ -47,7 +47,9 @@ CREATE TABLE Products (
     name VARCHAR(255) UNIQUE NOT NULL,
     price FLOAT NOT NULL,
     available BOOLEAN DEFAULT TRUE,
-    img VARCHAR(255) NOT NULL --apparently psql prefers BYTEA to IMAGE
+    img VARCHAR(255) NOT NULL, --apparently psql prefers BYTEA to IMAGE
+    description VARCHAR(2048) NOT NULL,
+    category VARCHAR(255) NOT NULL REFERENCES Product_Categories(category)
 );
 
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

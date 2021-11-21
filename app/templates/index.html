@@ -34,8 +34,21 @@
   <a class="list-group-item list-group-item-action disabled">A disabled link item</a>
 </div> -->
 
-<h2>Products for Sale:</h2>
-
+<h2>Product Search</h2>
+<div class="dropdown" style="display: inline-block;">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Search by category
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    {% for category in categories%}
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category=category) }}">{{category}}</a></li>
+    <!-- <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='drink') }}">Drink</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='art') }}">Art</a></li> -->
+    {% endfor %}
+  </ul>
+</div>
+<br><br>
+<h3>Products for Sale:</h3>
 <div class="album py-5 bg-light">
   <div class="container">
     <div class="row">

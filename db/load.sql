@@ -2,6 +2,7 @@
 SELECT pg_catalog.setval('public.users_uid_seq',
                          (SELECT MAX(uid)+1 FROM Users),
                          false);
+\COPY Product_Categories FROM 'data/Product_Categories.csv' WITH DELIMITER ',' NULL '' CSV                         
 \COPY Products FROM 'data/Products.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Purchases FROM 'data/Purchases.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Account FROM 'data/Account.csv' WITH DELIMITER ',' NULL '' CSV
