@@ -50,26 +50,12 @@
   </ul>
 </div>
 <div class="mb-3" style="display: inline-block;">
-  <input type="text" class="form-control" id="keywordSearch" placeholder="Search">
+  <input type="text" class="form-control" id="keyword-search-input" placeholder="Search">
 </div>
 <div style="display: inline-block;">
-  <a class="btn btn-primary" href="{{ url_for('prodsearch.ProductKeywordSearch', keywords='pizza') }}"><i
-      class="bi bi-search"></i></a>
+  <button id="prod-keyword-search" type="button" class="btn btn-primary" onclick="searchByKeyword()" disabled="true"><i
+    class="bi bi-search"></i></button>
 </div>
-
-<form method="post">
-  <div class="form-group">
-    <label for="Username">Enter Number</label>
-    <input type="text" class="form-control" name="number" placeholder="Enter Number">
-  </div>
-  <button type="submit" class="btn btn-primary" disabled="disabled">Login</button>
-</form>
-
-<div>
-  <input class="input-something" type="text" placeholder="fill me">
-  <button class="button-something">Click Me</button>
-</div>
-
 
 
 <br><br>
@@ -131,18 +117,34 @@
 
 {% block javascript %}
 <script>
-  let input = document.querySelector(".input-something");
-  let button = document.querySelector(".button-something");
-  console.log("wtf why isnt this working ")
-  button.disabled = true;
-  input.addEventListener("change", stateHandle);
+  // let input = document.querySelector(".input-something");
+  // let button = document.querySelector(".button-something");
+  // console.log("wtf why isnt this working ")
+  // button.disabled = true;
+  // input.addEventListener("change", stateHandle);
 
-  function stateHandle() {
-    if (document.querySelector(".input-something").value === "") {
-      button.disabled = true;
+  // function stateHandle() {
+  //   console.log("is this function ever being reached");
+  //   if (document.querySelector(".input-something").value === "") {
+  //     button.disabled = true;
+  //   } else {
+  //     button.disabled = false;
+  //   }
+  // }
+
+  $('#keyword-search-input').on("keyup", action);
+  function action() {
+    if ($('#keyword-search-input').val().length > 0) {
+      $('#prod-keyword-search').prop("disabled", false);
     } else {
-      button.disabled = false;
+      $('#prod-keyword-search').prop("disabled", true);
     }
+  }
+
+  function searchByKeyword() {
+    let keyword = document.getElementById("keyword-search-input").value;
+    console.log('this is the keyword ', keyword);
+    window.location.href = "{{ url_for('prodsearch.ProductKeywordSearch', keywords='REPLACE') }}".replace("REPLACE", keyword);
   }
 </script>
 
