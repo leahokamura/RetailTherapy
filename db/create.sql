@@ -141,6 +141,16 @@ CREATE TABLE Product_Reviews (
     PRIMARY KEY (uid, pid)
 );
 
+CREATE TABLE PR_Comments (
+    rid INT NOT NULL REFERENCES Users(uid),
+    uid INT NOT NULL REFERENCES Users(uid),
+    pid INT NOT NULL REFERENCES Products(pid),
+    time_commented timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    comment VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, pid, time_commented)
+);
+
 --Seller_Reviews(uid, seller_id, time_reviewed, rating, comments, votes)
 CREATE TABLE Seller_Reviews (
     uid INT NOT NULL REFERENCES Users(uid),
