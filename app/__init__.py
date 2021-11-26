@@ -39,4 +39,7 @@ def create_app():
     from .profile import bp as profile_bp
     app.register_blueprint(profile_bp)
 
+    from .PRComments import bp as prcomment_bp
+    app.register_blueprint(prcomment_bp)
+
     return app

@@ -9,7 +9,7 @@
 <h3>Average Rating: {{productreviewstats.average}}/5</h3>
 <h3># of Reviews: {{productreviewstats.number}}</h3>
 
-<table class='table table-hover table-bordered container'>
+<table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">User</th>
@@ -26,7 +26,16 @@
         <td>{{review.time_reviewed}}</td>
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
-        <td>{{review.votes}}</td>
+        <td>{{review.votes}}
+          <!--div x-data="{count: 0}">
+            <button @click="count = count+1">up</button>
+            <button @click="count- = count-1">down</button>
+            <p><strong x-text="count"></strong></p>
+          </div-->
+          <form action='/pr_comments/product{{productreviewstats.pid}}/user{{review.uid}}' method="post">
+            <input type="submit" name="review_details" value="details" />
+          </form> 
+        </td>
       </tr>
     {% endfor %}
   </tbody>

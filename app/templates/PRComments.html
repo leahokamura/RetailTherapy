@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>Review of {{productname.name}} by user {{productreviews.uid}}</h2>
+<h3>Rating: {{productreviews.rating}}/5</h2>
+<h3>Feedback: {{productreviews.comments}}</h3>
+<h3>Votes: {{productreviews.votes}}</h3>
+<h3>Time: {{productreviews.time_reviewed}}</h3>
+
+<form method="post">
+    <input type="submit" name="upvote" value="Upvote" />
+</form>
+<form method="post">
+    <input type="submit" name="downvote" value="Downvote" />
+</form>
+
+<form action='/productreviews/{{productname.pid}}' method="post">
+    <input type="submit" name="productreviews" value="Back to Product Reviews" />
+</form>
+
+<table class='table table-hover table-bordered table=sort container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Date</th>
+      <th scope="col">Comment</th>
+      <th scope="col">Votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for comment in productreviewcomments%}
+      <tr>
+        <th scope="row">{{comment.rid}}</th>
+        <td>{{comment.time_commented}}</td>
+        <td>{{comment.comment}}</td>
+        <td>{{comment.votes}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
