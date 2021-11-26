@@ -53,3 +53,13 @@ WHERE uid = :uid
                               uid=uid)
         return [ProductReview(*row) for row in rows]
 
+    @staticmethod
+    def upvote_review(uid, pid):
+        rows = app.db.execute('''
+UPDATE Product_Reviews
+SET votes = votes + 1
+WHERE uid = :uid, pid = :pid
+''',
+                                uid=uid, pid=pid)
+        return [ProductReview(*row) for row in rows]
+

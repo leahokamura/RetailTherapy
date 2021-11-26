@@ -26,10 +26,38 @@
         <td>{{review.time_reviewed}}</td>
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
-        <td>{{review.votes}}</td>
+        <td>{{review.votes}}
+          <!--div x-data="{count: 0}">
+            <button @click="count = count+1">up</button>
+            <button @click="count- = count-1">down</button>
+            <p><strong x-text="count"></strong></p>
+          </div-->
+          <button type = "button" onclick = "upvote()" id = "up">
+            Up
+          </button>
+          <script>
+            function upvote() {
+              review.votes = review.votes + 1;
+            }
+          </script>
+          <button type = "button" onclick = "downvote()">
+            Down
+          </button>
+          <script>
+            function downvote() {
+              review.votes = review.votes - 1;
+            }
+          </script>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<div x-data="{count: 0}">
+  <button @click="count = count+1">up</button>
+  <button @click="count- = count-1">down</button>
+  <p><strong x-text="count"></strong></p>
+</div>
 
 {% endblock %}
