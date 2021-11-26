@@ -2,35 +2,44 @@
 
 {% block content %}
 
-<br><br>
 
+<br><br>
 
 
 <br><br>
 {% if current_user.is_authenticated %}
 <!-- TO FIX: PURCHASES CURRENTLY BROKEN DUE TO NAMING CONVENTIONS -->
-<h2>You Cart:</h2>
-{#  
+<h2>Your Cart:</h2>
+<h4>Total Cost </h4>  <!-- : ${{cost}} change to right cost -->
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Purchase ID</th>
+      <th scope="col">Product ID</th>
       <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Unit Price</th>
     </tr>
   </thead>
   <tbody>
-    {% for item in cart_items %}
+    {% for item in items %}
       <tr>
-        <th scope="row">{{item.cid}}</th>
+        <th scope="row">{{item.pid}}</th>
+        <th scope="row">{{item.name}}</th>
         <th scope="row">{{item.p_quantity}}</th>
+        <th scope="row">{{item.unit_price}}</th>
+        <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
+          <input type="submit" value="Save for Later">
+        </form>
       </tr>
     {% endfor %}
   </tbody>
 </table>
-#}
 {% else %}
 <p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
 <!-- {% endif %} -->
+
+<form action="{{url_for('users.login')}}" method="POST"> <!-- change to proper page -->
+  <input type="submit" value="Checkout">
+</form>
 
 {% endblock %}

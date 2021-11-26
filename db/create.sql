@@ -54,9 +54,15 @@ CREATE TABLE Products (
 
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
---Cart(cid)
+--Cart(uid, pid, name, p_quantity, unit_price, seller_id)
 CREATE TABLE Cart(
-    cid INT NOT NULL PRIMARY KEY
+    uid VARCHAR(256) NOT NULL REFERENCES Users(uid),
+    pid INTEGER NOT NULL REFERENCES Products(pid),
+    name VARCHAR(255) REFERENCES Products(name),
+    p_quantity INT NOT NULL CHECK(quantity >= 1),
+    unit_price DECIMAL(10, 2) NOT NULL CHECK(unit_price > 0),
+    seller_id VARCHAR(256) NOT NULL REFERENCES Sellers(uid),
+    PRIMARY KEY(uid, pid, seller_id)
 );
 
 --InCart(cid, p_quantity, unit_price, total_price, pid, uid)
@@ -69,6 +75,7 @@ CREATE TABLE InCart (
     uid INT UNIQUE REFERENCES Users(uid),
     PRIMARY KEY(cid)
 );
+
 
 --SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 CREATE TABLE SaveForLater (

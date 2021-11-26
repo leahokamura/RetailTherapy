@@ -107,6 +107,8 @@ def gen_products(num_products):
     return available_pids
 
 
+# NEED TO FIX GENERATED DATA!!!
+#--Cart(uid, pid, p_quantity, unit_price, seller_id)
 #Cart(cid)
 def gen_cart(num_carts):
     with open('Cart.csv', 'w') as f:
