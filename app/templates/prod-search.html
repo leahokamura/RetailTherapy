@@ -8,6 +8,17 @@
 
 {% else %}
 <h2>Search: {{category}}</h2>
+<div class="dropdown" style="display: inline-block;">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+    aria-expanded="false">
+    Sort by...
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <!-- <li><a class="dropdown-item" href="#" onclick="sortByPriceLow('products')">Price: Low to High</a></li> -->
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='high', category_search=category_search) }}">Price: High to Low</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='low', category_search=category_search) }}">Price: Low to High</a></li>
+  </ul>
+</div>
 <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
@@ -32,5 +43,17 @@
     </div>
   </div>
 {% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+
+  // function sortByPriceLow(products) {
+  //   for (i = 0; i < products.length; i++){
+  //     console.log("this is product ", product.name);
+  //   }
+  // }
+</script>
 
 {% endblock %}
