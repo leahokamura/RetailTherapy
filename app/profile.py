@@ -18,7 +18,6 @@ def profile():
 
 @bp.route('/seller')
 def seller():
-    print("ahhhhh i'm here")
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
     seller = Seller.get_seller_info(current_user.uid)
