@@ -115,5 +115,17 @@ WHERE uid = :uid
 """,
         uid=uid)
         return User(*(rows[0])) if rows else None
+    
+    @staticmethod
+    def make_seller(uid):
+        try:
+            app.db.execute(
+                """
+                INSERT INTO Sellers
+                VALUES (%d)
+                """ % (uid))
+            return True
+        except Exception:
+            return False
 
 #dfishdifghsidfgd test dgsihfigvidsgdhihfdg
