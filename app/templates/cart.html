@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 <br><br>
 
 
@@ -20,17 +21,19 @@
     </tr>
   </thead>
   <tbody>
-    {% for item in cart_items %}
+    {% for item in items %}
       <tr>
-        <td>{{item.pid}}</td>
-        <td>{{item.name}}</td>
-        <td> {{item.p_quantity}} </td>
-        <td> {{item.unit_price}} </td>
+        <th scope="row">{{item.pid}}</th>
+        <th scope="row">{{item.name}}</th>
+        <th scope="row">{{item.p_quantity}}</th>
+        <th scope="row">{{item.unit_price}}</th>
+        <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
+          <input type="submit" value="Save for Later">
+        </form>
       </tr>
     {% endfor %}
   </tbody>
 </table>
-
 {% else %}
 <p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
 <!-- {% endif %} -->
