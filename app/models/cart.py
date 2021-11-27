@@ -2,25 +2,18 @@ from flask import current_app as app
 
 
 class Cart:
-    def __init__(self, uid, pid, name, p_quantity, unit_price, seller_id):
-        self.uid = uid
-        self.pid = pid
-        self.name = name
+    def __init__(self, cid, p_quantity, unit_price, total_price, pid, uid):
+        self.cid = cid
         self.p_quantity = p_quantity
-        self.unit_price = unit_price
-        self.seller_id = seller_id
-    
 
     @staticmethod
     def get_cart(uid):
         rows = app.db.execute('''
-SELECT uid, pid, name, p_quantity, unit_price, seller_id
+SELECT cid, p_quantity, unit_price, total_price, pid, uid
 FROM InCart
 WHERE uid = :uid
 ''',
                               uid=uid)
-        print("got cart data")
-        print([Cart(*row) for row in rows])
         return [Cart(*row) for row in rows] if rows is not None else None
 
 
