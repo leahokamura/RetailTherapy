@@ -75,6 +75,11 @@
                 <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}"
                   class="btn btn-sm btn-outline-secondary">View</a>
                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
+
+                <form action="{{url_for('users.login')}}" method="POST"> 
+                  <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
+                </form> 
+
               </div>
             </div>
           </div>

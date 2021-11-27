@@ -77,3 +77,18 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
      
+
+#Leah is working on this :/
+# @bp.route('/addToCart/<int:pid>/<int:uid>')
+# def addToCart(pid, uid):
+#     try:
+#         #AlreadyIn = Cart.checkIfInCart(pid, uid)
+#         #if (AlreadyIn is True):
+#          #   Cart.update(pid, uid, 'add')
+#         #else: 
+#         Cart.add(pid, uid)
+#         return redirect(url_for('index.index'))
+#     except Exception as e:
+#         return "Error adding stuff to cart"
+
+
