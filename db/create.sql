@@ -52,6 +52,51 @@ CREATE TABLE Products (
     category VARCHAR(255) NOT NULL REFERENCES Product_Categories(category)
 );
 
+--CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+--Cart(uid, pid, name, p_quantity, unit_price, seller_id)
+CREATE TABLE Cart(
+    uid VARCHAR(256) NOT NULL REFERENCES Users(uid),
+    pid INTEGER NOT NULL REFERENCES Products(pid),
+    name VARCHAR(255) REFERENCES Products(name),
+    p_quantity INT NOT NULL CHECK(quantity >= 1),
+    unit_price DECIMAL(10, 2) NOT NULL CHECK(unit_price > 0),
+    seller_id VARCHAR(256) NOT NULL REFERENCES Sellers(uid),
+    PRIMARY KEY(uid, pid, seller_id)
+);
+
+--InCart(cid, p_quantity, unit_price, total_price, pid, uid)
+CREATE TABLE InCart (
+    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
+    unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
+    total_price FLOAT NOT NULL,
+    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
+    uid INT UNIQUE REFERENCES Users(uid),
+    PRIMARY KEY(cid)
+);
+
+
+--SaveForLater(cid, p_quantity, unit_price, total_price, pid)
+CREATE TABLE SaveForLater (
+    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
+    p_quantity INT NOT NULL CHECK(p_quantity >=1),
+    unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
+    total_price FLOAT NOT NULL,
+    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
+    uid INT UNIQUE REFERENCES Users(uid),
+    PRIMARY KEY(cid)
+);
+
+--Orders(cid, oid, order_totalPrice, fulfilled)
+CREATE TABLE Orders (
+    cid INT NOT NULL REFERENCES Cart(cid),
+    oid INT NOT NULL,
+    order_totalPrice FLOAT NOT NULL,
+    fulfilled BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY(oid)
+);
+
 --SELLERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --Sellers(uid)
@@ -89,54 +134,6 @@ CREATE TABLE Update_Submission(
     PRIMARY KEY(oid, seller_id, cid), --bid
     CHECK(buyer_balance >= total_price)
 );
-
-
-
---CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
---InCart(uid, pid, name, p_quantity, unit_price, seller_id)
-CREATE TABLE InCart(
-    uid INT NOT NULL REFERENCES Users(uid),
-    pid INT NOT NULL REFERENCES Products(pid),
-    name VARCHAR(255) REFERENCES Products(name),
-    p_quantity INT NOT NULL CHECK(p_quantity >= 1),
-    unit_price DECIMAL(10, 2) NOT NULL CHECK(unit_price > 0),
-    seller_id INT NOT NULL REFERENCES Sellers(uid),
-    PRIMARY KEY(uid, pid, seller_id)
-);
-
---InCart(cid, p_quantity, unit_price, total_price, pid, uid)
--- CREATE TABLE InCart (
---     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
---     p_quantity INT NOT NULL CHECK(p_quantity >=1),
---     unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
---     total_price FLOAT NOT NULL,
---     pid INT UNIQUE NOT NULL REFERENCES Products(pid),
---     uid INT UNIQUE REFERENCES Users(uid),
---     PRIMARY KEY(cid)
--- );
-
-
---SaveForLater(cid, p_quantity, unit_price, total_price, pid)
-CREATE TABLE SaveForLater (
-    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
-    p_quantity INT NOT NULL CHECK(p_quantity >=1),
-    unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
-    total_price FLOAT NOT NULL,
-    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
-    uid INT UNIQUE REFERENCES Users(uid),
-    PRIMARY KEY(cid)
-);
-
---Orders(cid, oid, order_totalPrice, fulfilled)
-CREATE TABLE Orders (
-    cid INT NOT NULL REFERENCES Cart(cid),
-    oid INT NOT NULL,
-    order_totalPrice FLOAT NOT NULL,
-    fulfilled BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY(oid)
-);
-
 
 --SOCIAL--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
