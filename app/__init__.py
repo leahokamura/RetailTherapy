@@ -30,7 +30,7 @@ def create_app():
     from .OneProduct import bp as product_bp
     app.register_blueprint(product_bp)
 
-    from .cart import bp as cart_bp
+    from .Cart import bp as cart_bp
     app.register_blueprint(cart_bp)
 
     from .ProductSearch import bp as search_bp
