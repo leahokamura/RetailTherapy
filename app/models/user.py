@@ -19,6 +19,18 @@ class User(UserMixin):
     def get_id(self):
         return (self.uid)
 
+    def is_seller(self):
+        # print("here is my uid:%2d" % (self.uid))
+        rows = app.db.execute("""
+SELECT *
+FROM Sellers
+WHERE uid = :uid
+""",
+                              uid=self.uid)
+        if rows:
+            return True
+        return False
+
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""

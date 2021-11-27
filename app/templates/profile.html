@@ -12,6 +12,12 @@
     <h3>Name: {{current_user.firstname + " " + current_user.lastname}}</h3>
     <h3>Address: {{current_user.address}}</h3>
     <h3>Password: {{current_user.password}}</h3>
+    {% if current_user.is_seller() %}
+    <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">VISIT SELLER PAGE</a>
+    {% else %}
+      <h4>Wanna sell your silly little products on line? You'd like that, wouldn't you. Yeah, I bet you would.</h4>
+      <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">BECOME A SELLER</a>
+    {% endif %}
 </article> 
 </div>
 
