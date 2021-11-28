@@ -1,6 +1,6 @@
-1,vanilla ice cream,2.99,true,NULL,luxury vanilla ice cream made with the finest vanilla beans in the world,food
-2,chocolate ice cream,2.99,true,NULL,luxury chocolate ice cream made with the finest cocoa beans in the world,food
-3,strawberry ice cream,2.99,true,NULL,luxury strawberry ice cream made with the freshest strawberries in the world,food
-4,6-pack of paycheck pilsners,11.49,true,NULL,"An old-world pilsner brewed with new-world hops, local barley, and corn",drink
-5,seven fabergé easter eggs,1199000.00,true,NULL,collection of some of the finest faberge eggs,art
-6,painting - the storm on the sea of galilee,44000000.00,true,NULL,633 oil-on-canvas painting by the Dutch Golden Age painter Rembrandt van Rijn,art
+1,vanilla ice cream,2.99,true,NULL,luxury vanilla ice cream made with the finest vanilla beans in the world,food,1
+2,chocolate ice cream,2.99,true,NULL,luxury chocolate ice cream made with the finest cocoa beans in the world,food,4
+3,strawberry ice cream,2.99,true,NULL,luxury strawberry ice cream made with the freshest strawberries in the world,food,2
+4,6-pack of paycheck pilsners,11.49,true,NULL,"An old-world pilsner brewed with new-world hops, local barley, and corn",drink,3
+5,seven fabergé easter eggs,1199000.00,true,NULL,collection of some of the finest faberge eggs,art,2
+6,painting - the storm on the sea of galilee,44000000.00,true,NULL,633 oil-on-canvas painting by the Dutch Golden Age painter Rembrandt van Rijn,art,1

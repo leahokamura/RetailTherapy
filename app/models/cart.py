@@ -31,12 +31,11 @@ WHERE uid = :uid
 #--Inventory(seller_id, pid, in_stock)
     @staticmethod
     def add(pid, uid):
-        #quantity = request.args.get("quantity")
         app.db.execute('''
-    INSERT INTO InCart (:uid, :pid, name, 1, price, seller_id)
-    SELECT Products.name as name, Products.price as price, Inventory.seller_id AS seller_id
-    FROM Products, Inventory, Users
-    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0 AND Users.uid = :uid;
+    INSERT INTO InCart 
+    SELECT :uid, :pid, Products.name as name, 1, Products.price as price, Inventory.seller_id AS seller_id
+    FROM Products, Inventory
+    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0;
     ''',  
                                uid = uid, pid = pid)
 
