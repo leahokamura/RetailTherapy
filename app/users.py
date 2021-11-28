@@ -9,6 +9,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
+from .models.product import Product
+from .models.cart import Cart
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -77,18 +79,14 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
      
-
-#Leah is working on this :/
-# @bp.route('/addToCart/<int:pid>/<int:uid>')
-# def addToCart(pid, uid):
-#     try:
-#         #AlreadyIn = Cart.checkIfInCart(pid, uid)
-#         #if (AlreadyIn is True):
-#          #   Cart.update(pid, uid, 'add')
-#         #else: 
-#         Cart.add(pid, uid)
-#         return redirect(url_for('index.index'))
-#     except Exception as e:
-#         return "Error adding stuff to cart"
-
-
+     #Leah is working on this :/
+@bp.route('/addToCart/<int:pid><int:uid>', methods=['GET', 'POST'])
+def addToCart(pid, uid):
+        #AlreadyIn = Cart.checkIfInCart(pid, uid)
+        #if (AlreadyIn is True):
+         #   Cart.update(pid, uid, 'add')
+        #else: 
+    Cart.add(pid, uid)
+    return redirect(url_for('index.index'))
+    # except Exception as e:
+    #     return "Error adding stuff to cart"
