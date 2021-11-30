@@ -35,13 +35,12 @@ WHERE uid = :uid
     INSERT INTO InCart 
     SELECT :uid, :pid, Products.name as name, 1, Products.price as price, Inventory.seller_id AS seller_id
     FROM Products, Inventory
-    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0;
+    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0
+    LIMIT 1
+    RETURNING *;
     ''',  
                                uid = uid, pid = pid)
-
-
-
-
+    
 
 
 #     @staticmethod
