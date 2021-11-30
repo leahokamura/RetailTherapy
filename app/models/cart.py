@@ -33,7 +33,7 @@ WHERE uid = :uid
     def add(pid, uid):
         app.db.execute('''
     INSERT INTO InCart 
-    SELECT :uid, :pid, Products.name as name, 1, Products.price as price, Inventory.seller_id AS seller_id
+    SELECT :uid, :pid, name, 1, price, seller_id
     FROM Products, Inventory
     WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0
     LIMIT 1

@@ -18,6 +18,7 @@
       <th scope="col">Product Name</th>
       <th scope="col">Quantity</th>
       <th scope="col">Unit Price</th>
+      <th scope="col">Options</th>
     </tr>
   </thead>
   <tbody>
@@ -27,9 +28,12 @@
         <th scope="row">{{item.name}}</th>
         <th scope="row">{{item.p_quantity}}</th>
         <th scope="row">{{item.unit_price}}</th>
+        <th scope="row">
+
         <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
-          <input type="submit" value="Save for Later">
+          <input type="submit" value="Save for Later"> 
         </form>
+        </th>
       </tr>
     {% endfor %}
   </tbody>
