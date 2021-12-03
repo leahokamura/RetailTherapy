@@ -157,8 +157,15 @@ SELECT DISTINCT category FROM products
             sorting_descrip = '''rating ASC NULLS LAST'''
         
         rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
+WITH prod_rating  AS (
+SELECT pid, AVG(rating)::numeric(10,2) AS avg
+FROM Product_Reviews
+GROUP BY pid)
+SELECT Products.pid, Products.name, Products.price, prod_rating.avg AS rating
 FROM Products
+FULL OUTER JOIN
+prod_rating
+ON prod_rating.pid = Products.pid
 WHERE name LIKE ANY (:words)
 OR description LIKE ANY (:words)
 ORDER BY ''' + sorting_descrip,    
