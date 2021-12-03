@@ -22,3 +22,8 @@ def seller():
     products = Seller.get_seller_products(current_user.uid)
     seller = Seller.get_seller_info(current_user.uid)
     return render_template('seller.html', slr=seller, inv=products)
+
+@bp.route('/seller/additem')
+def additem():
+    # TODO: write this method
+    return render_template('additem.html')
