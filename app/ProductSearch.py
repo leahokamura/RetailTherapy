@@ -20,7 +20,9 @@ def ProductSearch(category):
     return render_template('prod-search.html',
                             category = category,
                             products = products, 
-                            category_search = 'true')
+                            category_search = 'true',
+                            sort_criteria = 'none',
+                            filter_criteria = 'none')
 
 
 @bp.route('/keywordsearch/<keywords>', methods=['GET', 'POST'])
@@ -40,13 +42,15 @@ def ProductKeywordSearch(keywords):
     return render_template('prod-search.html',
                             category = keywords_original,
                             products = products, 
-                            category_search = 'false')
+                            category_search = 'false',
+                            sort_criteria = 'none',
+                            filter_criteria = 'none')
 
 
-@bp.route('/search/<keywords>/sort/<sortCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
-def Sorting(keywords, sortCriteria, category_search):
+@bp.route('/search/<keywords>/sort/<sortCriteria>/filter/<filterCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
+def Sorting(keywords, sortCriteria, filterCriteria, category_search):
     if (category_search == 'true'):
-        products = Product.get_prod_by_cat(keywords, sortCriteria, 'none')
+        products = Product.get_prod_by_cat(keywords, sortCriteria, filterCriteria)
     else:
         keywords_arr = keywords.strip()
         keywords_arr = list(keywords.split(" "))
@@ -56,20 +60,26 @@ def Sorting(keywords, sortCriteria, category_search):
             temp_word = '%' + word + '%'
             keywords_adj.append(temp_word)
         
-        products = Product.get_by_keyword(keywords_adj, sortCriteria, 'none')
-
+        products = Product.get_by_keyword(keywords_adj, sortCriteria, filterCriteria)
+    
+    print("the filter criteria is " + filterCriteria, file=sys.stderr)
+    if (filterCriteria == ''):
+        print('filtering shuild be changed now ', file=sys.stderr)
+        filterCriteria = 'none'
     # TO DO: will likely need to adjust this to include filter and sort criteria so as to allow both on results
     return render_template('prod-search.html',
                             category = keywords,
                             products = products,
-                            category_search = category_search)
+                            category_search = category_search,
+                            sort_criteria = sortCriteria,
+                            filter_criteria = filterCriteria)
 
 
 # route used when filtering product results
-@bp.route('/search/<keywords>/filter/<filterCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
-def Filtering(keywords, filterCriteria, category_search):
+@bp.route('/search/<keywords>/sort/<sortCriteria>/filter/<filterCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
+def Filtering(keywords, sortCriteria, filterCriteria, category_search):
     if (category_search == 'true'):
-        products = Product.get_prod_by_cat(keywords, 'none', filterCriteria)
+        products = Product.get_prod_by_cat(keywords, sortCriteria, filterCriteria)
     else:
         keywords_arr = keywords.strip()
         keywords_arr = list(keywords.split(" "))
@@ -79,10 +89,16 @@ def Filtering(keywords, filterCriteria, category_search):
             temp_word = '%' + word + '%'
             keywords_adj.append(temp_word)
         
-        products = Product.get_by_keyword(keywords_adj, 'none', filterCriteria)
+        products = Product.get_by_keyword(keywords_adj, sortCriteria, filterCriteria)
     
+    print("the sort criteria is " + sortCriteria, file=sys.stderr)
+    if (sortCriteria == ''):
+        print('sorting shuild be changed now ', file=sys.stderr)
+        sortCriteria = 'none'
     # TO DO: will likely need to adjust this to include filter and sort criteria so as to allow both on results
     return render_template('prod-search.html',
                             category = keywords,
                             products = products,
-                            category_search = category_search)
+                            category_search = category_search,
+                            sort_criteria = sortCriteria,
+                            filter_Criteria = filterCriteria)
