@@ -24,7 +24,6 @@ def ProductSearch(category):
 
 @bp.route('/keywordsearch/<keywords>', methods=['GET', 'POST'])
 def ProductKeywordSearch(keywords):
-    print('these are the keywords that we are searching for', file=sys.stderr)
     print(keywords, file=sys.stderr)
     keywords_original = keywords
     keywords = keywords.strip()

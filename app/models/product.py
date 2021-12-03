@@ -4,6 +4,8 @@ from sqlalchemy import text
 
 import sys
 
+import sqlalchemy
+
 class Product:
     def __init__(self, pid, name, price, available, description, category):
         self.pid = pid
@@ -43,25 +45,62 @@ WHERE pid = :pid
                             pid=pid)
         return (rows[0]) if rows else None
 
+#     @staticmethod
+#     def get_prod_by_cat(category, sortCriteria):
+        rows = app.db.execute('''
+WITH prod_rating  AS (
+SELECT pid, AVG(rating)::numeric(10,2) AS avg
+FROM Product_Reviews
+GROUP BY pid)
+SELECT Products.pid, Products.name, Products.price, prod_rating.avg AS rating
+FROM Products
+FULL OUTER JOIN
+prod_rating
+ON prod_rating.pid = Products.pid
+WHERE Products.category = :category
+''', category=category)
+        return rows if rows else None
+    
+    
+    
+    # this is the one that works 
     @staticmethod
     def get_prod_by_cat(category, sortCriteria):
         
-        if (sortCriteria == 'high'):
-            rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
-FROM Products
-WHERE category = :category
-ORDER BY price DESC
-''', category=category)
-        else:
-            rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
-FROM Products
-WHERE category = :category
-ORDER BY price ASC
-''', category=category)   
+        sorting_descrip = ''
 
-        return [Product(*row) for row in rows] if rows else None
+        if (sortCriteria == 'high'):
+            sorting_descrip = '''price DESC'''
+        if (sortCriteria == 'low'):
+            sorting_descrip = '''price ASC'''
+        if (sortCriteria == 'high_rating'):
+            sorting_descrip = '''rating DESC NULLS LAST'''
+        if (sortCriteria == 'low_rating'):
+            sorting_descrip = '''rating ASC NULLS LAST'''
+
+        rows = app.db.execute('''
+WITH prod_rating  AS (
+SELECT pid, AVG(rating)::numeric(10,2) AS avg
+FROM Product_Reviews
+GROUP BY pid)
+SELECT Products.pid, Products.name, Products.price, prod_rating.avg AS rating
+FROM Products
+FULL OUTER JOIN
+prod_rating
+ON prod_rating.pid = Products.pid
+WHERE Products.category = :category
+ORDER BY ''' + sorting_descrip, 
+category=category)
+        
+        return rows if rows else None
+
+#         rows = app.db.execute('''
+# SELECT pid, name, price, available, description, category
+# FROM Products
+# WHERE category = :category
+# ORDER BY ''' + sorting_descrip,
+# category=category)
+# return [Product(*row) for row in rows] if rows else None
 
     @staticmethod
     def get_categories():
@@ -82,23 +121,47 @@ SELECT DISTINCT category FROM products
 #                             word = '%' + word + '%')
 #         return [Product(*row) for row in rows] if rows else None
 
+    # this is the one that works
+    # @staticmethod
+#     def get_by_keyword(words, sortCriteria):
+#         if (sortCriteria == 'high'):
+#             rows = app.db.execute('''
+# SELECT pid, name, price, available, description, category
+# FROM Products
+# WHERE name LIKE ANY (:words)
+# OR description LIKE ANY (:words)
+# ORDER BY price DESC      
+# ''', words = words)
+
+#         if (sortCriteria == 'low'):
+#             rows = app.db.execute('''
+# SELECT pid, name, price, available, description, category
+# FROM Products
+# WHERE name LIKE ANY (:words)
+# OR description LIKE ANY (:words)
+# ORDER BY price ASC      
+# ''', words = words)
+#         return [Product(*row) for row in rows] if rows else None
     @staticmethod
     def get_by_keyword(words, sortCriteria):
-        if (sortCriteria == 'high'):
-            rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
-FROM Products
-WHERE name LIKE ANY (:words)
-OR description LIKE ANY (:words)
-ORDER BY price DESC      
-''', words = words)
+        
+        sorting_descrip = ''
 
+        if (sortCriteria == 'high'):
+            sorting_descrip = '''price DESC'''
         if (sortCriteria == 'low'):
-            rows = app.db.execute('''
+            sorting_descrip = '''price ASC'''
+        if (sortCriteria == 'high_rating'):
+            sorting_descrip = '''rating DESC NULLS LAST'''
+        if (sortCriteria == 'low_rating'):
+            sorting_descrip = '''rating ASC NULLS LAST'''
+        
+        rows = app.db.execute('''
 SELECT pid, name, price, available, description, category
 FROM Products
 WHERE name LIKE ANY (:words)
 OR description LIKE ANY (:words)
-ORDER BY price ASC      
-''', words = words)
-        return [Product(*row) for row in rows] if rows else None
+ORDER BY ''' + sorting_descrip,    
+words = words)
+
+        return rows if rows else None
