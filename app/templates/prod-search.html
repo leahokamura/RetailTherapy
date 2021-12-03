@@ -16,23 +16,73 @@
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <!-- <li><a class="dropdown-item" href="#" onclick="sortByPriceLow('products')">Price: Low to High</a></li> -->
     <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='high', category_search=category_search) }}">
+      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='high', category_search=category_search) }}">
       Price: High to Low</a>
     </li>
     <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='low', category_search=category_search) }}">
+      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='low', category_search=category_search) }}">
       Price: Low to High</a>
     </li>
     <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='high_rating', category_search=category_search) }}">
+      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='high_rating', category_search=category_search) }}">
       Rating: High to Low</a>
     </li>
     <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.PriceSort', keywords=category, sortCriteria='low_rating', category_search=category_search) }}">
+      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='low_rating', category_search=category_search) }}">
       Rating: Low to High</a>
     </li>
   </ul>
 </div>
+
+
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+  Filter by...
+</button>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasExampleLabel">Filtering</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <h4>Price</h4>
+    </div>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='under25', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">Under $25</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='25to50', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">$25 to $50</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='50to100', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">$50 to $100</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='100to200', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">$100 to $200</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='200&Up', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">$200 & Above</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='none', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">Any Price</a>  
+    <br><br>
+    <div>
+      <h4>Rating</h4>
+    </div>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='4&Up', category_search=category_search) }}" 
+      type="button" class="btn btn-outline-secondary">4 <i class="bi bi-star"></i> & Up</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='3&Up', category_search=category_search) }}" 
+      type="button" class="btn btn-outline-secondary">3 <i class="bi bi-star"></i> & Up</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='2&Up', category_search=category_search) }}" 
+      type="button" class="btn btn-outline-secondary">2 <i class="bi bi-star"></i> & Up</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='1&Up', category_search=category_search) }}" 
+      type="button" class="btn btn-outline-secondary">1 <i class="bi bi-star"></i> & Up</a>
+    <a href="{{ url_for('prodsearch.Filtering', keywords=category, filterCriteria='none', category_search=category_search) }}" 
+      type="button" class="btn btn-outline-secondary">Any <i class="bi bi-star"></i></a>
+    <br><br>
+    <div>
+      <h4>Available</h4>
+    </div>
+    <a href="{{ url_for('index.index') }}" type="button" class="btn btn-outline-secondary">All products</a>
+    <a href="{{ url_for('index.index') }}" type="button" class="btn btn-outline-secondary">Available only</a>
+  </div>
+</div>
+
 <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">

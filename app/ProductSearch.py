@@ -15,79 +15,73 @@ bp = Blueprint('prodsearch', __name__)
 def ProductSearch(category):
     print('this is the product category we are searching for', file=sys.stderr)
     print(category, file=sys.stderr)
-    products = Product.get_prod_by_cat(category, sortCriteria='high')
+    products = Product.get_prod_by_cat(category, sortCriteria='high', filterCriteria='none')
     print(products, file=sys.stderr)
     return render_template('prod-search.html',
                             category = category,
                             products = products, 
                             category_search = 'true')
 
+
 @bp.route('/keywordsearch/<keywords>', methods=['GET', 'POST'])
 def ProductKeywordSearch(keywords):
-    print(keywords, file=sys.stderr)
     keywords_original = keywords
     keywords = keywords.strip()
     keywords = list(keywords.split(" "))
-    print('these are the keywords that we are searching for again', file=sys.stderr)
-    print(keywords, file=sys.stderr)
+
     keywords_adj = []
     for word in keywords:
         temp_word = '%' + word + '%'
         print(temp_word, file=sys.stderr)
         keywords_adj.append(temp_word)
-    print('these are the adjusted keywords ', file=sys.stderr)
-    print(keywords_adj, file=sys.stderr)
-    # products = []
-    # prod_ids = []
-    # for word in keywords:
-    #     tempList = Product.get_by_keyword(word)
-    #     if tempList is not None:
-    #         for prod in tempList:
-    #             print('this is the product in question', file=sys.stderr)
-    #             print(prod.pid, file = sys.stderr)
-    #             if prod.pid not in prod_ids:
-    #                 products.append(prod)
-    #                 prod_ids.append(prod.pid)
-    products = Product.get_by_keyword(keywords_adj, sortCriteria='low')
-    print('these are the products ', file=sys.stderr)
-    print(products, file=sys.stderr)
+
+    products = Product.get_by_keyword(keywords_adj, sortCriteria='low', filterCriteria='none')
+
     return render_template('prod-search.html',
                             category = keywords_original,
                             products = products, 
                             category_search = 'false')
 
+
 @bp.route('/search/<keywords>/sort/<sortCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
-def PriceSort(keywords, sortCriteria, category_search):
-    print('this is a category search', file=sys.stderr)
-    print(category_search, file=sys.stderr)
-    print('these are the original search terms', file=sys.stderr)
-    print(keywords, file=sys.stderr)
-    print('this is the sort criteria', file=sys.stderr)
-    print(sortCriteria, file=sys.stderr)
-    
+def Sorting(keywords, sortCriteria, category_search):
     if (category_search == 'true'):
-        print('start here', file=sys.stderr)
-        products = Product.get_prod_by_cat(keywords, sortCriteria)
-        print('end here', file=sys.stderr)
+        products = Product.get_prod_by_cat(keywords, sortCriteria, 'none')
     else:
         keywords_arr = keywords.strip()
         keywords_arr = list(keywords.split(" "))
         keywords_adj = []
+        
         for word in keywords_arr:
             temp_word = '%' + word + '%'
-            print(temp_word, file=sys.stderr)
             keywords_adj.append(temp_word)
-        print('made it here', file=sys.stderr)
-        products = Product.get_by_keyword(keywords_adj, sortCriteria)
-        print('made it to end', file=sys.stderr)
+        
+        products = Product.get_by_keyword(keywords_adj, sortCriteria, 'none')
 
+    # TO DO: will likely need to adjust this to include filter and sort criteria so as to allow both on results
+    return render_template('prod-search.html',
+                            category = keywords,
+                            products = products,
+                            category_search = category_search)
+
+
+# route used when filtering product results
+@bp.route('/search/<keywords>/filter/<filterCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
+def Filtering(keywords, filterCriteria, category_search):
+    if (category_search == 'true'):
+        products = Product.get_prod_by_cat(keywords, 'none', filterCriteria)
+    else:
+        keywords_arr = keywords.strip()
+        keywords_arr = list(keywords.split(" "))
+        keywords_adj = []
+        
+        for word in keywords_arr:
+            temp_word = '%' + word + '%'
+            keywords_adj.append(temp_word)
+        
+        products = Product.get_by_keyword(keywords_adj, 'none', filterCriteria)
     
-
-    print("FUCKING HELL ", file=sys.stderr)
-
-    # products.sort(key=Product.name, reverse=True)
-    print("these are the products ", file=sys.stderr)
-    print(products, file=sys.stderr)
+    # TO DO: will likely need to adjust this to include filter and sort criteria so as to allow both on results
     return render_template('prod-search.html',
                             category = keywords,
                             products = products,
