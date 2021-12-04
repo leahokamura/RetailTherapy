@@ -97,9 +97,8 @@ RETURNING pid
                                   rating = rating,
                                   comments = comments,
                                   votes = votes)
-            #product_id = rows[0][0]
-            #print('this is the pid: ' + product_id, file = sys.stderr)
-            print('this worked!')
+
+            print('this worked!', file = sys.stderr)
             return True
         except Exception:
             print('bad things happening', file = sys.stderr)

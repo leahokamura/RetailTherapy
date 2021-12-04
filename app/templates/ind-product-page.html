@@ -16,6 +16,9 @@
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
                 </form> 
+                <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
+                  <input type="submit" name="review_details" value="Add Review" />
+                </form> 
                 {% endif %}
 
 

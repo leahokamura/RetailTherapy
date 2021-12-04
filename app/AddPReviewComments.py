@@ -41,7 +41,7 @@ def addProductReviews(pid, uid, rid):
                                         form.comment.data,
                                         0):
                 print('made it into the if statement', file=sys.stderr)
-                flash('Congratulations, you have submitted a review!')
+                #flash('Congratulations, you have submitted a review!')
                 return redirect(url_for('pr_comments.ProductReviews', product_number = pid, user_id = uid))
             else:
                 print('baddddd', file=sys.stderr)
