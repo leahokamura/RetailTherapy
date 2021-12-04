@@ -56,5 +56,8 @@ def create_app():
 
     from .orderPage import bp as prcomment_bp
     app.register_blueprint(prcomment_bp)
+
+    from .SellerReviews import bp as sellerreview_bp
+    app.register_blueprint(sellerreview_bp)
     
     return app

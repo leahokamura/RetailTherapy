@@ -4,5 +4,15 @@
 
 <h2>Welcome to {{slr.firstname}} {{slr.lastname}}'s seller profile!</h2>
 
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-light">See Seller reviews</a>
+
+
+<!--{% if current_user.is_authenticated %}
+                
+                <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
+                  <input type="submit" name="review_details" value="Add Review" />
+                </form> 
+{% endif %}-->
+
 
 {% endblock %}

@@ -30,8 +30,8 @@ def SellerReviews(seller_id):
     seller_name = Seller.get_seller_info(seller_id)
     
     # render the page by adding information to the ProductReviews.html file
-    return render_template('ProductReviews.html',
-                            productreviews = p_reviews,
-                            productreviewstats = product_review_stats,
-                            productname = product_name)
+    return render_template('sellerreviews.html',
+                            sellerreviews = s_reviews,
+                            sellerreviewstats = seller_review_stats,
+                            sellername = seller_name)
                             #avg_rating = p_r_avg)
