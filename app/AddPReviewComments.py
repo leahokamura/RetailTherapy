@@ -4,55 +4,55 @@ from flask_login import current_user
 import datetime
 import sys
 
-
-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, DateTimeField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
-
 from .models.productreview import ProductReview
 from .models.product import Product
+from .models.prcomment import PR_Comment
 
 from flask import current_app as app
 
 from flask import Blueprint
 # import sys
-bp = Blueprint('addproductreviews', __name__)
+bp = Blueprint('addpreviewcomments', __name__)
 
 
-class AddReviewForm(FlaskForm):
-    rating = FloatField(_l('Rating'), validators=[DataRequired(), NumberRange(min=0, max=5)])
+class AddCommentForm(FlaskForm):
     comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
-    submit = SubmitField(_l('Add Review'))
+    #time_commented = DateTimeField('Time', default=datetime.now(), format='%Y-%m-%d %H:%M:%S')
+    submit = SubmitField(_l('Add Comment'))
 
-
-@bp.route('/addproductreview/product<int:pid>/reviewer<int:rid>', methods=['GET', 'POST'])
-def addProductReviews(pid, rid):
+@bp.route('/addpr_comment/product<int:pid>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def addProductReviews(pid, uid, rid):
     if current_user.is_authenticated:
-        form = AddReviewForm()
+        form = AddCommentForm()
         print('check 1')
         if form.validate_on_submit():
             print('made it this far', file=sys.stderr)
             default_time = datetime.datetime.now()
             default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
-            if ProductReview.addreview(rid,
+            if PR_Comment.addcomment(rid,
+                                        uid,
                                         pid,
                                         default_time,
-                                        form.rating.data,
                                         form.comment.data,
                                         0):
                 print('made it into the if statement', file=sys.stderr)
                 flash('Congratulations, you have submitted a review!')
-                return redirect(url_for('productreviews.ProductReviews', product_number = pid))
+                return redirect(url_for('pr_comments.ProductReviews', product_number = pid, user_id = uid))
             else:
                 print('baddddd', file=sys.stderr)
     
+    p_reviews = ProductReview.get_all_product_reviews_for_product(pid)
+
     product_review_stats = ProductReview.get_stats(pid)
 
     product_name = Product.get_name(pid)
-    return render_template('addproductreview.html', title='Add Product Review', 
+    return render_template('addproductreviewcomment.html', title='Add Comment', 
                                                     form=form,
                                                     productname = product_name,
-                                                    productreviewstats = product_review_stats)
+                                                    productreviews = p_reviews)
+

@@ -12,7 +12,10 @@
 
 
 {% if current_user.is_authenticated %}
-                
+<form action='/addpr_comment/product{{productname.pid}}/user{{productreviews.uid}}/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="review_details" value="Add Comment" />
+</form> 
+
 <form action="{{url_for('pr_comments.upvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
   <button class="btn btn-sm btn-outline-secondary" type="submit">Upvote Review</button>
 </form> 

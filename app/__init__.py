@@ -45,4 +45,7 @@ def create_app():
     from .AddProductReviews import bp as addpr_bp
     app.register_blueprint(addpr_bp)
 
+    from .AddPReviewComments import bp as addprc_bp
+    app.register_blueprint(addprc_bp)
+
     return app

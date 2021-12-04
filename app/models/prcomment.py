@@ -1,4 +1,5 @@
 from flask import current_app as app
+import sys
 
 class PR_Comment:
     def __init__(self, rid, uid, pid, time_commented, comment, votes):
@@ -60,3 +61,31 @@ ORDER BY votes DESC, time_commented DESC
     RETURNING *;
     ''',  
                                uid = uid, pid = pid, rid = rid)
+
+
+    @staticmethod
+    def addcomment(rid, uid, pid, time_reviewed, comments, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
+
+            rows = app.db.execute("""
+INSERT INTO PR_Comments
+VALUES(:rid, :uid, :pid, :time_reviewed, :comments, :votes)
+RETURNING pid
+""",
+                                  rid = rid,
+                                  uid = uid,
+                                  pid = pid,
+                                  time_reviewed = time_reviewed,
+                                  comments = comments,
+                                  votes = votes)
+            #product_id = rows[0][0]
+            #print('this is the pid: ' + product_id, file = sys.stderr)
+            print('this worked!')
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None
