@@ -10,12 +10,21 @@
 <h3>Votes: {{productreviews.votes}}</h3>
 <h3>Time: {{productreviews.time_reviewed}}</h3>
 
-<form method="post">
-    <input type="submit" name="upvote" value="Upvote" />
-</form>
-<form method="post">
-    <input type="submit" name="downvote" value="Downvote" />
-</form>
+
+{% if current_user.is_authenticated %}
+<form action='/addpr_comment/product{{productname.pid}}/user{{productreviews.uid}}/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="review_details" value="Add Comment" />
+</form> 
+
+<form action="{{url_for('pr_comments.upvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Upvote Review</button>
+</form> 
+
+<form action="{{url_for('pr_comments.downvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Downvote Review</button>
+</form> 
+
+{% endif %}
 
 <form action='/productreviews/{{productname.pid}}' method="post">
     <input type="submit" name="productreviews" value="Back to Product Reviews" />
@@ -28,6 +37,9 @@
       <th scope="col">Date</th>
       <th scope="col">Comment</th>
       <th scope="col">Votes</th>
+      {% if current_user.is_authenticated %}
+      <th scope="col">Feedback</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -37,6 +49,22 @@
         <td>{{comment.time_commented}}</td>
         <td>{{comment.comment}}</td>
         <td>{{comment.votes}}</td>
+        {% if current_user.is_authenticated %}
+        <td>
+          <div>
+            <div style = 'float: left'>
+              <form action="{{url_for('pr_comments.upvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+                <button class="btn btn-sm btn-outline-secondary" type="submit">+1</button>
+              </form> 
+            </div>
+            <div style = 'float: left'>
+              <form action="{{url_for('pr_comments.downvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+                <button class="btn btn-sm btn-outline-secondary" type="submit">-1</button>
+              </form>
+            </div>
+          </div>
+        </td>
+        {% endif %}
       </tr>
     {% endfor %}
   </tbody>

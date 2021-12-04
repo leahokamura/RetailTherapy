@@ -1,5 +1,7 @@
 from flask import current_app as app
 
+import sys
+
 class ProductReview:
     def __init__(self, uid, pid, time_reviewed, rating, comments, votes):
         self.uid = uid
@@ -15,6 +17,7 @@ class ProductReview:
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
+ORDER BY votes DESC, time_reviewed DESC
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]
@@ -56,9 +59,52 @@ WHERE uid = :uid
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid AND uid = :uid
+ORDER BY votes DESC
 ''',
                               pid=pid, uid=uid)
         return (rows[0]) if rows else None
+
+
+    @staticmethod
+    def upvote_review(pid, uid):
+        app.db.execute('''
+    UPDATE Product_Reviews
+    SET votes = votes + 1
+    WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
+    RETURNING *
+    ''',  
+                               uid = uid, pid = pid)
+
+
+
+    @staticmethod
+    def addreview(uid, pid, time_reviewed, rating, comments, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
+            print('this is the rating: ' + str(rating), file=sys.stderr)
+
+            rows = app.db.execute("""
+INSERT INTO Product_Reviews
+VALUES(:uid, :pid, :time_reviewed, :rating, :comments, :votes)
+RETURNING pid
+""",
+                                  uid = uid,
+                                  pid = pid,
+                                  time_reviewed = time_reviewed,
+                                  rating = rating,
+                                  comments = comments,
+                                  votes = votes)
+            #product_id = rows[0][0]
+            #print('this is the pid: ' + product_id, file = sys.stderr)
+            print('this worked!')
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None
+
 
     def get_just_rating(pid):
         rows = app.db.execute('''
@@ -68,3 +114,4 @@ WHERE pid = :pid
 ''',  
         pid = pid)
         return (rows[0]) if rows else None
+
