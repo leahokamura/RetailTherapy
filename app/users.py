@@ -74,6 +74,22 @@ def register():
             print('something fucked up', file=sys.stderr)
     return render_template('register.html', title='Register', form=form)
 
+@bp.route('/update', methods=['GET', 'POST'])
+def update():
+    if current_user.is_authenticated:
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            print('made it this far', file=sys.stderr)
+            if User.register(form.email.data,
+                            form.password.data,
+                            form.firstname.data,
+                            form.lastname.data):
+                flash('Congratulations, you have updated your profile information!')
+                return redirect(url_for('users.login'))
+        else: 
+            print('something fucked up', file=sys.stderr)
+    return render_template('register.html', title='Update Profile', form=form)
+
 @bp.route('/logout')
 def logout():
     logout_user()

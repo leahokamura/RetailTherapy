@@ -15,14 +15,4 @@ class User(UserMixin):
         self.password = password
         self.address = address
 
-    @staticmethod
-    def get_profile(uid):
-        rows = app.db.execute("""
-SELECT uid, email, firstname, lastname, password, address
-FROM Users
-WHERE uid = :uid
-""",
-                            uid=uid)
-        return User(*(rows[0])) if rows else None
-
 

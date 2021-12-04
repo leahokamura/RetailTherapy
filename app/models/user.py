@@ -8,13 +8,14 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname, password=None, address=None):
+    def __init__(self, uid, email, firstname, lastname, password=None, address=None, balance=None):
         self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
         self.password = password
         self.address = address
+        self.balance = balance
     
     def get_id(self):
         return (self.uid)
@@ -98,11 +99,11 @@ WHERE uid = :uid
     @staticmethod
     def get_profile(uid):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname, password, address
-FROM Users
-WHERE uid = :uid
+SELECT Users.uid, email, firstname, lastname, password, address, balance
+FROM Users, Account
+WHERE Users.uid = :uid
 """,
-        uid=uid)
+                            uid=uid)
         return User(*(rows[0])) if rows else None
 
 
@@ -128,4 +129,42 @@ WHERE uid = :uid
         except Exception:
             return False
 
-#dfishdifghsidfgd test dgsihfigvidsgdhihfdg
+    @staticmethod
+    def get_public_seller(uid):
+        rows = app.db.execute("""
+SELECT Users.uid, Users.firstname, Users.email, Users.address, Seller_Reviews.rating, Seller_Reviews.comments, Seller_Reviews.votes
+FROM Users, Seller_Reviews
+WHERE Users.uid = Seller_Reviews.seller_id AND Users.uid = :uid
+""",
+        uid=uid)
+        return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def update(email, password, firstname, lastname):
+        try:
+            print('this is the email: ' + email, file=sys.stderr)
+            print('this is the password: ' + password, file=sys.stderr)
+            print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the lastname: ' + lastname, file=sys.stderr)
+            rows = app.db.execute("""
+UPDATE Users
+SET
+    email = :email
+    firstname = :firstname,
+    lastname = :lastname,
+    password = :password,
+WHERE 
+""",
+                                  email=email,
+                                  firstname=firstname,
+                                  lastname=lastname,
+                                  password=generate_password_hash(password))
+            # print('go wrong 1', file=sys.stderr)
+            uid = rows[0][0]
+            # print('go wrong 2', file=sys.stderr)
+            return User.get(uid)
+        except Exception as e:
+            print(e)
+            # likely email already in use; better error checking and
+            # reporting needed
+            return None
