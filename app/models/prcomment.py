@@ -18,3 +18,23 @@ WHERE pid = :pid AND uid = :uid
 ''',
                               pid=pid, uid=uid)
         return [PR_Comment(*row) for row in rows]
+
+    @staticmethod
+    def upvote_review(pid, uid):
+        app.db.execute('''
+    UPDATE Product_Reviews
+    SET votes = votes + 1
+    WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid)
+
+    @staticmethod
+    def downvote_review(pid, uid):
+        app.db.execute('''
+    UPDATE Product_Reviews
+    SET votes = votes - 1
+    WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid)

@@ -15,6 +15,7 @@ class ProductReview:
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
+ORDER BY votes DESC
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]
@@ -56,6 +57,18 @@ WHERE uid = :uid
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid AND uid = :uid
+ORDER BY votes DESC
 ''',
                               pid=pid, uid=uid)
         return (rows[0]) if rows else None
+
+
+    @staticmethod
+    def upvote_review(pid, uid):
+        app.db.execute('''
+    UPDATE Product_Reviews
+    SET votes = votes + 1
+    WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid)

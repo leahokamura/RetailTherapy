@@ -10,12 +10,18 @@
 <h3>Votes: {{productreviews.votes}}</h3>
 <h3>Time: {{productreviews.time_reviewed}}</h3>
 
-<form method="post">
-    <input type="submit" name="upvote" value="Upvote" />
-</form>
-<form method="post">
-    <input type="submit" name="downvote" value="Downvote" />
-</form>
+
+{% if current_user.is_authenticated %}
+                
+<form action="{{url_for('pr_comments.upvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Upvote</button>
+</form> 
+
+<form action="{{url_for('pr_comments.downvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Downvote</button>
+</form> 
+
+{% endif %}
 
 <form action='/productreviews/{{productname.pid}}' method="post">
     <input type="submit" name="productreviews" value="Back to Product Reviews" />
