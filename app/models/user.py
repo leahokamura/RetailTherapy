@@ -8,13 +8,14 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname, password=None, address=None):
+    def __init__(self, uid, email, firstname, lastname, password=None, address=None, balance=None):
         self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
         self.password = password
         self.address = address
+        self.balance = balance
     
     def get_id(self):
         return (self.uid)
@@ -98,11 +99,11 @@ WHERE uid = :uid
     @staticmethod
     def get_profile(uid):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname, password, address
-FROM Users
-WHERE uid = :uid
+SELECT Users.uid, Users.email, Users.firstname, Users.lastname, Users.password, Users.address, Account.balance
+FROM Users, Account
+WHERE Users.uid = :uid
 """,
-        uid=uid)
+                            uid=uid)
         return User(*(rows[0])) if rows else None
 
 
@@ -128,4 +129,54 @@ WHERE uid = :uid
         except Exception:
             return False
 
-#dfishdifghsidfgd test dgsihfigvidsgdhihfdg
+    @staticmethod
+    def get_public_seller(uid):
+        rows = app.db.execute("""
+SELECT Users.uid, Users.firstname, Users.email, Users.address, Seller_Reviews.rating, Seller_Reviews.comments, Seller_Reviews.votes
+FROM Users, Seller_Reviews
+WHERE Users.uid = Seller_Reviews.seller_id AND Users.uid = :uid
+""",
+        uid=uid)
+        return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def update_profile(uid, email, password, firstname, lastname, address):
+        rows = app.db.execute("""
+UPDATE Users
+SET
+    email = :email,
+    firstname = :firstname,
+    lastname = :lastname,
+    password = :password,
+    address = :address
+WHERE uid = :uid
+RETURNING *
+""",
+                                  uid=uid,
+                                  email=email,
+                                  firstname=firstname,
+                                  lastname=lastname,
+                                  password=generate_password_hash(password),
+                                  address=address)
+
+    @staticmethod
+    def update_balance(uid, balance):
+        rows = app.db.execute("""
+UPDATE Account
+SET
+    balance = balance + :balance
+WHERE uid = :uid
+RETURNING *
+""",
+                                  uid=uid,
+                                  balance=balance)
+
+    @staticmethod
+    def get_balance(uid):
+        rows = app.db.execute("""
+SELECT uid, balance
+FROM Account
+WHERE uid = :uid
+""",
+                              uid=uid)
+        return User(*(rows[0][1])) if rows else None
