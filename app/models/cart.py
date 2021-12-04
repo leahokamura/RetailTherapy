@@ -42,12 +42,12 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
 
 
 
-#--Products(pid, name, price, available, img)
+#--Products(pid, name, price, available, image)
 #--InCart(uid, pid, name, p_quantity, unit_price, seller_id)
 #--Inventory(seller_id, pid, in_stock)
     @staticmethod
     def add(pid, uid):
-        app.db.execute('''
+        rows = app.db.execute('''
     INSERT INTO InCart 
     SELECT :uid, :pid, name, 1, price, seller_id
     FROM Products, Inventory
@@ -56,6 +56,7 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+        print([Cart(*row) for row in rows])
     
     @staticmethod
     def check(pid, uid):

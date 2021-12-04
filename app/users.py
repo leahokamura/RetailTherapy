@@ -87,6 +87,7 @@ def addToCart(pid, uid):
         print("It is in cart")
         Cart.update(pid, uid, 'add')
     else: 
+        print("not in cart")
         Cart.add(pid, uid)
     return redirect(url_for('index.index'))
 

@@ -41,7 +41,7 @@ CREATE TABLE Product_Categories (
     category VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
---Products(pid, name, price, available, img)
+--Products(pid, name, price, available, image)
 CREATE TABLE Products (
     pid INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
