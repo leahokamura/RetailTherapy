@@ -104,4 +104,7 @@ def Add(pid, uid):
 @bp.route('/removeOne/<int:pid><int:uid>', methods=['GET', 'POST'])
 def removeOne(pid, uid):
     Cart.update(pid, uid, 'delete')
+    # quantity_zero = Cart.check_ifZero(pid,uid)
+    # if (quantity_zero is True):
+    #     Cart.remove(pid, uid)
     return redirect(url_for('cart.cart'))

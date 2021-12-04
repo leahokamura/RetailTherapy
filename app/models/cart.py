@@ -85,11 +85,15 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
 
         if action == "add":
             quantity = current_quantity + 1
-            
-        else: 
-            quantity = current_quantity - 1
 
-        app.db.execute('''
+        else: 
+
+            if current_quantity == 1:
+                Cart.remove(pid,uid)
+            else:
+                quantity = current_quantity - 1
+
+                app.db.execute('''
     UPDATE InCart
     SET p_quantity = :quantity
     WHERE uid = :uid AND pid = :pid
@@ -99,11 +103,33 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
                                 pid = pid,
                                 quantity = quantity)
 
-        
+    #     rows2 = app.db.execute('''
+    # SELECT p_quantity
+    # FROM InCart
+    # WHERE uid = :uid AND pid = :pid
+    # ''',
+    #                             uid = uid, 
+    #                             pid = pid)
+    #     current_quantity = int(rows2[0][0])
+    #     if current_quantity == 0:
+    #         remove(pid,uid)
 
+    # @staticmethod
+    # def check_ifZero(pid, uid):
+    #     rows = app.db.execute('''
+    # SELECT p_quantity
+    # FROM InCart
+    # WHERE uid = :uid AND pid = :pid
+    # ''',
+    #                             uid = uid, 
+    #                             pid = pid)
+    #     current_quantity = int(rows[0][0])
+    #     if current_quantity > 0:
+    #         return False
+    #     return True
 
     @staticmethod
-    def remove(uid, pid):
+    def remove(pid, uid):
         app.db.execute('''
     DELETE
     FROM InCart
@@ -111,9 +137,16 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     RETURNING *
     ''',
                                 uid = uid, 
-                                pid = pid) 
-
-
+                                pid = pid)
+        
+#         rows = app.db.execute('''
+# SELECT uid, pid, name, p_quantity, unit_price, seller_id
+# FROM InCart
+# WHERE uid = :uid
+# ORDER BY pid
+# ''',
+#                               uid=uid)
+#         print(rows)
 
 
 
