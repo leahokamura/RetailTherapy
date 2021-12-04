@@ -88,8 +88,8 @@
       <div class="row">
         {% for product in products%}
         <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <img class="card-img-top" src="{{url_for('static', filename='blank.png')}}" alt="Card image cap">
+          <div class="card mb-4 box-shadow h-100">
+            <img class="card-img-top" src="{{product.image}}" alt="Card image cap" style="max-width: 24rem; max-height: 21rem;">
             <div class="card-body">
               <h5 class="card-title">{{product.name}}</h5>
               <p class="card-text">Price: {{product.price}}</p>
