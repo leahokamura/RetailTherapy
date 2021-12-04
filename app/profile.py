@@ -17,15 +17,17 @@ bp = Blueprint('profile', __name__)
 def profile():
     #get profile info
     profile_info = User.get_profile(current_user.uid)
+    new_balance = User.get_balance(current_user.uid)
     # render the page by adding information to the profile.html file
-    return render_template('profile.html', current_user = profile_info)
+    return render_template('profile.html', current_user = profile_info, current_balance = new_balance)
 
 @bp.route('/public-profile', methods=['GET', 'POST'])
 def public():
     #get public info
     public_info = User.get_public(current_user.uid)
+    public_seller = User.get_public_seller(current_user.uid)
     # render the page by adding information to the public.html file
-    return render_template('public.html', public_user = public_info)
+    return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
 @bp.route('/seller')
 def seller():
