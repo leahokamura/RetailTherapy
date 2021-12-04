@@ -46,7 +46,7 @@ class Seller:
         try:
             app.db.execute( # add to Products
                 """
-                INSERT INTO Products(pid, name, price, available, img, description, category)
+                INSERT INTO Products(pid, name, price, available, image, description, category)
                 VALUES(:new_pid, :productname, :price, :available, :image, :description, :category)
                 RETURNING pid
                 """, new_pid=new_pid, productname=productname, price=price, available=available, description=description, image=image, category=category)
