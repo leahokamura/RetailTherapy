@@ -24,6 +24,21 @@ WHERE uid = :uid
         print([Cart(*row) for row in rows])
         return [Cart(*row) for row in rows] if rows is not None else None
 
+    @staticmethod
+    def get_total(uid):
+        rows = app.db.execute('''
+SELECT SUM(InCart.p_quantity * Products.price) as total
+FROM InCart, Products
+WHERE InCart.pid = Products.pid AND InCart.uid = :uid
+''', 
+                            uid = uid)
+        return rows[0][0]
+
+
+
+
+
+
 
 
 #--Products(pid, name, price, available, img)
@@ -33,12 +48,61 @@ WHERE uid = :uid
     def add(pid, uid):
         app.db.execute('''
     INSERT INTO InCart 
-    SELECT :uid, :pid, Products.name as name, 1, Products.price as price, Inventory.seller_id AS seller_id
+    SELECT :uid, :pid, name, 1, price, seller_id
     FROM Products, Inventory
-    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0;
+    WHERE Products.pid = :pid AND Products.pid = Inventory.pid AND Inventory.in_stock > 0
+    LIMIT 1
+    RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+    
+    @staticmethod
+    def check(pid, uid):
+        rows = app.db.execute('''
+    SELECT * 
+    FROM InCart
+    WHERE uid = :uid AND pid = :pid
+    ''',
+                                uid = uid, 
+                                pid = pid)
+    
+        if len(rows) == 0:
+            return False
+        else:
+            return True 
+    
+    @staticmethod 
+    def update(pid, uid, action):
+        rows = app.db.execute('''
+    SELECT p_quantity
+    FROM InCart
+    WHERE uid = :uid AND pid = :pid
+    ''',
+                                uid = uid, 
+                                pid = pid)
+        current_quantity = int(rows[0][0])
+        if action == "add":
+            quantity = current_quantity + 1
+            app.db.execute('''
+    UPDATE InCart
+    SET p_quantity = :quantity
+    WHERE uid = :uid AND pid = :pid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                pid = pid,
+                                quantity = quantity)
 
+    @staticmethod
+    def remove(uid, pid):
+        app.db.execute('''
+    DELETE
+    FROM InCart
+    WHERE uid = :uid AND pid = :pid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                pid = pid) 
 
 
 

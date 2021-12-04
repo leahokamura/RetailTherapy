@@ -77,7 +77,7 @@
                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                 {% if current_user.is_authenticated %}
                 
-                <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST"> 
+                <form action="{{url_for('users.addToCart', pid = product.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
                 </form> 
                 {% endif %}

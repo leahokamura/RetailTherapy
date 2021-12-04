@@ -36,3 +36,8 @@ def public_seller():
     public_info = User.get_public_seller(current_user.uid)
     # render the page by adding information to the public.html file
     return render_template('public.html', public_user = public_info)
+
+@bp.route('/seller/additem')
+def additem():
+    # TODO: write this method
+    return render_template('additem.html')

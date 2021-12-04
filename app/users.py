@@ -98,11 +98,21 @@ def logout():
      #Leah is working on this :/
 @bp.route('/addToCart/<int:pid><int:uid>', methods=['GET', 'POST'])
 def addToCart(pid, uid):
-        #AlreadyIn = Cart.checkIfInCart(pid, uid)
-        #if (AlreadyIn is True):
-         #   Cart.update(pid, uid, 'add')
-        #else: 
-    Cart.add(pid, uid)
+    In = Cart.check(pid, uid)
+    if (In is True):
+        print("It is in cart")
+        Cart.update(pid, uid, 'add')
+    else: 
+        Cart.add(pid, uid)
     return redirect(url_for('index.index'))
-    # except Exception as e:
-    #     return "Error adding stuff to cart"
+
+@bp.route('/remove_item/<int:pid><int:uid>', methods=['GET', 'POST'])
+def remove_item(pid, uid):
+    Cart.remove(pid, uid)
+    print("removed item")
+    return redirect(url_for('cart.cart'))
+
+@bp.route('/Add/<int:pid><int:uid>', methods=['GET', 'POST'])
+def Add(pid, uid):
+    Cart.update(pid, uid, 'add')
+    return redirect(url_for('cart.cart'))
