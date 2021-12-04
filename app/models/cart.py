@@ -85,6 +85,15 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
 
         if action == "add":
             quantity = current_quantity + 1
+            app.db.execute('''
+    UPDATE InCart
+    SET p_quantity = :quantity
+    WHERE uid = :uid AND pid = :pid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                pid = pid,
+                                quantity = quantity)
 
         else: 
 

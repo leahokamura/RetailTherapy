@@ -105,33 +105,20 @@ CREATE TABLE InCart(
     PRIMARY KEY(uid, pid, seller_id)
 );
 
---InCart(cid, p_quantity, unit_price, total_price, pid, uid)
--- CREATE TABLE InCart (
+--SaveForLater(cid, p_quantity, unit_price, total_price, pid)
+-- CREATE TABLE SaveForLater (
 --     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
 --     p_quantity INT NOT NULL CHECK(p_quantity >=1),
---     unit_price FLOAT NOT NULL,  --REFERENCES Products(price), --removed this b/c of constraints on use of REFERENCES
+--     unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
 --     total_price FLOAT NOT NULL,
 --     pid INT UNIQUE NOT NULL REFERENCES Products(pid),
 --     uid INT UNIQUE REFERENCES Users(uid),
 --     PRIMARY KEY(cid)
 -- );
 
-
---SaveForLater(cid, p_quantity, unit_price, total_price, pid)
-CREATE TABLE SaveForLater (
-    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
-    p_quantity INT NOT NULL CHECK(p_quantity >=1),
-    unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
-    total_price FLOAT NOT NULL,
-    pid INT UNIQUE NOT NULL REFERENCES Products(pid),
-    uid INT UNIQUE REFERENCES Users(uid),
-    PRIMARY KEY(cid)
-);
-
 --Orders(cid, oid, order_totalPrice, fulfilled)
 CREATE TABLE Orders (
-    cid INT NOT NULL REFERENCES Cart(cid),
-    oid INT NOT NULL,
+    uid INT NOT NULL REFERENCES Users(uid),
     order_totalPrice FLOAT NOT NULL,
     fulfilled BOOLEAN DEFAULT FALSE,
     PRIMARY KEY(oid)
