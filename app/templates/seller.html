@@ -2,33 +2,39 @@
 
 {% block content %}
 
+
 <br><br>
 
-<h2>Your inventory:</h2>
 
-<div class="album py-5 bg-light">
-  <div class="container">
-    <div class="row">
-      {% for product in inv %}
-      <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <img class="card-img-top" src="{{url_for('static', filename='blank.png')}}" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Product ID: {{product.pid}}</h5>
-            <p class="card-text">In stock: {{product.in_stock}}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}" class="btn btn-sm btn-outline-secondary" >View</a>
-                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
+<br><br>
+{% if current_user.is_authenticated %}
+<h2>Your Inventory:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Unit Price</th>
+      <th scope="col">In Stock?</th>
+      <th scope="col">Quantity Available</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+      <tr>
+        <th scope="row">{{product.pid}}</th>
+        <th scope="row">{{product.name}}</th>
+        <th scope="row">{{product.price}}</th>
+        <th scope="row">{{product.in_stock}}</th>
+        <th scope="row">{{product.available}}</th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('profile.additem') }}" type="button" class="btn btn-light">Add item to inventory</a>
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to view your seller page!</p>
+{% endif %}
 
 
 {% endblock %}
