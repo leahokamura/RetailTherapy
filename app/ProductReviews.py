@@ -18,21 +18,6 @@ from flask import Blueprint
 bp = Blueprint('productreviews', __name__)
 
 
-# @bp.route('/productreviews')
-# def ProductReviews():
-#     # get all reviews for a certain product:
-#     p_reviews = ProductReview.get_all_product_reviews_for_product(1)
-#     # print(p_reviews, file=sys.stderr)
-
-#     #p_r_avg = ProductReview.get_product_avg_rating(1)
-#     product_review_stats = ProductReview.get_stats(1)
-    
-#     # render the page by adding information to the ProductReviews.html file
-#     return render_template('ProductReviews.html',
-#                             productreviews = p_reviews,
-#                             productreviewstats = product_review_stats)
-#                             #avg_rating = p_r_avg)
-
 @bp.route('/productreviews/<int:product_number>', methods=['GET', 'POST'])
 def ProductReviews(product_number):
     # get all reviews for a certain product:
