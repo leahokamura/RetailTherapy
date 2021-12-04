@@ -8,6 +8,7 @@
 <h3>Price: {{productinfo.price}}</h3>
 <h3>Description: {{productinfo.description}}</h3>
 <h3>Category: {{productinfo.category}}</h3>
+<h3>Rating: {{product_rating.avg}}</h3>
 <a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid) }}" type="button" class="btn btn-light">See product reviews</a>
 
 {% if current_user.is_authenticated %}
