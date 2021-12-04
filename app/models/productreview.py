@@ -105,3 +105,13 @@ RETURNING pid
             print('bad things happening', file = sys.stderr)
             return None
 
+
+    def get_just_rating(pid):
+        rows = app.db.execute('''
+SELECT MAX(pid) as pid, AVG(rating)::numeric(10,2) AS avg
+FROM Product_Reviews
+WHERE pid = :pid        
+''',  
+        pid = pid)
+        return (rows[0]) if rows else None
+

@@ -54,7 +54,7 @@
 </div>
 <div style="display: inline-block;">
   <button id="prod-keyword-search" type="button" class="btn btn-primary" onclick="searchByKeyword()" disabled="true"><i
-    class="bi bi-search"></i></button>
+      class="bi bi-search"></i></button>
 </div>
 
 
@@ -65,8 +65,10 @@
     <div class="row">
       {% for product in avail_products%}
       <div class="col-md-4">
-        <div class="card mb-4 box-shadow">
-          <img class="card-img-top" src="{{url_for('static', filename='blank.png')}}" alt="Card image cap">
+        <div class="card mb-4 box-shadow h-100">
+          <!-- <img class="card-img-top" src="{{url_for('static', filename='blank.png')}}" alt="Card image cap"> -->
+          <img class="card-img-top" src="{{product.image}}" alt="Card image cap" style="max-width: 24rem; max-height: 21rem;">
+
           <div class="card-body">
             <h5 class="card-title">{{product.name}}</h5>
             <p class="card-text">Price: {{product.price}}</p>
@@ -76,10 +78,10 @@
                   class="btn btn-sm btn-outline-secondary">View</a>
                 <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                 {% if current_user.is_authenticated %}
-                
-                <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST"> 
+
+                <form action="{{url_for('users.addToCart', pid = product.pid, uid = current_user.uid)}}" method="POST">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
-                </form> 
+                </form>
                 {% endif %}
 
               </div>

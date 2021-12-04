@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 <div class="profile">
   <h1>Hello {{current_user.firstname}}!</h1>
   <br></br>
@@ -11,11 +12,13 @@
     <h3>Email: {{current_user.email}}</h3>
     <h3>Name: {{current_user.firstname + " " + current_user.lastname}}</h3>
     <h3>Address: {{current_user.address}}</h3>
-    <h3>Password: {{current_user.password}}</h3>
+    <h3>Password: ********</h3>
+    <h3>Balance: {{current_user.balance}} <a href="{{ url_for('users.updateBalance') }}" type="button" class="btn btn-light">ADD or WITHDRAW</a> </h3>
+    <a href="{{ url_for('users.update') }}" type="button" class="btn btn-light">UPDATE PROFILE</a>
     {% if current_user.is_seller() %}
     <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">VISIT SELLER PAGE</a>
     {% else %}
-      <h4>Wanna sell your silly little products on line? You'd like that, wouldn't you. Yeah, I bet you would.</h4>
+      <h4>Wanna sell your silly little products on line?.</h4>
       <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">BECOME A SELLER</a>
     {% endif %}
 </article> 

@@ -10,7 +10,6 @@
 {% if current_user.is_authenticated %}
 <!-- TO FIX: PURCHASES CURRENTLY BROKEN DUE TO NAMING CONVENTIONS -->
 <h2>Your Cart:</h2>
-<h4>Total Cost </h4>  <!-- : ${{cost}} change to right cost -->
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -18,6 +17,8 @@
       <th scope="col">Product Name</th>
       <th scope="col">Quantity</th>
       <th scope="col">Unit Price</th>
+      <th scope="col">Total Price</th>
+      <th scope="col">Options</th>
     </tr>
   </thead>
   <tbody>
@@ -25,21 +26,47 @@
       <tr>
         <th scope="row">{{item.pid}}</th>
         <th scope="row">{{item.name}}</th>
-        <th scope="row">{{item.p_quantity}}</th>
+
+        <th scope="row">{{item.p_quantity}}
+
+          
+          <div >
+            <div style="float: left"> 
+              <form action="{{url_for('users.Add', pid = item.pid, uid = current_user.uid)}}" method="POST">   
+                <input type="submit" value="+1"> 
+                </form>
+            </div>
+            <div style="float: left"> 
+              <form action="{{url_for('users.removeOne', pid = item.pid, uid = current_user.uid)}}" method="POST">
+                <input type="submit" value="-1"> 
+            </form>
+            </div>
+        </div>
+
+        </th>
+
         <th scope="row">{{item.unit_price}}</th>
-        <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
-          <input type="submit" value="Save for Later">
-        </form>
+        <th scope="row">{{item.unit_price * item.p_quantity}}</th>
+
+        <th scope="row">
+          
+          <form action="{{url_for('users.remove_item', pid = item.pid, uid = current_user.uid)}}" method="POST">   
+            <input type="submit" value="Remove from Cart"> 
+          </form>
+          
+          <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
+          <input type="submit" value="Save for Later"> 
+          </form>
+        </th>
       </tr>
     {% endfor %}
   </tbody>
 </table>
-{% else %}
-<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
-<!-- {% endif %} -->
+{% endif %}
 
-<form action="{{url_for('users.login')}}" method="POST"> <!-- change to proper page -->
-  <input type="submit" value="Checkout">
-</form>
+<h3>Cart Total: {{total}}</h3> 
+
+<a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">Checkout</a>
+
 
 {% endblock %}

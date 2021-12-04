@@ -11,7 +11,9 @@ bp = Blueprint('cart', __name__)
 @bp.route('/cart')
 def cart():
     cart_items = Cart.get_cart(current_user.uid)
-    return render_template('cart.html', items=cart_items)
+    cart_total = Cart.get_total(current_user.uid)
+    return render_template('cart.html', items=cart_items, total = cart_total)
+
 
 
 
