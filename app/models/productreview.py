@@ -1,5 +1,7 @@
 from flask import current_app as app
 
+import sys
+
 class ProductReview:
     def __init__(self, uid, pid, time_reviewed, rating, comments, votes):
         self.uid = uid
@@ -69,6 +71,36 @@ ORDER BY votes DESC
     UPDATE Product_Reviews
     SET votes = votes + 1
     WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
-    RETURNING *;
+    RETURNING *
     ''',  
                                uid = uid, pid = pid)
+
+
+
+    @staticmethod
+    def addreview(pid, rid, time_reviewed, rating, comments, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
+            
+
+
+            rows = app.db.execute("""
+INSERT INTO Product_Reviews(uid, pid, time_reviewed, rating, comments, votes)
+VALUES(:rid, :pid, :time_reviewed, :rating, :comments, :votes)
+RETURNING pid
+""",
+                                  rid = rid,
+                                  pid = pid,
+                                  time_reviewed = time_reviewed,
+                                  rating = rating,
+                                  comments = comments,
+                                  votes = votes)
+            product_id = rows[0][0]
+            return ProductReview.get_all_product_reviews_for_product_and_user(product_id)
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None
+

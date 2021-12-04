@@ -9,6 +9,12 @@
 <h3>Average Rating: {{productreviewstats.average}}/5</h3>
 <h3># of Reviews: {{productreviewstats.number}}</h3>
 
+{% if current_user.is_authenticated %}
+<form action='/addproductreview/product{{productreviewstats.pid}}/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="review_details" value="Add Review" />
+</form> 
+{% endif %}
+
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
     <tr>

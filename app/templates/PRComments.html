@@ -14,11 +14,11 @@
 {% if current_user.is_authenticated %}
                 
 <form action="{{url_for('pr_comments.upvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
-  <button class="btn btn-sm btn-outline-secondary" type="submit">Upvote</button>
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Upvote Review</button>
 </form> 
 
 <form action="{{url_for('pr_comments.downvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
-  <button class="btn btn-sm btn-outline-secondary" type="submit">Downvote</button>
+  <button class="btn btn-sm btn-outline-secondary" type="submit">Downvote Review</button>
 </form> 
 
 {% endif %}
@@ -48,13 +48,18 @@
         <td>{{comment.votes}}</td>
         {% if current_user.is_authenticated %}
         <td>
-          <form action="{{url_for('pr_comments.upvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
-            <button class="btn btn-sm btn-outline-secondary" type="submit">+1</button>
-          </form> 
-          
-          <form action="{{url_for('pr_comments.downvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
-            <button class="btn btn-sm btn-outline-secondary" type="submit">-1</button>
-          </form> 
+          <div>
+            <div style = 'float: left'>
+              <form action="{{url_for('pr_comments.upvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+                <button class="btn btn-sm btn-outline-secondary" type="submit">+1</button>
+              </form> 
+            </div>
+            <div style = 'float: left'>
+              <form action="{{url_for('pr_comments.downvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+                <button class="btn btn-sm btn-outline-secondary" type="submit">-1</button>
+              </form>
+            </div>
+          </div>
         </td>
         {% endif %}
       </tr>
