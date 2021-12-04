@@ -8,7 +8,7 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname, password=None, address=None, balance=None):
+    def __init__(self, uid, email, firstname, lastname, password=None, address=None, balance=0.0):
         self.uid = uid
         self.email = email
         self.firstname = firstname
@@ -110,7 +110,7 @@ WHERE Users.uid = :uid
     @staticmethod
     def get_public(uid):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname, password, address
+SELECT uid, email, firstname, lastname, address
 FROM Users
 WHERE uid = :uid
 """,
@@ -170,6 +170,7 @@ RETURNING *
 """,
                                   uid=uid,
                                   balance=balance)
+        return True
 
     @staticmethod
     def get_balance(uid):
@@ -179,4 +180,4 @@ FROM Account
 WHERE uid = :uid
 """,
                               uid=uid)
-        return User(*(rows[0][1])) if rows else None
+        return User(*(rows[0])) if rows else None

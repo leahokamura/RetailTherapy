@@ -119,11 +119,14 @@ def update():
 def updateBalance():
     form = UpdateBalance()
     if form.validate_on_submit():
-        User.update_balance(current_user.uid, form.balance.data)
-        flash('Congratulations, you have updated your balance!')
-        return redirect(url_for('profile.profile'))                
-    else:
-        return render_template('balance.html', title='Update Balance', form=form)
+        print('made it this far', file=sys.stderr)
+        if User.update_balance(current_user.uid, form.balance.data):
+            flash('Congratulations, you have updated your balance!')
+            print('update worked')
+            return redirect(url_for('profile.profile'))                
+        else: 
+            print('something fucked up', file=sys.stderr)
+    return render_template('balance.html', title='Update Balance', form=form)
 
 
 @bp.route('/logout')
