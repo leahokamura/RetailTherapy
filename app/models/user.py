@@ -99,7 +99,7 @@ WHERE uid = :uid
     @staticmethod
     def get_profile(uid):
         rows = app.db.execute("""
-SELECT Users.uid, email, firstname, lastname, password, address, balance
+SELECT Users.uid, Users.email, Users.firstname, Users.lastname, Users.password, Users.address, Account.balance
 FROM Users, Account
 WHERE Users.uid = :uid
 """,
@@ -140,31 +140,43 @@ WHERE Users.uid = Seller_Reviews.seller_id AND Users.uid = :uid
         return User(*(rows[0])) if rows else None
 
     @staticmethod
-    def update(email, password, firstname, lastname):
-        try:
-            print('this is the email: ' + email, file=sys.stderr)
-            print('this is the password: ' + password, file=sys.stderr)
-            print('this is the firstname: ' + firstname, file=sys.stderr)
-            print('this is the lastname: ' + lastname, file=sys.stderr)
-            rows = app.db.execute("""
+    def update_profile(uid, email, password, firstname, lastname, address):
+        rows = app.db.execute("""
 UPDATE Users
 SET
-    email = :email
+    email = :email,
     firstname = :firstname,
     lastname = :lastname,
     password = :password,
-WHERE 
+    address = :address
+WHERE uid = :uid
+RETURNING *
 """,
+                                  uid=uid,
                                   email=email,
                                   firstname=firstname,
                                   lastname=lastname,
-                                  password=generate_password_hash(password))
-            # print('go wrong 1', file=sys.stderr)
-            uid = rows[0][0]
-            # print('go wrong 2', file=sys.stderr)
-            return User.get(uid)
-        except Exception as e:
-            print(e)
-            # likely email already in use; better error checking and
-            # reporting needed
-            return None
+                                  password=generate_password_hash(password),
+                                  address=address)
+
+    @staticmethod
+    def update_balance(uid, balance):
+        rows = app.db.execute("""
+UPDATE Account
+SET
+    balance = balance + :balance
+WHERE uid = :uid
+RETURNING *
+""",
+                                  uid=uid,
+                                  balance=balance)
+
+    @staticmethod
+    def get_balance(uid):
+        rows = app.db.execute("""
+SELECT uid, balance
+FROM Account
+WHERE uid = :uid
+""",
+                              uid=uid)
+        return User(*(rows[0][1])) if rows else None

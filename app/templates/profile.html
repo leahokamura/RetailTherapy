@@ -13,7 +13,7 @@
     <h3>Name: {{current_user.firstname + " " + current_user.lastname}}</h3>
     <h3>Address: {{current_user.address}}</h3>
     <h3>Password: ********</h3>
-    <h3>Balance: {{current_user.balance}}</h3>
+    <h3>Balance: {{current_user.balance}} <a href="{{ url_for('users.updateBalance') }}" type="button" class="btn btn-light">ADD or WITHDRAW</a> </h3>
     <a href="{{ url_for('users.update') }}" type="button" class="btn btn-light">UPDATE PROFILE</a>
     {% if current_user.is_seller() %}
     <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">VISIT SELLER PAGE</a>

@@ -4,8 +4,8 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
@@ -56,6 +56,24 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError(_('Already a user with this email.'))
 
+class UpdateProfile(FlaskForm):
+    firstname = StringField(_l('First Name'), validators=[DataRequired()])
+    lastname = StringField(_l('Last Name'), validators=[DataRequired()])
+    email = StringField(_l('Email'), validators=[DataRequired(), Email()])
+    password = PasswordField(_l('Password'), validators=[DataRequired()])
+    password2 = PasswordField(
+        _l('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
+    address = StringField(_l('Address'), validators=[DataRequired()])
+    submit = SubmitField(_l('Update Profile'))
+
+    def validate_email(self, email):
+        if User.email_exists(email.data):
+            raise ValidationError(_('Already a user with this email.'))
+
+class UpdateBalance(FlaskForm):
+    balance = FloatField(_l('Balance'), validators=[DataRequired(), NumberRange(min=0.0)])
+    submit = SubmitField(_l('Update Balance'))
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -74,21 +92,39 @@ def register():
             print('something fucked up', file=sys.stderr)
     return render_template('register.html', title='Register', form=form)
 
+
 @bp.route('/update', methods=['GET', 'POST'])
 def update():
-    if current_user.is_authenticated:
-        form = RegistrationForm()
+    form = UpdateProfile()
+    if request.method == 'POST':
         if form.validate_on_submit():
-            print('made it this far', file=sys.stderr)
-            if User.register(form.email.data,
-                            form.password.data,
-                            form.firstname.data,
-                            form.lastname.data):
-                flash('Congratulations, you have updated your profile information!')
-                return redirect(url_for('users.login'))
-        else: 
-            print('something fucked up', file=sys.stderr)
-    return render_template('register.html', title='Update Profile', form=form)
+            User.update_profile(current_user.uid,
+                    form.email.data, 
+                    form.password.data,
+                    form.firstname.data,
+                    form.lastname.data,
+                    form.address.data) 
+            flash('Congratulations, you have updated your profile information!')
+            return redirect(url_for('profile.profile'))                    
+        return render_template('update.html', title='Update Profile', form=form)
+    else:
+        form.email.data = current_user.email
+        form.password.data = current_user.password
+        form.firstname.data = current_user.firstname
+        form.lastname.data = current_user.lastname
+        form.address.data = current_user.address
+        return render_template('update.html', title='Update Profile', form=form)
+
+@bp.route('/update-balance', methods=['GET', 'POST'])
+def updateBalance():
+    form = UpdateBalance()
+    if form.validate_on_submit():
+        User.update_balance(current_user.uid, form.balance.data)
+        flash('Congratulations, you have updated your balance!')
+        return redirect(url_for('profile.profile'))                
+    else:
+        return render_template('balance.html', title='Update Balance', form=form)
+
 
 @bp.route('/logout')
 def logout():
