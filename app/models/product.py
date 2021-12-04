@@ -39,7 +39,7 @@ WHERE available = :available
     @staticmethod
     def get_name(pid):
         rows = app.db.execute('''
-SELECT pid, name
+SELECT pid, name, image
 FROM Products
 WHERE pid = :pid
 ''',
@@ -98,7 +98,7 @@ WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
 FROM Product_Reviews
 GROUP BY pid)
-SELECT Products.pid, Products.name, Products.price, prod_rating.avg AS rating
+SELECT Products.pid, Products.name, Products.price, Products.image, prod_rating.avg AS rating
 FROM Products
 FULL OUTER JOIN
 prod_rating
@@ -152,7 +152,7 @@ WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
 FROM Product_Reviews
 GROUP BY pid)
-SELECT Products.pid, Products.name, Products.price, prod_rating.avg AS rating
+SELECT Products.pid, Products.name, Products.price, Products.image, prod_rating.avg AS rating
 FROM Products
 FULL OUTER JOIN
 prod_rating

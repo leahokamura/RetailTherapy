@@ -42,6 +42,12 @@ def create_app():
     from .PRComments import bp as prcomment_bp
     app.register_blueprint(prcomment_bp)
 
+    from .sellers import bp as sellers_bp
+    app.register_blueprint(sellers_bp)
+
+    from .seller import bp as seller_bp
+    app.register_blueprint(seller_bp)
+
     from .AddProductReviews import bp as addpr_bp
     app.register_blueprint(addpr_bp)
 
