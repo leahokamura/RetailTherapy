@@ -21,7 +21,7 @@
   </p>
   <p>
     {{ form.comment.label }}<br/>
-    {{ form.comment(size=255) }}<br/>
+    {{ form.comment(cols = 100, rows = 10) }}<br/>
     {% for error in form.comment.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}

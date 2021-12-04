@@ -78,27 +78,27 @@ ORDER BY votes DESC
 
 
     @staticmethod
-    def addreview(pid, rid, time_reviewed, rating, comments, votes):
+    def addreview(uid, pid, time_reviewed, rating, comments, votes):
         try:
         #     print('this is the email: ' + email, file=sys.stderr)
         #     print('this is the password: ' + password, file=sys.stderr)
         #     print('this is the firstname: ' + firstname, file=sys.stderr)
             print('this is the comment: ' + comments, file=sys.stderr)
-            
-
+            print('this is the rating: ' + str(rating), file=sys.stderr)
 
             rows = app.db.execute("""
-INSERT INTO Product_Reviews(uid, pid, time_reviewed, rating, comments, votes)
-VALUES(:rid, :pid, :time_reviewed, :rating, :comments, :votes)
+INSERT INTO Product_Reviews
+VALUES(:uid, :pid, :time_reviewed, :rating, :comments, :votes)
 RETURNING pid
 """,
-                                  rid = rid,
+                                  uid = uid,
                                   pid = pid,
                                   time_reviewed = time_reviewed,
                                   rating = rating,
                                   comments = comments,
                                   votes = votes)
             product_id = rows[0][0]
+            print('this is the pid: ' + product_id, file = sys.stderr)
             return ProductReview.get_all_product_reviews_for_product_and_user(product_id)
         except Exception:
             print('bad things happening', file = sys.stderr)

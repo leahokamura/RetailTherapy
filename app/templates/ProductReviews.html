@@ -5,12 +5,12 @@
 <br><br>
 
 <h2>{{productname.name}}</h2>
-<h3>Product ID: {{productreviewstats.pid}}</h3>
+<h3>Product ID: {{productname.pid}}</h3>
 <h3>Average Rating: {{productreviewstats.average}}/5</h3>
 <h3># of Reviews: {{productreviewstats.number}}</h3>
 
 {% if current_user.is_authenticated %}
-<form action='/addproductreview/product{{productreviewstats.pid}}/reviewer{{current_user.uid}}' method="post">
+<form action='/addproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
   <input type="submit" name="review_details" value="Add Review" />
 </form> 
 {% endif %}
@@ -38,7 +38,7 @@
             <button @click="count- = count-1">down</button>
             <p><strong x-text="count"></strong></p>
           </div-->
-          <form action='/pr_comments/product{{productreviewstats.pid}}/user{{review.uid}}' method="post">
+          <form action='/pr_comments/product{{productname.pid}}/user{{review.uid}}' method="post">
             <input type="submit" name="review_details" value="details" />
           </form> 
         </td>
