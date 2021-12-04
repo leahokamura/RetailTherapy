@@ -97,9 +97,10 @@ RETURNING pid
                                   rating = rating,
                                   comments = comments,
                                   votes = votes)
-            product_id = rows[0][0]
-            print('this is the pid: ' + product_id, file = sys.stderr)
-            return ProductReview.get_all_product_reviews_for_product_and_user(product_id)
+            #product_id = rows[0][0]
+            #print('this is the pid: ' + product_id, file = sys.stderr)
+            print('this worked!')
+            return True
         except Exception:
             print('bad things happening', file = sys.stderr)
             return None
