@@ -25,8 +25,9 @@ def profile():
 def public():
     #get public info
     public_info = User.get_public(current_user.uid)
+    public_seller = User.get_public_seller(current_user.uid)
     # render the page by adding information to the public.html file
-    return render_template('public.html', public_user = public_info)
+    return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
 @bp.route('/seller')
 def seller():
