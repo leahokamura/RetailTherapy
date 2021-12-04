@@ -18,6 +18,7 @@ class Cart:
 SELECT uid, pid, name, p_quantity, unit_price, seller_id
 FROM InCart
 WHERE uid = :uid
+ORDER BY pid
 ''',
                               uid=uid)
         print("got cart data")
@@ -81,9 +82,14 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
                                 uid = uid, 
                                 pid = pid)
         current_quantity = int(rows[0][0])
+
         if action == "add":
             quantity = current_quantity + 1
-            app.db.execute('''
+            
+        else: 
+            quantity = current_quantity - 1
+
+        app.db.execute('''
     UPDATE InCart
     SET p_quantity = :quantity
     WHERE uid = :uid AND pid = :pid
@@ -92,6 +98,9 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
                                 uid = uid, 
                                 pid = pid,
                                 quantity = quantity)
+
+        
+
 
     @staticmethod
     def remove(uid, pid):

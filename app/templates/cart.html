@@ -26,9 +26,28 @@
       <tr>
         <th scope="row">{{item.pid}}</th>
         <th scope="row">{{item.name}}</th>
-        <th scope="row">{{item.p_quantity}}</th>
+
+        <th scope="row">{{item.p_quantity}}
+
+          
+          <div >
+            <div style="float: left"> 
+              <form action="{{url_for('users.Add', pid = item.pid, uid = current_user.uid)}}" method="POST">   
+                <input type="submit" value="+1"> 
+                </form>
+            </div>
+            <div style="float: left"> 
+              <form action="{{url_for('users.removeOne', pid = item.pid, uid = current_user.uid)}}" method="POST">
+                <input type="submit" value="-1"> 
+            </form>
+            </div>
+        </div>
+
+        </th>
+
         <th scope="row">{{item.unit_price}}</th>
         <th scope="row">{{item.unit_price * item.p_quantity}}</th>
+
         <th scope="row">
           
           <form action="{{url_for('users.remove_item', pid = item.pid, uid = current_user.uid)}}" method="POST">   <!-- fix this shiz-->
@@ -37,13 +56,7 @@
           
           <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
           <input type="submit" value="Save for Later"> 
-
-          <form action="{{url_for('users.Add', pid = item.pid, uid = current_user.uid)}}" method="POST">   <!-- fix this shiz-->
-            <button type="submit">+</button>
-            
-            <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
-              <input type="submit" value="-"> 
-        </form>
+          </form>
         </th>
       </tr>
     {% endfor %}
