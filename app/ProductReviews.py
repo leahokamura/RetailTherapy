@@ -3,6 +3,11 @@ from flask import render_template
 from flask_login import current_user
 import datetime
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
+
+
 from .models.productreview import ProductReview
 from .models.product import Product
 
@@ -45,3 +50,4 @@ def ProductReviews(product_number):
                             productreviewstats = product_review_stats,
                             productname = product_name)
                             #avg_rating = p_r_avg)
+
