@@ -15,7 +15,7 @@ class ProductReview:
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
-ORDER BY votes DESC
+ORDER BY votes DESC, time_reviewed DESC
 ''',
                               pid=pid)
         return [ProductReview(*row) for row in rows]

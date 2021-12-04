@@ -39,3 +39,13 @@ def upvote(product_number, user_id):
 def downvote(product_number, user_id):
     PR_Comment.downvote_review(product_number, user_id)
     return redirect(url_for('pr_comments.ProductReviews', product_number = product_number, user_id = user_id))
+
+@bp.route('/pr_comments/product<int:product_number>/user<int:user_id>/upvote_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
+def upvote_comment(product_number, user_id, reviewer_id):
+    PR_Comment.upvote_comment(product_number, user_id, reviewer_id)
+    return redirect(url_for('pr_comments.ProductReviews', product_number = product_number, user_id = user_id, reviewer_id = reviewer_id))
+
+@bp.route('/pr_comments/product<int:product_number>/user<int:user_id>/downvote_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
+def downvote_comment(product_number, user_id, reviewer_id):
+    PR_Comment.downvote_comment(product_number, user_id, reviewer_id)
+    return redirect(url_for('pr_comments.ProductReviews', product_number = product_number, user_id = user_id, reviewer_id = reviewer_id))

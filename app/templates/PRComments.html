@@ -34,6 +34,9 @@
       <th scope="col">Date</th>
       <th scope="col">Comment</th>
       <th scope="col">Votes</th>
+      {% if current_user.is_authenticated %}
+      <th scope="col">Feedback</th>
+      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -43,6 +46,17 @@
         <td>{{comment.time_commented}}</td>
         <td>{{comment.comment}}</td>
         <td>{{comment.votes}}</td>
+        {% if current_user.is_authenticated %}
+        <td>
+          <form action="{{url_for('pr_comments.upvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+            <button class="btn btn-sm btn-outline-secondary" type="submit">+1</button>
+          </form> 
+          
+          <form action="{{url_for('pr_comments.downvote_comment',  product_number = productname.pid, user_id = productreviews.uid, reviewer_id = comment.rid)}}" method="POST"> 
+            <button class="btn btn-sm btn-outline-secondary" type="submit">-1</button>
+          </form> 
+        </td>
+        {% endif %}
       </tr>
     {% endfor %}
   </tbody>

@@ -15,6 +15,7 @@ class PR_Comment:
 SELECT rid, uid, pid, time_commented, comment, votes
 FROM PR_Comments
 WHERE pid = :pid AND uid = :uid
+ORDER BY votes DESC, time_commented DESC
 ''',
                               pid=pid, uid=uid)
         return [PR_Comment(*row) for row in rows]
@@ -38,3 +39,24 @@ WHERE pid = :pid AND uid = :uid
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+
+
+    @staticmethod
+    def upvote_comment(pid, uid, rid):
+        app.db.execute('''
+    UPDATE PR_Comments
+    SET votes = votes + 1
+    WHERE PR_Comments.pid = :pid AND PR_Comments.uid = :uid AND PR_Comments.rid = :rid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid, rid = rid)
+
+    @staticmethod
+    def downvote_comment(pid, uid, rid):
+        app.db.execute('''
+    UPDATE PR_Comments
+    SET votes = votes - 1
+    WHERE PR_Comments.pid = :pid AND PR_Comments.uid = :uid AND PR_Comments.rid = :rid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid, rid = rid)
