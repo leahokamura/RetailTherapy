@@ -7,18 +7,19 @@ import sys
 import sqlalchemy
 
 class Product:
-    def __init__(self, pid, name, price, available, description, category):
+    def __init__(self, pid, name, price, available, image, description, category):
         self.pid = pid
         self.name = name
         self.price = price
         self.available = available
+        self.image = image
         self.description = description
         self.category = category
 
     @staticmethod
     def get(pid):
         rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
+SELECT pid, name, price, available, image, description, category
 FROM Products
 WHERE pid = :pid
 ''',
@@ -28,7 +29,7 @@ WHERE pid = :pid
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT pid, name, price, available, description, category
+SELECT pid, name, price, available, image, description, category
 FROM Products
 WHERE available = :available
 ''',
