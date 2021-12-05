@@ -4,35 +4,37 @@ from flask_login import current_user
 import datetime
 import sys
 
+#import forms
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
-
+#import models
 from .models.productreview import ProductReview
 from .models.product import Product
 
 from flask import current_app as app
 
 from flask import Blueprint
-# import sys
 bp = Blueprint('addproductreviews', __name__)
 
 
+#form to add review for a product
 class AddReviewForm(FlaskForm):
     rating = FloatField(_l('Rating'), validators=[DataRequired(), NumberRange(min=0, max=5)])
     comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
     submit = SubmitField(_l('Add Review'))
 
 
+#routes to form to add a product review
 @bp.route('/addproductreview/product<int:pid>/reviewer<int:rid>', methods=['GET', 'POST'])
 def addProductReviews(pid, rid):
     if current_user.is_authenticated:
         form = AddReviewForm()
-        print('check 1')
+        print('check 1: user authenticated')
         if form.validate_on_submit():
-            print('made it this far', file=sys.stderr)
+            print('form validated', file=sys.stderr)
             default_time = datetime.datetime.now()
             default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
             if ProductReview.addreview(rid,
@@ -41,11 +43,10 @@ def addProductReviews(pid, rid):
                                         form.rating.data,
                                         form.comment.data,
                                         0):
-                print('made it into the if statement', file=sys.stderr)
-                #flash('Congratulations, you have submitted a review!')
+                print('review added', file=sys.stderr)
                 return redirect(url_for('productreviews.ProductReviews', product_number = pid))
             else:
-                print('baddddd', file=sys.stderr)
+                print('Error: review not added', file=sys.stderr)
     
     product_review_stats = ProductReview.get_stats(pid)
 
@@ -55,18 +56,20 @@ def addProductReviews(pid, rid):
                                                     productname = product_name,
                                                     productreviewstats = product_review_stats)
 
+#form to edit an existing review by the current user
 class EditReviewForm(FlaskForm):
     rating = FloatField(_l('Rating'), validators=[DataRequired(), NumberRange(min=0, max=5)])
     comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
     submit = SubmitField(_l('Add Review'))
 
+#routes to form to edit an existing review
 @bp.route('/editproductreview/product<int:pid>/reviewer<int:rid>', methods=['GET', 'POST'])
 def editProductReviews(pid, rid):
     if current_user.is_authenticated:
         form = EditReviewForm()
-        print('check 1')
+        print('check 1: user authenticated')
         if form.validate_on_submit():
-            print('made it this far', file=sys.stderr)
+            print('form validated on submit', file=sys.stderr)
             default_time = datetime.datetime.now()
             default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
             if ProductReview.editreview(rid,
@@ -75,11 +78,10 @@ def editProductReviews(pid, rid):
                                         form.rating.data,
                                         form.comment.data,
                                         0):
-                print('made it into the if statement', file=sys.stderr)
-                #flash('Congratulations, you have submitted a review!')
+                print('review updated', file=sys.stderr)
                 return redirect(url_for('productreviews.ProductReviews', product_number = pid))
             else:
-                print('baddddd', file=sys.stderr)
+                print('Error: review not updated', file=sys.stderr)
     
     product_review_stats = ProductReview.get_stats(pid)
 

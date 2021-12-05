@@ -11,16 +11,16 @@
 <h3># of Reviews: {{productreviewstats.number}}</h3>
 
 {% if current_user.is_authenticated %}
+  {% if productreviewcheck == false  %}
 <form action='/addproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
   <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Add Review" />
 </form> 
+  {% endif %}
 {% endif %}
 
 <form action='/oneproduct/{{productname.pid}}' method="post">
   <input type="submit" name="productreviews" class = "btn btn-sm btn-outline-secondary" value="Back to Product Page" />
 </form>
-
-<br><br>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">

@@ -29,9 +29,12 @@ def SellerReviews(seller_id):
 
     seller_name = Seller.get_seller_info(seller_id)
     
+    SR_check = SellerReview.review_check(seller_id, current_user.uid)
+
     # render the page by adding information to the ProductReviews.html file
     return render_template('sellerreviews.html',
                             sellerreviews = s_reviews,
                             sellerreviewstats = seller_review_stats,
+                            SRcheck = SR_check,
                             sellername = seller_name)
                             #avg_rating = p_r_avg)

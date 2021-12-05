@@ -10,16 +10,19 @@
 <h3>Description: {{productinfo.description}}</h3>
 <h3>Category: {{productinfo.category}}</h3>
 <h3>Rating: {{product_rating.avg}}</h3>
-<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid) }}" type="button" class="btn btn-sm btn-outline-secondary">See Product Reviews</a>
+<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid) }}" type="button" class="btn btn-sm btn-outline-secondary">See product reviews</a>
 
 {% if current_user.is_authenticated %}
                 
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
                 </form> 
-                <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="POST">
+                {% if productreviewcheck == false  %}
+
+                <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add Review</button>
                 </form> 
+                {% endif %}
 {% endif %}
 
 

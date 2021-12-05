@@ -141,3 +141,13 @@ RETURNING *
         except Exception:
             print('bad things happening', file = sys.stderr)
             return None
+
+    @staticmethod
+    def review_check(pid, uid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Product_Reviews
+        WHERE pid = :pid AND uid = :uid
+        ''',
+                                uid = uid, pid = pid)
+        return True if rows else False
