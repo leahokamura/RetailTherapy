@@ -26,15 +26,15 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  <p>{{ form.submit() }}</p>
+  <p>{{ form.submit(class_="btn btn-secondary") }}</p>
 </form>
 
 <form action='/pr_comments/product{{productreviewstats.pid}}/user{{current_user.uid}}/delete_review' method="post">
-  <input type="submit" name="sellerreviews" value="Delete Review" />
+  <input type="submit" name="sellerreviews" class = "btn btn-secondary" value="Delete Review" />
 </form>
 
 <form action='/productreviews/{{productname.pid}}' method="post">
-  <input type="submit" name="productreviews" value="Cancel" />
+  <input type="submit" name="productreviews" class = "btn btn-secondary" value="Cancel" />
 </form>
 
 {% endblock %}

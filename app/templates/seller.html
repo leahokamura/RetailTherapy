@@ -31,7 +31,7 @@
     {% endfor %}
   </tbody>
 </table>
-<a href="{{ url_for('profile.additem') }}" type="button" class="btn btn-light">Add item to inventory</a>
+<a href="{{ url_for('profile.additem') }}" type="button" class="btn btn-secondary">Add item to inventory</a>
 {% else %}
 <p><a href="{{ url_for('users.login') }}">Log in</a> to view your seller page!</p>
 {% endif %}

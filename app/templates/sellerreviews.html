@@ -12,13 +12,13 @@
 {% if SRcheck == false  %}
 
 <form action='/addsellerreview/seller{{sellername.uid}}/reviewer{{current_user.uid}}' method="POST">
-  <input type="submit" name="review_details" class="btn btn-sm btn-outline-secondary" value="Add Review" />
+  <input type="submit" name="review_details" class="btn btn-secondary" value="Add Review" />
 </form> 
 {% endif %}
 {% endif %}
 
 <a href="{{ url_for('seller.seller', uid=sellername.uid) }}"
-                  class="btn btn-sm btn-outline-secondary">Back to Seller Page</a>
+                  class="btn btn-secondary">Back to Seller Page</a>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
@@ -39,11 +39,11 @@
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
           <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}' method="post">
-            <input type="submit" name="review_details"class="btn btn-sm btn-outline-secondary"  value="details" />
+            <input type="submit" name="review_details"class="btn btn-secondary"  value="details" />
           </form>
           {% if current_user.uid == review.uid %}
           <form action='/editsellerreview/seller{{sellername.uid}}/reviewer{{review.uid}}' method="post">
-            <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Edit" />
+            <input type="submit" name="review_details" class = "btn btn-secondary" value="Edit" />
           </form> 
           {% endif %} 
         </td>
