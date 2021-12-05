@@ -92,7 +92,7 @@
 <body>
   <div class="sidenav">
     {% block msg %}
-      <img src='https://i.postimg.cc/MHqtZN07/logo.png' alt="logo" style="width:150px;height:150px;">
+      <a href="{{ url_for('index.index') }}"><img src='https://i.postimg.cc/MHqtZN07/logo.png' alt="logo" style="width:150px;height:150px;"></a>
       <div style="color: aliceblue; text-align: right; margin-bottom: 0px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light2">LOG OUT</a>

@@ -11,6 +11,7 @@ from flask_babel import _, lazy_gettext as _l
 from .models.user import User
 from .models.product import Product
 from .models.cart import Cart
+from .models.account import Account
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -56,6 +57,7 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError(_('Already a user with this email.'))
 
+
 class UpdateProfile(FlaskForm):
     firstname = StringField(_l('First Name'), validators=[DataRequired()])
     lastname = StringField(_l('Last Name'), validators=[DataRequired()])
@@ -66,14 +68,17 @@ class UpdateProfile(FlaskForm):
     address = StringField(_l('Address'), validators=[DataRequired()])
     submit = SubmitField(_l('Update Profile'))
 
-    def validate_email(self, email):
-        if User.email_exists(email.data):
+    def validate_email_update(self, email):
+        if User.email_exists_update(email.data, self.uid):
             raise ValidationError(_('Already a user with this email.'))
 
 class UpdateBalance(FlaskForm):
-    balance = FloatField(_l('Balance'), validators=[DataRequired(), NumberRange(min=0.0)])
+    balance = FloatField(_l('Balance'), validators=[DataRequired()])
     submit = SubmitField(_l('Update Balance'))
 
+    def validate_balance(self, balance):
+        if self.balance.data + balance.data < 0.0:
+            raise ValidationError(_('Insufficient funds.'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -86,7 +91,7 @@ def register():
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data):
-            flash('Congratulations, you are now a registered user!')
+            #flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
         else: 
             print('something fucked up', file=sys.stderr)
@@ -104,7 +109,7 @@ def update():
                     form.firstname.data,
                     form.lastname.data,
                     form.address.data) 
-            flash('Congratulations, you have updated your profile information!')
+            #flash('Congratulations, you have updated your profile information!')
             return redirect(url_for('profile.profile'))                    
         return render_template('update.html', title='Update Profile', form=form)
     else:
@@ -118,14 +123,17 @@ def update():
 @bp.route('/update-balance', methods=['GET', 'POST'])
 def updateBalance():
     form = UpdateBalance()
-    if form.validate_on_submit():
-        print('made it this far', file=sys.stderr)
-        if User.update_balance(current_user.uid, form.balance.data):
-            flash('Congratulations, you have updated your balance!')
-            print('update worked')
-            return redirect(url_for('profile.profile'))                
-        else: 
-            print('something fucked up', file=sys.stderr)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if Account.update_balance(current_user.uid, form.balance.data):
+                flash('Congratulations, you have updated your balance!')
+                print('update worked')
+                print(form.balance.data)
+                x = Account.get_balance(current_user.uid)
+                y = Account.update_balance(current_user.uid, form.balance.data)
+                print(x)
+                print(y)
+                return redirect(url_for('profile.profile'))                
     return render_template('balance.html', title='Update Balance', form=form)
 
 
