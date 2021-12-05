@@ -20,8 +20,6 @@
                 </form> 
 {% endif %}
 
-<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-secondary">See Seller reviews</a>
-
 
 {% if current_user.is_authenticated %}
 {% if SRcheck == false  %}
