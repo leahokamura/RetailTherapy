@@ -21,7 +21,7 @@ def profile():
     # render the page by adding information to the profile.html file
     return render_template('profile.html', current_user = profile_info, current_balance = new_balance)
 
-@bp.route('/public-profile/<int:uid>', methods=['GET', 'POST'])
+@bp.route('/profile/public', methods=['GET', 'POST'])
 def public():
     #get public info
     public_info = User.get_public(current_user.uid)

@@ -9,16 +9,14 @@
   <article>
     <h3>User ID: {{public_user.uid}}</h3>
     {% if public_user.is_seller() %}
-    <a href="{{ url_for('profile.seller') }}" type="button" class="btn btn-light">VISIT SELLER PAGE</a>
     <h3>Email: {{public_seller.email}}</h3>
     <h3>Address: {{public_seller.address}}</h3>
-    <h3>Seller Reviews: {{public_seller.comments}}</h3>
-    <h3>Seller Ratings: {{public_seller.rating}}</h3>
-    <h3>Seller Votes: {{public_seller.votes}}</h3>
+    <a href="{{ url_for('seller.seller', uid=seller.sid) }}" type="button" class="btn btn-light">Visit Seller Page</a>
     {% else %}
       
     {% endif %}
 </article> 
 </div>
+
 
 {% endblock %}
