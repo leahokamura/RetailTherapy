@@ -114,3 +114,30 @@ WHERE pid = :pid
         pid = pid)
         return (rows[0]) if rows else None
 
+    @staticmethod
+    def editreview(uid, pid, time_reviewed, rating, comments, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
+            print('this is the rating: ' + str(rating), file=sys.stderr)
+
+            rows = app.db.execute("""
+UPDATE Product_Reviews
+SET time_reviewed = :time_reviewed, rating = :rating, comments = :comments
+WHERE Product_Reviews.uid = :uid AND Product_Reviews.pid = :pid
+RETURNING *
+""",
+                                  uid = uid,
+                                  pid = pid,
+                                  time_reviewed = time_reviewed,
+                                  rating = rating,
+                                  comments = comments,
+                                  votes = votes)
+
+            print('this worked!', file = sys.stderr)
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None

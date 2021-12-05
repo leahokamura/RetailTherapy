@@ -4,7 +4,7 @@
 
 <br><br>
 
-<h1>Add Product Review Comment</h1>
+<h1>Edit Product Review Comment</h1>
 <h2>Review of {{productname.name}} by user {{productreviews.uid}}</h2>
 <h3>Rating: {{productreviews.rating}}/5</h2>
 <h3>Feedback: {{productreviews.comments}}</h3>
@@ -22,6 +22,11 @@
   </p>
   <p>{{ form.submit() }}</p>
 </form>
+
+<form action='/pr_comments/product{{productname.pid}}/user{{productreviews.uid}}/delete_comment/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="sellerreviews" value="Delete Comment" />
+</form>
+
 
 <form action='/pr_comments/product{{productname.pid}}/user{{productreviews.uid}}' method="post">
   <input type="submit" name="productreviews" value="Cancel" />

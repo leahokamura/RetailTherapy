@@ -54,3 +54,37 @@ def addProductReviews(pid, rid):
                                                     form=form,
                                                     productname = product_name,
                                                     productreviewstats = product_review_stats)
+
+class EditReviewForm(FlaskForm):
+    rating = FloatField(_l('Rating'), validators=[DataRequired(), NumberRange(min=0, max=5)])
+    comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
+    submit = SubmitField(_l('Add Review'))
+
+@bp.route('/editproductreview/product<int:pid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def editProductReviews(pid, rid):
+    if current_user.is_authenticated:
+        form = EditReviewForm()
+        print('check 1')
+        if form.validate_on_submit():
+            print('made it this far', file=sys.stderr)
+            default_time = datetime.datetime.now()
+            default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
+            if ProductReview.editreview(rid,
+                                        pid,
+                                        default_time,
+                                        form.rating.data,
+                                        form.comment.data,
+                                        0):
+                print('made it into the if statement', file=sys.stderr)
+                #flash('Congratulations, you have submitted a review!')
+                return redirect(url_for('productreviews.ProductReviews', product_number = pid))
+            else:
+                print('baddddd', file=sys.stderr)
+    
+    product_review_stats = ProductReview.get_stats(pid)
+
+    product_name = Product.get_name(pid)
+    return render_template('editproductreview.html', title='Edit Product Review', 
+                                                    form=form,
+                                                    productname = product_name,
+                                                    productreviewstats = product_review_stats)

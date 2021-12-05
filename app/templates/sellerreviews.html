@@ -3,17 +3,20 @@
 {% block content %}
 
 <br><br>
-
-<h2>{{sellername.name}}</h2>
+<h2>{{sellername.firstname}} {{sellername.lastname}}</h2>
 <h3>Seller ID: {{sellername.uid}}</h3>
 <h3>Average Rating: {{sellerreviewstats.average}}/5</h3>
 <h3># of Reviews: {{sellerreviewstats.number}}</h3>
 
 {% if current_user.is_authenticated %}
 <form action='/addsellerreview/seller{{sellername.uid}}/reviewer{{current_user.uid}}' method="post">
-  <input type="submit" name="review_details" value="Add Review" />
+  <input type="submit" name="review_details" class="btn btn-sm btn-outline-secondary" value="Add Review" />
 </form> 
 {% endif %}
+
+<form action='/seller/{{sellername.uid}}' method="post">
+  <input type="submit" name="sellerreviews" class="btn btn-sm btn-outline-secondary" value="Back to Seller Page" />
+</form>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
@@ -34,8 +37,13 @@
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
           <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}' method="post">
-            <input type="submit" name="review_details" value="details" />
+            <input type="submit" name="review_details"class="btn btn-sm btn-outline-secondary"  value="details" />
+          </form>
+          {% if current_user.uid == review.uid %}
+          <form action='/editsellerreview/seller{{sellername.uid}}/reviewer{{review.uid}}' method="post">
+            <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Edit" />
           </form> 
+          {% endif %} 
         </td>
       </tr>
     {% endfor %}

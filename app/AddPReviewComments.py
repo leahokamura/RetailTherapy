@@ -46,12 +46,48 @@ def addProductReviews(pid, uid, rid):
             else:
                 print('baddddd', file=sys.stderr)
     
-    p_reviews = ProductReview.get_all_product_reviews_for_product(pid)
+    p_reviews = ProductReview.get_all_product_reviews_for_product_and_user(pid, uid)
 
     product_review_stats = ProductReview.get_stats(pid)
 
     product_name = Product.get_name(pid)
     return render_template('addproductreviewcomment.html', title='Add Comment', 
+                                                    form=form,
+                                                    productname = product_name,
+                                                    productreviews = p_reviews)
+
+class EditCommentForm(FlaskForm):
+    comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
+    #time_commented = DateTimeField('Time', default=datetime.now(), format='%Y-%m-%d %H:%M:%S')
+    submit = SubmitField(_l('Edit Comment'))
+
+@bp.route('/editpr_comment/product<int:pid>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def editProductReviews(pid, uid, rid):
+    if current_user.is_authenticated:
+        form = EditCommentForm()
+        print('check 1')
+        if form.validate_on_submit():
+            print('made it this far', file=sys.stderr)
+            default_time = datetime.datetime.now()
+            default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
+            if PR_Comment.editcomment(rid,
+                                        uid,
+                                        pid,
+                                        default_time,
+                                        form.comment.data,
+                                        0):
+                print('made it into the if statement', file=sys.stderr)
+                #flash('Congratulations, you have submitted a review!')
+                return redirect(url_for('pr_comments.ProductReviews', product_number = pid, user_id = uid))
+            else:
+                print('baddddd', file=sys.stderr)
+    
+    p_reviews = ProductReview.get_all_product_reviews_for_product_and_user(pid, uid)
+
+    product_review_stats = ProductReview.get_stats(pid)
+
+    product_name = Product.get_name(pid)
+    return render_template('editproductreviewcomment.html', title='Edit Comment', 
                                                     form=form,
                                                     productname = product_name,
                                                     productreviews = p_reviews)

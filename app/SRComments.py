@@ -49,3 +49,13 @@ def upvote_comment(seller_id, user_id, reviewer_id):
 def downvote_comment(seller_id, user_id, reviewer_id):
     SR_Comment.downvote_comment(seller_id, user_id, reviewer_id)
     return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, reviewer_id = reviewer_id))
+
+@bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/delete_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
+def delete_comment(seller_id, user_id, reviewer_id):
+    SR_Comment.delete_comment(seller_id, user_id, reviewer_id)
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, reviewer_id = reviewer_id))
+
+@bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/delete_review', methods=['GET', 'POST'])
+def delete_review(seller_id, user_id):
+    SR_Comment.delete_review(seller_id, user_id)
+    return redirect(url_for('sellerreviews.SellerReviews', seller_id = seller_id))

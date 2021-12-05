@@ -29,4 +29,9 @@
   <p>{{ form.submit() }}</p>
 </form>
 
+<form action='/sellerreviews/{{sellerinfo.uid}}' method="post">
+    <input type="submit" name="sellerreviews" value="Cancel" />
+</form>
+
+
 {% endblock %}

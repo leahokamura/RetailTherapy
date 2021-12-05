@@ -4,11 +4,11 @@
 
 <br><br>
 
-<h1>Add Product Review</h1>
-<h2>{{productname.name}}</h2>
-<h3>Product ID: {{productreviewstats.pid}}</h3>
-<h3>Average Rating: {{productreviewstats.average}}/5</h3>
-<h3># of Reviews: {{productreviewstats.number}}</h3>
+<h1>Edit Seller Review</h1>
+<h2>{{sellerinfo.name}}</h2>
+<h3>Seller ID: {{sellerinfo.uid}}</h3>
+<h3>Average Rating: {{sellerreviewstats.average}}/5</h3>
+<h3># of Reviews: {{sellerreviewstats.number}}</h3>
 
 <form action="" method="post">
   {{ form.hidden_tag() }}
@@ -29,8 +29,13 @@
   <p>{{ form.submit() }}</p>
 </form>
 
-<form action='/productreviews/{{productname.pid}}' method="post">
-  <input type="submit" name="productreviews" value="Cancel" />
+  <form action='/sr_comments/seller{{sellerinfo.uid}}/user{{current_user.uid}}/delete_review' method="post">
+    <input type="submit" name="sellerreviews" value="Delete Review" />
+  </form>
+
+<form action='/sellerreviews/{{sellerinfo.uid}}' method="post">
+    <input type="submit" name="sellerreviews" value="Cancel" />
 </form>
+
 
 {% endblock %}

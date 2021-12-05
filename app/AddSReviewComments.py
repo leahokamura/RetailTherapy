@@ -46,7 +46,7 @@ def addSellerReviews(seller_id, uid, rid):
             else:
                 print('baddddd', file=sys.stderr)
     
-    s_reviews = SellerReview.get_all_seller_reviews_for_seller(seller_id)
+    s_reviews = SellerReview.get_all_seller_reviews_for_seller_and_user(seller_id, uid)
 
     seller_review_stats = SellerReview.get_stats(seller_id)
 
@@ -56,3 +56,38 @@ def addSellerReviews(seller_id, uid, rid):
                                                     sellername = seller_name,
                                                     sellerreviews = s_reviews)
 
+class EditCommentForm(FlaskForm):
+    comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
+    #time_commented = DateTimeField('Time', default=datetime.now(), format='%Y-%m-%d %H:%M:%S')
+    submit = SubmitField(_l('Edit Comment'))
+
+@bp.route('/editsr_comment/seller<int:seller_id>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def editSellerReviews(seller_id, uid, rid):
+    if current_user.is_authenticated:
+        form = EditCommentForm()
+        print('check 1')
+        if form.validate_on_submit():
+            print('made it this far', file=sys.stderr)
+            default_time = datetime.datetime.now()
+            default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
+            if SR_Comment.editcomment(rid,
+                                        uid,
+                                        seller_id,
+                                        default_time,
+                                        form.comment.data,
+                                        0):
+                print('made it into the if statement', file=sys.stderr)
+                #flash('Congratulations, you have submitted a review!')
+                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid))
+            else:
+                print('baddddd', file=sys.stderr)
+    
+    s_reviews = SellerReview.get_all_seller_reviews_for_seller_and_user(seller_id, uid)
+
+    seller_review_stats = SellerReview.get_stats(seller_id)
+
+    seller_name = Seller.get_seller_info(seller_id)
+    return render_template('editsellerreviewcomment.html', title='Edit Comment', 
+                                                    form=form,
+                                                    sellername = seller_name,
+                                                    sellerreviews = s_reviews)

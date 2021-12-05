@@ -23,8 +23,14 @@
   <p>{{ form.submit() }}</p>
 </form>
 
-<form action='/sr_comments/seller{{sellername.uid}}/user{{sellerreviews.uid}}' method="post">
+  <form action='/sr_comments/seller{{sellername.uid}}/user{{sellerreviews.uid}}/delete_comment/reviewer{{current_user.uid}}' method="post">
+    <input type="submit" name="sellerreviews" value="Delete Comment" />
+  </form>
+
+  <form action='/sr_comments/seller{{sellername.uid}}/user{{sellerreviews.uid}}' method="post">
     <input type="submit" name="sellerreviews" value="Cancel" />
   </form>
+
+
 
 {% endblock %}

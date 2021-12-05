@@ -113,3 +113,31 @@ WHERE seller_id = :seller_id
 ''',  
         seller_id = seller_id)
         return (rows[0]) if rows else None
+
+    @staticmethod
+    def editreview(uid, seller_id, time_reviewed, rating, comments, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
+            print('this is the rating: ' + str(rating), file=sys.stderr)
+
+            rows = app.db.execute("""
+UPDATE Seller_Reviews
+SET rating = :rating, comments = :comments
+WHERE Seller_Reviews.uid = :uid AND Seller_Reviews.seller_id = :seller_id
+RETURNING seller_id
+""",
+                                  uid = uid,
+                                  seller_id = seller_id,
+                                  time_reviewed = time_reviewed,
+                                  rating = rating,
+                                  comments = comments,
+                                  votes = votes)
+
+            print('this worked!', file = sys.stderr)
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None

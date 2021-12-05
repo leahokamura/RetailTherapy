@@ -12,9 +12,13 @@
 
 {% if current_user.is_authenticated %}
 <form action='/addproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
-  <input type="submit" name="review_details" value="Add Review" />
+  <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Add Review" />
 </form> 
 {% endif %}
+
+<form action='/oneproduct/{{productname.pid}}' method="post">
+  <input type="submit" name="productreviews" class = "btn btn-sm btn-outline-secondary" value="Back to Product Page" />
+</form>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
@@ -40,8 +44,13 @@
             <p><strong x-text="count"></strong></p>
           </div-->
           <form action='/pr_comments/product{{productname.pid}}/user{{review.uid}}' method="post">
-            <input type="submit" name="review_details" value="details" />
+            <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="details" />
           </form> 
+          {% if current_user.uid == review.uid %}
+            <form action='/editproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
+              <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Edit" />
+            </form> 
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
