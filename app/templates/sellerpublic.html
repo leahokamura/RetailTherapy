@@ -7,12 +7,12 @@
 <a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-light">See Seller reviews</a>
 
 
-<!--{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated %}
                 
-                <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
+                <form action='/addsellerreview/seller{{slr.uid}}/reviewer{{current_user.uid}}' method="post">
                   <input type="submit" name="review_details" value="Add Review" />
                 </form> 
-{% endif %}-->
+{% endif %}
 
 
 {% endblock %}

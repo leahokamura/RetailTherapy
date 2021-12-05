@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h1>Add Seller Review</h1>
+<h2>{{sellerinfo.name}}</h2>
+<h3>Seller ID: {{sellerinfo.uid}}</h3>
+<h3>Average Rating: {{sellerreviewstats.average}}/5</h3>
+<h3># of Reviews: {{sellerreviewstats.number}}</h3>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.rating.label }}<br/>
+    {{ form.rating(size=32) }}<br/>
+    {% for error in form.rating.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.comment.label }}<br/>
+    {{ form.comment(cols = 100, rows = 10) }}<br/>
+    {% for error in form.comment.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

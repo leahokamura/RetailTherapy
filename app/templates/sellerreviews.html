@@ -9,6 +9,11 @@
 <h3>Average Rating: {{sellerreviewstats.average}}/5</h3>
 <h3># of Reviews: {{sellerreviewstats.number}}</h3>
 
+{% if current_user.is_authenticated %}
+<form action='/addsellerreview/seller{{sellername.uid}}/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="review_details" value="Add Review" />
+</form> 
+{% endif %}
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
@@ -28,7 +33,9 @@
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
-
+          <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}' method="post">
+            <input type="submit" name="review_details" value="details" />
+          </form> 
         </td>
       </tr>
     {% endfor %}
