@@ -4,7 +4,7 @@
 
 <br><br>
 
-<h1>Add Product Review</h1>
+<h1>Edit Product Review</h1>
 <h2>{{productname.name}}</h2>
 <h3>Product ID: {{productreviewstats.pid}}</h3>
 <h3>Average Rating: {{productreviewstats.average}}/5</h3>
@@ -27,6 +27,10 @@
     {% endfor %}
   </p>
   <p>{{ form.submit() }}</p>
+</form>
+
+<form action='/pr_comments/product{{productreviewstats.pid}}/user{{current_user.uid}}/delete_review' method="post">
+  <input type="submit" name="sellerreviews" value="Delete Review" />
 </form>
 
 <form action='/productreviews/{{productname.pid}}' method="post">

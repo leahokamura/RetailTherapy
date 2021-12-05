@@ -12,8 +12,13 @@
 
 
 {% if current_user.is_authenticated %}
+{% if current_user.uid == productreviews.uid %}
+<form action='/editproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
+  <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Edit Review" />
+</form> 
+{% endif %}
 <form action='/addpr_comment/product{{productname.pid}}/user{{productreviews.uid}}/reviewer{{current_user.uid}}' method="post">
-  <input type="submit" name="review_details" value="Add Comment" />
+  <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Add Comment" />
 </form> 
 
 <form action="{{url_for('pr_comments.upvote',  product_number = productname.pid, user_id = productreviews.uid)}}" method="POST"> 
@@ -24,10 +29,11 @@
   <button class="btn btn-sm btn-outline-secondary" type="submit">Downvote Review</button>
 </form> 
 
+
 {% endif %}
 
 <form action='/productreviews/{{productname.pid}}' method="post">
-    <input type="submit" name="productreviews" value="Back to Product Reviews" />
+    <input type="submit" name="productreviews" class = "btn btn-sm btn-outline-secondary" value="Back to Product Reviews" />
 </form>
 
 <table class='table table-hover table-bordered table=sort container'>
@@ -63,6 +69,12 @@
               </form>
             </div>
           </div>
+        
+        {% if current_user.uid == comment.rid %}
+          <form action='/editpr_comment/product{{productname.pid}}/user{{current_user.uid}}/reviewer{{comment.uid}}' method="post">
+            <input type="submit" name="review_details" class = "btn btn-sm btn-outline-secondary" value="Edit" />
+          </form> 
+        {% endif %}
         </td>
         {% endif %}
       </tr>
