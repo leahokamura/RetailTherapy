@@ -155,6 +155,16 @@ CREATE TABLE Seller_Reviews (
     PRIMARY KEY (uid, seller_id)
 );
 
+CREATE TABLE SR_Comments (
+    rid INT NOT NULL REFERENCES Users(uid),
+    uid INT NOT NULL REFERENCES Users(uid),
+    seller_id INT NOT NULL REFERENCES Sellers(uid),
+    time_commented timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    comment VARCHAR(2048),
+    votes INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (uid, seller_id, time_commented)
+);
+
 --Images_Reviews(uid, pid, img)
 CREATE TABLE Images_Reviews (
     uid INT NOT NULL REFERENCES Users(uid),

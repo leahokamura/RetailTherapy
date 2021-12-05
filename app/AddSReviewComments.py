@@ -9,15 +9,15 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextA
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
-from .models.productreview import ProductReview
-from .models.product import Product
-from .models.prcomment import PR_Comment
+from .models.sellerreview import SellerReview
+from .models.seller import Seller
+from .models.srcomment import SR_Comment
 
 from flask import current_app as app
 
 from flask import Blueprint
 # import sys
-bp = Blueprint('addpreviewcomments', __name__)
+bp = Blueprint('addsreviewcomments', __name__)
 
 
 class AddCommentForm(FlaskForm):
@@ -25,8 +25,8 @@ class AddCommentForm(FlaskForm):
     #time_commented = DateTimeField('Time', default=datetime.now(), format='%Y-%m-%d %H:%M:%S')
     submit = SubmitField(_l('Add Comment'))
 
-@bp.route('/addpr_comment/product<int:pid>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
-def addProductReviews(pid, uid, rid):
+@bp.route('/addsr_comment/seller<int:seller_id>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def addSellerReviews(seller_id, uid, rid):
     if current_user.is_authenticated:
         form = AddCommentForm()
         print('check 1')
@@ -34,35 +34,35 @@ def addProductReviews(pid, uid, rid):
             print('made it this far', file=sys.stderr)
             default_time = datetime.datetime.now()
             default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
-            if PR_Comment.addcomment(rid,
+            if SR_Comment.addcomment(rid,
                                         uid,
-                                        pid,
+                                        seller_id,
                                         default_time,
                                         form.comment.data,
                                         0):
                 print('made it into the if statement', file=sys.stderr)
                 #flash('Congratulations, you have submitted a review!')
-                return redirect(url_for('pr_comments.ProductReviews', product_number = pid, user_id = uid))
+                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid))
             else:
                 print('baddddd', file=sys.stderr)
     
-    p_reviews = ProductReview.get_all_product_reviews_for_product_and_user(pid, uid)
+    s_reviews = SellerReview.get_all_seller_reviews_for_seller_and_user(seller_id, uid)
 
-    product_review_stats = ProductReview.get_stats(pid)
+    seller_review_stats = SellerReview.get_stats(seller_id)
 
-    product_name = Product.get_name(pid)
-    return render_template('addproductreviewcomment.html', title='Add Comment', 
+    seller_name = Seller.get_seller_info(seller_id)
+    return render_template('addsellerreviewcomment.html', title='Add Comment', 
                                                     form=form,
-                                                    productname = product_name,
-                                                    productreviews = p_reviews)
+                                                    sellername = seller_name,
+                                                    sellerreviews = s_reviews)
 
 class EditCommentForm(FlaskForm):
     comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
     #time_commented = DateTimeField('Time', default=datetime.now(), format='%Y-%m-%d %H:%M:%S')
     submit = SubmitField(_l('Edit Comment'))
 
-@bp.route('/editpr_comment/product<int:pid>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
-def editProductReviews(pid, uid, rid):
+@bp.route('/editsr_comment/seller<int:seller_id>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
+def editSellerReviews(seller_id, uid, rid):
     if current_user.is_authenticated:
         form = EditCommentForm()
         print('check 1')
@@ -70,25 +70,24 @@ def editProductReviews(pid, uid, rid):
             print('made it this far', file=sys.stderr)
             default_time = datetime.datetime.now()
             default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
-            if PR_Comment.editcomment(rid,
+            if SR_Comment.editcomment(rid,
                                         uid,
-                                        pid,
+                                        seller_id,
                                         default_time,
                                         form.comment.data,
                                         0):
                 print('made it into the if statement', file=sys.stderr)
                 #flash('Congratulations, you have submitted a review!')
-                return redirect(url_for('pr_comments.ProductReviews', product_number = pid, user_id = uid))
+                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid))
             else:
                 print('baddddd', file=sys.stderr)
     
-    p_reviews = ProductReview.get_all_product_reviews_for_product_and_user(pid, uid)
+    s_reviews = SellerReview.get_all_seller_reviews_for_seller_and_user(seller_id, uid)
 
-    product_review_stats = ProductReview.get_stats(pid)
+    seller_review_stats = SellerReview.get_stats(seller_id)
 
-    product_name = Product.get_name(pid)
-    return render_template('editproductreviewcomment.html', title='Edit Comment', 
+    seller_name = Seller.get_seller_info(seller_id)
+    return render_template('editsellerreviewcomment.html', title='Edit Comment', 
                                                     form=form,
-                                                    productname = product_name,
-                                                    productreviews = p_reviews)
-
+                                                    sellername = seller_name,
+                                                    sellerreviews = s_reviews)

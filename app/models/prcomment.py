@@ -64,23 +64,23 @@ ORDER BY votes DESC, time_commented DESC
 
 
     @staticmethod
-    def addcomment(rid, uid, pid, time_reviewed, comments, votes):
+    def addcomment(rid, uid, pid, time_commented, comment, votes):
         try:
         #     print('this is the email: ' + email, file=sys.stderr)
         #     print('this is the password: ' + password, file=sys.stderr)
         #     print('this is the firstname: ' + firstname, file=sys.stderr)
-            print('this is the comment: ' + comments, file=sys.stderr)
+            print('this is the comment: ' + comment, file=sys.stderr)
 
             rows = app.db.execute("""
 INSERT INTO PR_Comments
-VALUES(:rid, :uid, :pid, :time_reviewed, :comments, :votes)
+VALUES(:rid, :uid, :pid, :time_commented, :comment, :votes)
 RETURNING pid
 """,
                                   rid = rid,
                                   uid = uid,
                                   pid = pid,
-                                  time_reviewed = time_reviewed,
-                                  comments = comments,
+                                  time_commented = time_commented,
+                                  comment = comment,
                                   votes = votes)
             #product_id = rows[0][0]
             #print('this is the pid: ' + product_id, file = sys.stderr)
@@ -89,3 +89,53 @@ RETURNING pid
         except Exception:
             print('bad things happening', file = sys.stderr)
             return None
+
+    @staticmethod
+    def editcomment(rid, uid, pid, time_commented, comment, votes):
+        try:
+        #     print('this is the email: ' + email, file=sys.stderr)
+        #     print('this is the password: ' + password, file=sys.stderr)
+        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the comment: ' + comment, file=sys.stderr)
+            print('this is the rid:' + str(rid), file=sys.stderr)
+            print('this is the uid:' + str(uid), file=sys.stderr)
+            print('this is the pid:' + str(pid), file=sys.stderr)
+
+            rows = app.db.execute("""
+UPDATE PR_Comments
+SET time_commented = :time_commented, comment = :comment
+WHERE uid = :uid AND pid = :pid AND rid = :rid
+RETURNING *
+""",
+                                  rid = rid,
+                                  uid = uid,
+                                  pid = pid,
+                                  time_commented = time_commented,
+                                  comment = comment,
+                                  votes = votes)
+
+            print('this worked!')
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None
+
+    @staticmethod
+    def delete_comment(pid, uid, rid):
+        app.db.execute('''
+    DELETE
+    FROM PR_Comments
+    WHERE pid = :pid AND uid = :uid AND rid = :rid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid, rid = rid)
+
+    @staticmethod
+    def delete_review(pid, uid):
+        app.db.execute('''
+    DELETE
+    FROM Product_Reviews
+    WHERE pid = :pid AND uid = :uid
+    RETURNING *;
+    ''',  
+                               uid = uid, pid = pid)
