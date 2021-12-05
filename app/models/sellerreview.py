@@ -141,3 +141,14 @@ RETURNING seller_id
         except Exception:
             print('bad things happening', file = sys.stderr)
             return None
+
+
+    @staticmethod
+    def review_check(seller_id, uid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM Seller_Reviews
+        WHERE seller_id = :seller_id AND uid = :uid
+        ''',
+                                seller_id = seller_id, uid = uid)
+        return True if rows else False

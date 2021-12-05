@@ -4,15 +4,18 @@
 
 <h2>Welcome to {{slr.firstname}} {{slr.lastname}}'s seller profile!</h2>
 
-<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-light">See Seller reviews</a>
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-sm btn-outline-secondary">See Seller reviews</a>
 
 
 {% if current_user.is_authenticated %}
-                
-                <form action='/addsellerreview/seller{{slr.uid}}/reviewer{{current_user.uid}}' method="post">
-                  <input type="submit" name="review_details" value="Add Review" />
-                </form> 
+{% if SRcheck == false  %}
+
+<form action='/addsellerreview/seller{{slr.uid}}/reviewer{{current_user.uid}}' method="POST">
+  <input type="submit" name="review_details" class="btn btn-sm btn-outline-secondary" value="Add Review" />
+</form> 
+{% endif %}
 {% endif %}
 
+<a href="{{ url_for('sellers.sellers') }}" type="button" class="btn btn-sm btn-outline-secondary">Back to Sellers</a>
 
 {% endblock %}

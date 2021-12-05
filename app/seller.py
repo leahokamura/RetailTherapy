@@ -6,6 +6,7 @@ from .models.product import Product
 from .models.purchase import Purchase
 from .models.user import User
 from .models.seller import Seller
+from .models.sellerreview import SellerReview
 
 from flask import Blueprint
 bp = Blueprint('seller', __name__)
@@ -15,6 +16,8 @@ def seller(uid):
     print("ahhhhh i'm here")
     products = Seller.get_seller_products(uid)
     seller = Seller.get_seller_info(uid)
+    SR_check = SellerReview.review_check(uid, current_user.uid)
+    
     print(seller)
     # TODO: create sellerpublic.html
-    return render_template('sellerpublic.html', slr=seller, inv=products)
+    return render_template('sellerpublic.html', slr=seller, inv=products, SRcheck = SR_check)

@@ -9,14 +9,16 @@
 <h3># of Reviews: {{sellerreviewstats.number}}</h3>
 
 {% if current_user.is_authenticated %}
-<form action='/addsellerreview/seller{{sellername.uid}}/reviewer{{current_user.uid}}' method="post">
+{% if SRcheck == false  %}
+
+<form action='/addsellerreview/seller{{sellername.uid}}/reviewer{{current_user.uid}}' method="POST">
   <input type="submit" name="review_details" class="btn btn-sm btn-outline-secondary" value="Add Review" />
 </form> 
 {% endif %}
+{% endif %}
 
-<form action='/seller/{{sellername.uid}}' method="post">
-  <input type="submit" name="sellerreviews" class="btn btn-sm btn-outline-secondary" value="Back to Seller Page" />
-</form>
+<a href="{{ url_for('seller.seller', uid=sellername.uid) }}"
+                  class="btn btn-sm btn-outline-secondary">Back to Seller Page</a>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">

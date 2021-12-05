@@ -28,11 +28,14 @@ def ProductReviews(product_number):
     product_review_stats = ProductReview.get_stats(product_number)
 
     product_name = Product.get_name(product_number)
+
+    PR_check = ProductReview.review_check(product_number, current_user.uid)
     
     # render the page by adding information to the ProductReviews.html file
     return render_template('ProductReviews.html',
                             productreviews = p_reviews,
                             productreviewstats = product_review_stats,
-                            productname = product_name)
+                            productname = product_name,
+                            productreviewcheck = PR_check)
                             #avg_rating = p_r_avg)
 

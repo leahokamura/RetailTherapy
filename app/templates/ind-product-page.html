@@ -17,9 +17,12 @@
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
                 </form> 
+                {% if productreviewcheck == false  %}
+
                 <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add Review</button>
                 </form> 
+                {% endif %}
 {% endif %}
 
 

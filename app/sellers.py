@@ -8,10 +8,11 @@ from .models.purchase import Purchase
 from .models.user import User
 from .models.seller import Seller
 
+
 from flask import Blueprint
 bp = Blueprint('sellers', __name__)
 
-@bp.route('/sellers')
+@bp.route('/sellers', methods = ['GET', 'POST'])
 def sellers():
     print("ahhhhh i'm here")
     rows = app.db.execute(
