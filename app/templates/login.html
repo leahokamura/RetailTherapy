@@ -10,14 +10,14 @@
     {{ form.email.label }}<br/>
     {{ form.email(size=32) }}<br/>
     {% for error in form.email.errors %}
-    <span style="color: red;">[{{ error }}]</span>
+    <span style="color: #D24694;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
     {{ form.password.label }}<br/>
     {{ form.password(size=32) }}<br/>
     {% for error in form.password.errors %}
-    <span style="color: red;">[{{ error }}]</span>
+    <span style="color: #D24694;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
@@ -31,7 +31,7 @@
     {% endif %}
     {% endwith %}
   </p>
-  {{ form.submit(class_="btn btn-black") }}
+  {{ form.submit(class_="btn btn-secondary") }}
   <a class="btn btn-secondary" href="{{ url_for('users.register') }}" role="button">Register</a>
 </form>
 
