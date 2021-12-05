@@ -10,7 +10,7 @@
     {{ form.balance.label }}<br/>
     {{ form.balance(size=32) }}<br/>
     {% for error in form.balance.errors %}
-    <span style="color: red;">[{{ error }}]</span>
+    <span style="color: #D24694;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>{{ form.submit() }}</p>

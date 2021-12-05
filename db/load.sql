@@ -9,11 +9,9 @@ SELECT pg_catalog.setval('public.users_uid_seq',
 \COPY Product_Reviews FROM 'data/Product_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Sellers FROM 'data/Sellers.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Inventory FROM 'data/Inventory.csv' WITH DELIMITER ',' NULL '' CSV
-\COPY Cart FROM 'data/Cart.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY InCart FROM 'data/InCart.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY SaveForLater FROM 'data/SaveForLater.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Orders FROM 'data/Orders.csv' WITH DELIMITER ',' NULL '' CSV
-\COPY SellerOrders FROM 'data/SellerOrders.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY OrderedItems FROM 'data/OrderedItems.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Seller_Reviews FROM 'data/Seller_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
-\COPY Update_Submission FROM 'data/UpdateSubmission.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY PR_Comments FROM 'data/PR_Comments.csv' WITH DELIMITER ',' NULL '' CSV

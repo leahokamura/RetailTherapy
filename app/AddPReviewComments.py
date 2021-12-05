@@ -61,7 +61,7 @@ class EditCommentForm(FlaskForm):
     comment = TextAreaField(_l('Comment'), validators=[DataRequired()])
     submit = SubmitField(_l('Edit Comment'))
 
-#routse to page to submit form to edit an existing comment for a particular product review
+#routes to page to submit form to edit an existing comment for a particular product review
 @bp.route('/editpr_comment/product<int:pid>/user<int:uid>/reviewer<int:rid>', methods=['GET', 'POST'])
 def editProductReviews(pid, uid, rid):
     if current_user.is_authenticated:

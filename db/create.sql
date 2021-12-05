@@ -75,23 +75,6 @@ CREATE TABLE SellerOrders (
 	uid INT NOT NULL REFERENCES Users(uid)
 );
 
---UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, total_price)
---moved here to be below Sellers
-CREATE TABLE Update_Submission(
-    buyer_balance FLOAT NOT NULL,
-    seller_balance FLOAT NOT NULL,
-    fulfilled_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    oid INT UNIQUE NOT NULL REFERENCES Orders(oid),
-    cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
-    seller_id INT UNIQUE NOT NULL REFERENCES Sellers(uid),
-    --bid INT NOT NULL REFERENCES Buyers(uid), --commenting this out bc we have no buyers table
-    total_price FLOAT UNIQUE NOT NULL,  --REFERENCES InCart(total_price), --see above note about REFERENCES
-    PRIMARY KEY(oid, seller_id, cid), --bid
-    CHECK(buyer_balance >= total_price)
-);
-
-
-
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --InCart(uid, pid, name, p_quantity, unit_price, seller_id)
@@ -118,10 +101,23 @@ CREATE TABLE InCart(
 
 --Orders(cid, oid, order_totalPrice, fulfilled)
 CREATE TABLE Orders (
+    oid INT NOT NULL UNIQUE,
     uid INT NOT NULL REFERENCES Users(uid),
     order_totalPrice FLOAT NOT NULL,
     fulfilled BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY(oid)
+    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    PRIMARY KEY(oid, uid)
+);
+
+CREATE TABLE OrderedItems (
+    oid INT NOT NULL REFERENCES Orders(oid),
+    pid INT NOT NULL REFERENCES Products(pid),
+    total_price FLOAT NOT NULL,
+    p_quantity INT NOT NULL,
+    fulfilled BOOLEAN DEFAULT FALSE,
+    fulfillment_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    PRIMARY KEY (oid, pid)
+    
 );
 
 

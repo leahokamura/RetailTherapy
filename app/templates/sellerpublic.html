@@ -2,7 +2,23 @@
 
 {% block content %}
 
-<h2>Welcome to {{slr.firstname}} {{slr.lastname}}'s seller profile!</h2>
+<br></br>
+<div class="profile">
+  <h2>Welcome to {{slr.firstname}} {{slr.lastname}}'s Seller Profile!</h2>
+  <br></br>
+  <article>
+    <h3>Email: {{slr.email}}</h3>
+    <h3>Address: {{slr.address}}</h3>
+</article> 
+</div>
+
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-light">See Seller Reviews</a>
+
+{% if current_user.is_authenticated %}
+                <form action='/addsellerreview/seller{{slr.uid}}/reviewer{{current_user.uid}}' method="post">
+                  <input type="submit" name="review_details" value="Add Review" />
+                </form> 
+{% endif %}
 
 <a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-sm btn-outline-secondary">See Seller reviews</a>
 
