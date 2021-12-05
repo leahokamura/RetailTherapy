@@ -16,14 +16,14 @@
     {{ form.rating.label }}<br/>
     {{ form.rating(size=32) }}<br/>
     {% for error in form.rating.errors %}
-    <span style="color: red;">[{{ error }}]</span>
+    <span style="color: #D24694;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
     {{ form.comment.label }}<br/>
     {{ form.comment(cols = 100, rows = 10) }}<br/>
     {% for error in form.comment.errors %}
-    <span style="color: red;">[{{ error }}]</span>
+    <span style="color: #D24694;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>{{ form.submit() }}</p>

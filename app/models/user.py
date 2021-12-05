@@ -6,16 +6,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import login
 
-
 class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname, password=None, address=None, balance=0.0):
+    def __init__(self, uid, email, firstname, lastname, password=None, address=None):
         self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
         self.password = password
         self.address = address
-        self.balance = balance
     
     def get_id(self):
         return (self.uid)
@@ -59,6 +57,17 @@ WHERE email = :email
         return len(rows) > 0
 
     @staticmethod
+    def email_exists_update(email, uid):
+        rows = app.db.execute("""
+SELECT email
+FROM Users
+WHERE email = :email, uid != :uid
+""",
+                              email=email,
+                              uid=uid)
+        return len(rows) > 0
+
+    @staticmethod
     def register(email, password, firstname, lastname):
         try:
             print('this is the email: ' + email, file=sys.stderr)
@@ -99,9 +108,9 @@ WHERE uid = :uid
     @staticmethod
     def get_profile(uid):
         rows = app.db.execute("""
-SELECT Users.uid, Users.email, Users.firstname, Users.lastname, Users.password, Users.address, Account.balance
-FROM Users, Account
-WHERE Users.uid = :uid
+SELECT uid, email, firstname, lastname, password, address
+FROM Users
+WHERE uid = :uid
 """,
                             uid=uid)
         return User(*(rows[0])) if rows else None
@@ -159,25 +168,3 @@ RETURNING *
                                   password=generate_password_hash(password),
                                   address=address)
 
-    @staticmethod
-    def update_balance(uid, balance):
-        rows = app.db.execute("""
-UPDATE Account
-SET
-    balance = balance + :balance
-WHERE uid = :uid
-RETURNING *
-""",
-                                  uid=uid,
-                                  balance=balance)
-        return True
-
-    @staticmethod
-    def get_balance(uid):
-        rows = app.db.execute("""
-SELECT uid, balance
-FROM Account
-WHERE uid = :uid
-""",
-                              uid=uid)
-        return User(*(rows[0])) if rows else None

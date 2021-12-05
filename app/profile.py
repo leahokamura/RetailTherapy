@@ -9,6 +9,7 @@ from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
 from .models.seller import Seller
+from .models.account import Account
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
@@ -17,7 +18,7 @@ bp = Blueprint('profile', __name__)
 def profile():
     #get profile info
     profile_info = User.get_profile(current_user.uid)
-    new_balance = User.get_balance(current_user.uid)
+    new_balance = Account.get_balance(current_user.uid)
     # render the page by adding information to the profile.html file
     return render_template('profile.html', current_user = profile_info, current_balance = new_balance)
 
