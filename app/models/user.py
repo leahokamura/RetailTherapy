@@ -83,9 +83,16 @@ RETURNING uid
                                   firstname=firstname,
                                   lastname=lastname,
                                   password=generate_password_hash(password))
+            
             # print('go wrong 1', file=sys.stderr)
             uid = rows[0][0]
             # print('go wrong 2', file=sys.stderr)
+            rows_account = app.db.execute("""
+INSERT INTO ACCOUNT(uid, balance)
+VALUES(:uid, DEFAULT)
+RETURNING *
+            """,
+                                    uid=uid)
             return User.get(uid)
         except Exception as e:
             print(e)

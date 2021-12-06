@@ -1,6 +1,8 @@
 from flask import current_app as app
 from flask_login import current_user
 
+import sys
+
 from .. import login
 
 class Account:
@@ -11,16 +13,20 @@ class Account:
 
     @staticmethod
     def update_balance(uid, balance):
-        rows = app.db.execute("""
+        try:
+            rows = app.db.execute("""
 UPDATE Account
-SET
-    balance = CAST((balance + :balance) AS float)
+SET  balance = balance + :balance
 WHERE uid = :uid
 RETURNING *
 """,
                                   uid=uid,
                                   balance=balance)
-        return True
+            print('balance updated', file = sys.stderr)
+            return True
+        except Exception:
+            print('bad things happening', file = sys.stderr)
+            return None
 
 
     @staticmethod
@@ -31,4 +37,4 @@ FROM Account
 WHERE uid = :uid
 """,
                               uid=uid)
-        return Account(*(rows[0][1])) if rows else 0.0
+        return rows[0][1] if rows else False
