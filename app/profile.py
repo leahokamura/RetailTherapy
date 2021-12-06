@@ -30,6 +30,11 @@ def public():
     # render the page by adding information to the public.html file
     return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
+@bp.route('/affirmations', methods=['GET', 'POST'])
+def affirmations():
+    profile_info = User.get_profile(current_user.uid)
+    return render_template('affirmations.html', current_user = profile_info)
+
 @bp.route('/seller')
 def seller():
     User.make_seller(current_user.uid)
@@ -49,10 +54,10 @@ def additem():
     return render_template('additem.html', title='Add item', form=form)
 
 class AddToInventoryForm(FlaskForm):
-    productname = StringField(_l('Product name'), validators=[DataRequired()])
+    productname = StringField(_l('Product Name'), validators=[DataRequired()])
     price = DecimalField(_l('Price'), validators=[DataRequired()]) # add: places = 2
-    quantity = IntegerField(_l('Quantity available'), validators=[NumberRange(min=0)])
+    quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
     description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
     image = StringField(_l('Image URL'), validators=[DataRequired()])
-    category = StringField(_l('Category (Choose 1 from: drink, art, food)'))
-    submit = SubmitField(_l('Add to inventory'))
+    category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
+    submit = SubmitField(_l('Add to Inventory'))

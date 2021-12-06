@@ -85,6 +85,13 @@
         color: #fff;
         font-weight: bold;
     }
+
+    .special {
+        color: #12183B !important;
+        padding-left: 40px !important; 
+        font-family: "Andale Mono", monospace !important;
+
+    }
     
   </style>
 </head>
@@ -108,8 +115,7 @@
             <ul class="menu">
               <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light2">ALL PRODUCTS</a>
               <a href="{{ url_for('sellers.sellers') }}" type="button" class="btn btn-light2">ALL SELLERS</a>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" type="button" class="btn btn-light2">AFFIRMATIONS</a>
-              
+              <a href="{{ url_for('profile.affirmations') }}" type="button" class="btn btn-light2">AFFIRMATIONS</a>
             </ul>
         <!-- </div> -->
         </nav></strong>
@@ -123,5 +129,16 @@
 
   {% block javascript %}{% endblock %}
 </body>
+
+{% block footer %}
+</div>
+<div class="container">
+  <strong><nav>
+    <div id="footer" style="text-align: center;">
+      <p>I will only buy what I need &#128717; &#160 &#160 I have so much self control &#128588; &#160 &#160 My bank account is not suffering &#128184; &#160 &#160</p>
+  </div>
+  </nav></strong>
+   {%- endblock %}
+
 
 </html>

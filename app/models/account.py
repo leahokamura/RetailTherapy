@@ -10,6 +10,8 @@ class Account:
         self.uid = uid
         self.balance = balance
 
+    def get_id(self):
+        return (self.uid)
 
     @staticmethod
     def update_balance(uid, balance):
