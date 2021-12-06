@@ -40,12 +40,7 @@
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
-          <!--div x-data="{count: 0}">
-            <button @click="count = count+1">up</button>
-            <button @click="count- = count-1">down</button>
-            <p><strong x-text="count"></strong></p>
-          </div-->
-          <form action='/pr_comments/product{{productname.pid}}/user{{review.uid}}' method="post">
+          <form action='/pr_comments/product{{productname.pid}}/user{{review.uid}}/0' method="post">
             <input type="submit" name="review_details" class = "btn btn-secondary" value="details" />
           </form> 
           {% if current_user.uid == review.uid %}

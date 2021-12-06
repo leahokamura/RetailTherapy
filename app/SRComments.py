@@ -12,15 +12,18 @@ from flask import current_app as app
 from flask import Blueprint
 bp = Blueprint('sr_comments', __name__)
 
-@bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>', methods=['GET', 'POST'])
-def SellerReviews(seller_id, user_id):
+@bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/<int:number>', methods=['GET', 'POST'])
+def SellerReviews(seller_id, user_id, number):
     s_reviews = SellerReview.get_all_seller_reviews_for_seller_and_user(seller_id, user_id)
-    review_comments = SR_Comment.get_all_seller_review_comments(seller_id, user_id)
+    review_comments = SR_Comment.get_all_seller_review_comments(seller_id, user_id, number)
     seller_name = Seller.get_seller_info(seller_id)
+    total_comments = SR_Comment.get_total_number_seller_review_comments(seller_id, user_id)
     return render_template('SRComments.html',
                             sellerreviews = s_reviews,
                             sellerreviewcomments = review_comments,
-                            sellername = seller_name)
+                            sellername = seller_name,
+                            number = number,
+                            total = total_comments)
 
 #executes review upvote
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/upvote', methods=['GET', 'POST'])

@@ -63,7 +63,7 @@
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
-          <form action='/pr_comments/product{{review.pid}}/user{{review.uid}}' method="post">
+          <form action='/pr_comments/product{{review.pid}}/user{{review.uid}}/0' method="post">
             <input type="submit" name="review_details" class = "btn btn-secondary" value="details" />
           </form> 
           {% if current_user.uid == review.uid %}
@@ -96,7 +96,7 @@
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
-          <form action='/sr_comments/seller{{review.seller_id}}/user{{review.uid}}' method="post">
+          <form action='/sr_comments/seller{{review.seller_id}}/user{{review.uid}}/0' method="post">
             <input type="submit" name="review_details" class = "btn btn-secondary" value="details" />
           </form> 
           {% if current_user.uid == review.uid %}

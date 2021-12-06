@@ -18,15 +18,28 @@ class SR_Comment:
 
 #get all comments for particular seller review
     @staticmethod
-    def get_all_seller_review_comments(seller_id, uid):
+    def get_all_seller_review_comments(seller_id, uid, number):
         rows = app.db.execute('''
 SELECT rid, uid, seller_id, time_commented, comment, votes
 FROM SR_Comments
 WHERE seller_id = :seller_id AND uid = :uid
-ORDER BY votes DESC, time_commented DESC
+ORDER BY time_commented DESC
+LIMIT 10
+OFFSET :number
+''',
+                              seller_id=seller_id, uid=uid, number = number)
+        return [SR_Comment(*row) for row in rows]
+
+#get number of comments for review
+    @staticmethod
+    def get_total_number_seller_review_comments(seller_idid, uid):
+        rows = app.db.execute('''
+SELECT rid, uid, seller_id, time_commented, comment, votes
+FROM SR_Comments
+WHERE seller_id = :seller_id AND uid = :uid
 ''',
                               seller_id=seller_id, uid=uid)
-        return [SR_Comment(*row) for row in rows]
+        return len(rows)
 
 #upvote seller review
     @staticmethod

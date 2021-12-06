@@ -82,4 +82,16 @@
   </tbody>
 </table>
 
+{% if number > 0 %}
+<form action='/pr_comments/product{{productname.pid}}/user{{productreviews.uid}}/{{number-10}}' method="post">
+  <input type="submit" name="productreviews" class = "btn btn-secondary" value="Previous Comments" />
+</form>
+{% endif %}
+
+{% if total > number+10%}
+<form action='/pr_comments/product{{productname.pid}}/user{{productreviews.uid}}/{{number+10}}' method="post">
+  <input type="submit" name="productreviews" class = "btn btn-secondary" value="More Comments" />
+</form>
+{% endif %}
+
 {% endblock %}

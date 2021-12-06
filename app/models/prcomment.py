@@ -18,15 +18,28 @@ class PR_Comment:
 
 #get all comments for a particular product review
     @staticmethod
-    def get_all_product_review_comments(pid, uid):
+    def get_all_product_review_comments(pid, uid, number):
         rows = app.db.execute('''
 SELECT rid, uid, pid, time_commented, comment, votes
 FROM PR_Comments
 WHERE pid = :pid AND uid = :uid
-ORDER BY votes DESC, time_commented DESC
+ORDER BY time_commented DESC
+LIMIT 10
+OFFSET :number
+''',
+                              pid=pid, uid=uid, number=number)
+        return [PR_Comment(*row) for row in rows]
+
+#get number of comments for review
+    @staticmethod
+    def get_total_number_product_review_comments(pid, uid):
+        rows = app.db.execute('''
+SELECT rid, uid, pid, time_commented, comment, votes
+FROM PR_Comments
+WHERE pid = :pid AND uid = :uid
 ''',
                               pid=pid, uid=uid)
-        return [PR_Comment(*row) for row in rows]
+        return len(rows)
 
 #upvote product review
     @staticmethod
@@ -134,14 +147,14 @@ RETURNING *
 
 #delete existing comment on product review
     @staticmethod
-    def delete_comment(pid, uid, rid):
+    def delete_comment(pid, uid, rid, time_commented):
         app.db.execute('''
     DELETE
     FROM PR_Comments
-    WHERE pid = :pid AND uid = :uid AND rid = :rid
+    WHERE pid = :pid AND uid = :uid AND rid = :rid AND time_commented = :time_commented
     RETURNING *;
     ''',  
-                               uid = uid, pid = pid, rid = rid)
+                               uid = uid, pid = pid, rid = rid, time_commented = time_commented)
         print('comment deleted', file=sys.stderr)
 
 #delete product review
