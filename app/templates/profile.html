@@ -5,8 +5,6 @@
 
 <div class="profile">
   <h1>Hello {{current_user.firstname}}!</h1>
-  <br></br>
-  <h2>Profile</h2>
   <article>
     <h4>User ID: {{current_user.uid}}</h4>
     <h4>Email: {{current_user.email}}</h4>
@@ -36,9 +34,11 @@
   <tbody>
     {% for order in orders %}
       <tr>
-        <th scope="row">amount here</th>
-        <th scope="row">fulfillment status</th>
-        <th scope="row">order page link</th>
+        <th scope="row">{{order.p_quantity}}</th>
+        <td>{{order.name}}</td> 
+        <!-- fullfillment -->
+        <td>{{order.pid}}</td>
+        <!-- link to order page -->
       </tr>
     {% endfor %}
   </tbody>

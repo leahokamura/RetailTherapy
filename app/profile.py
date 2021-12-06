@@ -12,6 +12,7 @@ from .models.seller import Seller
 from .models.account import Account
 from .models.productreview import ProductReview
 from .models.sellerreview import SellerReview
+from .models.cart import Cart
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
@@ -23,11 +24,13 @@ def profile():
     new_balance = Account.get_balance(current_user.uid)
     product_reviews = ProductReview.get_all_product_reviews_by_user(current_user.uid)
     seller_reviews = SellerReview.get_all_seller_reviews_by_user(current_user.uid)
+    all_orders = Cart.get_cart(current_user.uid)
     # render the page by adding information to the profile.html file
     return render_template('profile.html', current_user = profile_info, 
                                             current_balance = new_balance,
                                             productreviews = product_reviews,
-                                            sellerreviews = seller_reviews)
+                                            sellerreviews = seller_reviews,
+                                            orders = all_orders)
 
 @bp.route('/profile/public', methods=['GET', 'POST'])
 def public():
@@ -39,7 +42,9 @@ def public():
 
 @bp.route('/affirmations', methods=['GET', 'POST'])
 def affirmations():
+    # get profile info
     profile_info = User.get_profile(current_user.uid)
+    # render the page by adding information to the affirmations.html file
     return render_template('affirmations.html', current_user = profile_info)
 
 @bp.route('/seller')

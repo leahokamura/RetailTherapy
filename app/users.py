@@ -76,9 +76,9 @@ class UpdateBalance(FlaskForm):
     balance = FloatField(_l('Amount to Add (+) or Withdraw (-)'), validators=[DataRequired()])
     submit = SubmitField(_l('Update Balance'))
 
-    def validate_balance(self, balance):
-        if (balance.data + self.balance.data) < 0.0:
-            raise ValidationError(_('Insufficient funds.'))
+    #def validate_balance(self, balance):
+     #   if (balance.data + self.balance.data) < 0.0:
+      #      raise ValidationError(_('Insufficient funds.'))
     #currently cannot withdraw funds...will always give error
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -95,7 +95,7 @@ def register():
             #flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
         else: 
-            print('something fucked up', file=sys.stderr)
+            print('something messed up', file=sys.stderr)
     return render_template('register.html', title='Register', form=form)
 
 

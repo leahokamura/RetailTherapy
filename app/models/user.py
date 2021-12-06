@@ -19,7 +19,6 @@ class User(UserMixin):
         return (self.uid)
 
     def is_seller(self):
-        # print("here is my uid:%2d" % (self.uid))
         rows = app.db.execute("""
 SELECT *
 FROM Sellers
