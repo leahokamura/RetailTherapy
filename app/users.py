@@ -75,10 +75,14 @@ class UpdateProfile(FlaskForm):
 class UpdateBalance(FlaskForm):
     balance = FloatField(_l('Amount to Add (+) or Withdraw (-)'), validators=[DataRequired()])
     submit = SubmitField(_l('Update Balance'))
-
+    
     def validate_balance(self, balance):
-        if (balance.data + self.balance.data) < 0.0:
-            raise ValidationError(_('Insufficient funds.'))
+        print('balance_data' + str(balance.data), file = sys.stderr)
+        current_balance = Account.get_balance(current_user.uid)
+        print('current balance: ' + str(current_balance), file = sys.stderr)
+        if (balance.data + current_balance) < 0.0:
+            message = 'Insufficient funds. You currently have %d dollars.' % (current_balance)
+            raise ValidationError(message)
     #currently cannot withdraw funds...will always give error
 
 @bp.route('/register', methods=['GET', 'POST'])

@@ -39,4 +39,4 @@ FROM Account
 WHERE uid = :uid
 """,
                               uid=uid)
-        return rows[0][1] if rows else False
+        return rows[0][1] if rows else 0.0
