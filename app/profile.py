@@ -49,13 +49,23 @@ def seller():
     seller = Seller.get_seller_info(current_user.uid)
     return render_template('seller.html', slr=seller, inv=products)
 
+@bp.route('/seller/sort<sort_category>')
+def sellersorted(sort_category=0):
+    User.make_seller(current_user.uid)
+    products = Seller.get_seller_products(current_user.uid)
+    # print("sort category: ", sort_category)
+    products = sorted(products, key=lambda x: x[int(sort_category)])
+    # print("in order of", sort_category, products)
+    seller = Seller.get_seller_info(current_user.uid)
+    return render_template('seller.html', slr=seller, inv=products)
+
 @bp.route('/seller/additem', methods=['GET', 'POST'])
 def additem():
     form = AddToInventoryForm()
     if form.validate_on_submit():
         print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
-            return redirect(url_for('profile.seller'))
+            return redirect(url_for('profile.seller', sort_category=0))
         else: 
             print('something hinky is going on')
     return render_template('additem.html', title='Add item', form=form)
