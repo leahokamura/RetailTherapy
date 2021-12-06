@@ -65,7 +65,7 @@ class UpdateProfile(FlaskForm):
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
-    address = StringField(_l('Address'), validators=[DataRequired()])
+    address = StringField(_l('Address'))
     submit = SubmitField(_l('Update Profile'))
 
     def validate_email_update(self, email):
@@ -126,7 +126,7 @@ def updateBalance():
     if request.method == 'POST':
         if form.validate_on_submit():
             if Account.update_balance(current_user.uid, form.balance.data):
-                flash('Congratulations, you have updated your balance!')
+                #flash('Congratulations, you have updated your balance!')
                 print('update worked')
                 print(form.balance.data)
                 x = Account.get_balance(current_user.uid)
