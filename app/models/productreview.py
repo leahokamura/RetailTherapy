@@ -19,15 +19,28 @@ class ProductReview:
 
 #get all product reviews for a product        
     @staticmethod
-    def get_all_product_reviews_for_product(pid):
+    def get_all_product_reviews_for_product(pid, number):
         rows = app.db.execute('''
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
 ORDER BY votes DESC, time_reviewed DESC
+LIMIT 10
+OFFSET :number
+''',
+                              pid=pid, number = number)
+        return [ProductReview(*row) for row in rows]
+
+#get total number of product reviews for product
+    @staticmethod
+    def get_total_number_product_reviews_for_product(pid):
+        rows = app.db.execute('''
+SELECT uid, pid, time_reviewed, rating, comments, votes
+FROM Product_Reviews
+WHERE pid = :pid
 ''',
                               pid=pid)
-        return [ProductReview(*row) for row in rows]
+        return len(rows)
 
 #get all review stats associated with a product
     @staticmethod

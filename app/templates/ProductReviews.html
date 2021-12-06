@@ -54,4 +54,12 @@
   </tbody>
 </table>
 
+
+{% if number > 0 %}
+<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = (number-10) )}}" type="button" class="btn btn-secondary">Previous Reviews</a>
+{% endif %}
+
+{% if total > number+10%}
+<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = (number+10) )}}" type="button" class="btn btn-secondary">More Reviews</a>
+{% endif %}
 {% endblock %}

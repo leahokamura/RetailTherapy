@@ -32,7 +32,7 @@ OFFSET :number
 
 #get number of comments for review
     @staticmethod
-    def get_total_number_seller_review_comments(seller_idid, uid):
+    def get_total_number_seller_review_comments(seller_id, uid):
         rows = app.db.execute('''
 SELECT rid, uid, seller_id, time_commented, comment, votes
 FROM SR_Comments
@@ -87,7 +87,7 @@ WHERE seller_id = :seller_id AND uid = :uid
 
 #add comment to seller review
     @staticmethod
-    def addcomment(rid, uid, seller_id, time_reviewed, comments, votes):
+    def addcomment(rid, uid, seller_id, time_commented, comments, votes):
         try:
             print('this is the uid: ' + str(uid), file=sys.stderr)
             print('this is the seller_id: ' + str(seller_id), file = sys.stderr)
@@ -96,13 +96,13 @@ WHERE seller_id = :seller_id AND uid = :uid
 
             rows = app.db.execute("""
 INSERT INTO SR_Comments
-VALUES(:rid, :uid, :seller_id, :time_reviewed, :comments, :votes)
+VALUES(:rid, :uid, :seller_id, :time_commented, :comments, :votes)
 RETURNING seller_id
 """,
                                   rid = rid,
                                   uid = uid,
                                   seller_id = seller_id,
-                                  time_reviewed = time_reviewed,
+                                  time_commented = time_commented,
                                   comments = comments,
                                   votes = votes)
 

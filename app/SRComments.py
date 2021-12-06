@@ -29,34 +29,43 @@ def SellerReviews(seller_id, user_id, number):
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/upvote', methods=['GET', 'POST'])
 def upvote(seller_id, user_id):
     SR_Comment.upvote_review(seller_id, user_id)
-    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id))
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, number = 0))
 
 #executes review downvote
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/downvote', methods=['GET', 'POST'])
 def downvote(seller_id, user_id):
     SR_Comment.downvote_review(seller_id, user_id)
-    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id))
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, number = 0))
 
 #executes comment upvote
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/upvote_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
 def upvote_comment(seller_id, user_id, reviewer_id):
     SR_Comment.upvote_comment(seller_id, user_id, reviewer_id)
-    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, reviewer_id = reviewer_id))
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, 
+                                                         user_id = user_id, 
+                                                        reviewer_id = reviewer_id,
+                                                        number = 0))
 
 #executes comment downvote
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/downvote_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
 def downvote_comment(seller_id, user_id, reviewer_id):
     SR_Comment.downvote_comment(seller_id, user_id, reviewer_id)
-    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, reviewer_id = reviewer_id))
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, 
+                                                         user_id = user_id, 
+                                                         reviewer_id = reviewer_id,
+                                                         number = 0))
 
 #executes delete comment
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/delete_comment/reviewer<int:reviewer_id>', methods=['GET', 'POST'])
 def delete_comment(seller_id, user_id, reviewer_id):
     SR_Comment.delete_comment(seller_id, user_id, reviewer_id)
-    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = user_id, reviewer_id = reviewer_id))
+    return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, 
+                                                         user_id = user_id, 
+                                                         reviewer_id = reviewer_id,
+                                                         number = 0))
 
 #executes delete review
 @bp.route('/sr_comments/seller<int:seller_id>/user<int:user_id>/delete_review', methods=['GET', 'POST'])
 def delete_review(seller_id, user_id):
     SR_Comment.delete_review(seller_id, user_id)
-    return redirect(url_for('sellerreviews.SellerReviews', seller_id = seller_id))
+    return redirect(url_for('sellerreviews.SellerReviews', seller_id = seller_id, number = 0))

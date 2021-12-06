@@ -19,15 +19,28 @@ class SellerReview:
 
 #get all reviews for a seller 
     @staticmethod
-    def get_all_seller_reviews_for_seller(seller_id):
+    def get_all_seller_reviews_for_seller(seller_id, number):
         rows = app.db.execute('''
 SELECT uid, seller_id, time_reviewed, rating, comments, votes
 FROM Seller_Reviews
 WHERE seller_id = :seller_id
 ORDER BY votes DESC, time_reviewed DESC
+LIMIT 10
+OFFSET :number
+''',
+                              seller_id=seller_id, number = number)
+        return [SellerReview(*row) for row in rows]
+
+#get total number of reviews for a seller 
+    @staticmethod
+    def get_total_number_seller_reviews_for_seller(seller_id):
+        rows = app.db.execute('''
+SELECT uid, seller_id, time_reviewed, rating, comments, votes
+FROM Seller_Reviews
+WHERE seller_id = :seller_id
 ''',
                               seller_id=seller_id)
-        return [SellerReview(*row) for row in rows]
+        return len(rows)
 
 #get average rating for a seller 
     @staticmethod

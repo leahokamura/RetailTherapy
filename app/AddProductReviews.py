@@ -44,7 +44,7 @@ def addProductReviews(pid, rid):
                                         form.comment.data,
                                         0):
                 print('review added', file=sys.stderr)
-                return redirect(url_for('productreviews.ProductReviews', product_number = pid))
+                return redirect(url_for('productreviews.ProductReviews', product_number = pid, number = 0))
             else:
                 print('Error: review not added', file=sys.stderr)
     
@@ -79,7 +79,7 @@ def editProductReviews(pid, rid):
                                         form.comment.data,
                                         0):
                 print('review updated', file=sys.stderr)
-                return redirect(url_for('productreviews.ProductReviews', product_number = pid))
+                return redirect(url_for('productreviews.ProductReviews', product_number = pid, number = 0))
             else:
                 print('Error: review not updated', file=sys.stderr)
     

@@ -26,7 +26,7 @@
 
 {% endif %}
 
-<form action='/sellerreviews/{{sellername.uid}}' method="post">
+<form action='/sellerreviews/{{sellername.uid}}/0' method="post">
     <input type="submit" name="sellerreviews" class="btn btn-secondary" value="Back to Seller Reviews" />
 </form>
 
@@ -76,5 +76,17 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% if number > 0 %}
+<form action='/sr_comments/seller{{sellername.uid}}/user{{sellerreviews.uid}}/{{number-10}}' method="post">
+  <input type="submit" name="review_details"class="btn btn-secondary"  value="Previous Comments" />
+</form>
+{% endif %}
+
+{% if total > number+10%}
+<form action='/sr_comments/seller{{sellername.uid}}/user{{sellerreviews.uid}}/{{number+10}}' method="post">
+  <input type="submit" name="review_details"class="btn btn-secondary"  value="More Comments" />
+</form>
+{% endif %}
 
 {% endblock %}

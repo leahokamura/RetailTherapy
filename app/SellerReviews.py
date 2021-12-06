@@ -18,16 +18,19 @@ from flask import Blueprint
 bp = Blueprint('sellerreviews', __name__)
 
 #routes to reviews page for certain seller
-@bp.route('/sellerreviews/<int:seller_id>', methods=['GET', 'POST'])
-def SellerReviews(seller_id):
-    s_reviews = SellerReview.get_all_seller_reviews_for_seller(seller_id)
+@bp.route('/sellerreviews/<int:seller_id>/<int:number>', methods=['GET', 'POST'])
+def SellerReviews(seller_id, number):
+    s_reviews = SellerReview.get_all_seller_reviews_for_seller(seller_id, number)
     seller_review_stats = SellerReview.get_stats(seller_id)
     seller_name = Seller.get_seller_info(seller_id)
     SR_check = True
     if current_user.is_authenticated:
         SR_check = SellerReview.review_check(seller_id, current_user.uid)
+    total_reviews = SellerReview.get_total_number_seller_reviews_for_seller(seller_id)
     return render_template('sellerreviews.html',
                             sellerreviews = s_reviews,
                             sellerreviewstats = seller_review_stats,
                             SRcheck = SR_check,
-                            sellername = seller_name)
+                            sellername = seller_name,
+                            number = number,
+                            total = total_reviews)
