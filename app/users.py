@@ -125,14 +125,13 @@ def updateBalance():
     form = UpdateBalance()
     if request.method == 'POST':
         if form.validate_on_submit():
-            if Account.update_balance(current_user.uid, form.balance.data):
-                #flash('Congratulations, you have updated your balance!')
+            
+            if Account.update_balance(current_user.uid, float(form.balance.data)):
+                flash('Congratulations, you have updated your balance!')
                 print('update worked')
                 print(form.balance.data)
                 x = Account.get_balance(current_user.uid)
-                y = Account.update_balance(current_user.uid, form.balance.data)
                 print(x)
-                print(y)
                 return redirect(url_for('profile.profile'))                
     return render_template('balance.html', title='Update Balance', form=form)
 
