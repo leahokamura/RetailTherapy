@@ -12,7 +12,7 @@
 </article> 
 </div>
 
-<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-secondary">See Seller Reviews</a>
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid, number = 0) }}" type="button" class="btn btn-secondary">See Seller Reviews</a>
 
 
 {% if current_user.is_authenticated %}

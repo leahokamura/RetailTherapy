@@ -42,8 +42,7 @@ def addSellerReviews(seller_id, uid, rid):
                                         form.comment.data,
                                         0):
                 print('comment added', file=sys.stderr)
-                #flash('Congratulations, you have submitted a review!')
-                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid))
+                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid, number = 0))
             else:
                 print('Error: comment not added', file=sys.stderr)
     
@@ -79,7 +78,7 @@ def editSellerReviews(seller_id, uid, rid):
                                         form.comment.data,
                                         0):
                 print('seller review comment updated', file=sys.stderr)
-                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid))
+                return redirect(url_for('sr_comments.SellerReviews', seller_id = seller_id, user_id = uid, number = 0))
             else:
                 print('Error: seller review comment not updated', file=sys.stderr)
     

@@ -10,6 +10,8 @@ from flask_babel import _, lazy_gettext as _l
 from .models.user import User
 from .models.seller import Seller
 from .models.account import Account
+from .models.productreview import ProductReview
+from .models.sellerreview import SellerReview
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
@@ -19,8 +21,13 @@ def profile():
     #get profile info
     profile_info = User.get_profile(current_user.uid)
     new_balance = Account.get_balance(current_user.uid)
+    product_reviews = ProductReview.get_all_product_reviews_by_user(current_user.uid)
+    seller_reviews = SellerReview.get_all_seller_reviews_by_user(current_user.uid)
     # render the page by adding information to the profile.html file
-    return render_template('profile.html', current_user = profile_info, current_balance = new_balance)
+    return render_template('profile.html', current_user = profile_info, 
+                                            current_balance = new_balance,
+                                            productreviews = product_reviews,
+                                            sellerreviews = seller_reviews)
 
 @bp.route('/profile/public', methods=['GET', 'POST'])
 def public():
@@ -42,13 +49,23 @@ def seller():
     seller = Seller.get_seller_info(current_user.uid)
     return render_template('seller.html', slr=seller, inv=products)
 
+@bp.route('/seller/sort<sort_category>')
+def sellersorted(sort_category=0):
+    User.make_seller(current_user.uid)
+    products = Seller.get_seller_products(current_user.uid)
+    # print("sort category: ", sort_category)
+    products = sorted(products, key=lambda x: x[int(sort_category)])
+    # print("in order of", sort_category, products)
+    seller = Seller.get_seller_info(current_user.uid)
+    return render_template('seller.html', slr=seller, inv=products)
+
 @bp.route('/seller/additem', methods=['GET', 'POST'])
 def additem():
     form = AddToInventoryForm()
     if form.validate_on_submit():
         print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
-            return redirect(url_for('profile.seller'))
+            return redirect(url_for('profile.seller', sort_category=0))
         else: 
             print('something hinky is going on')
     return render_template('additem.html', title='Add item', form=form)

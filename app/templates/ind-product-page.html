@@ -10,7 +10,7 @@
 <h3>Description: {{productinfo.description}}</h3>
 <h3>Category: {{productinfo.category}}</h3>
 <h3>Rating: {{product_rating.avg}}</h3>
-<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid) }}" type="button" class="btn btn-secondary">See Product Reviews</a>
+<a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = 0)}}" type="button" class="btn btn-secondary">See Product Reviews</a>
 <a href="{{ url_for('index.index') }}" type="button" class="btn btn-secondary">Back to Products</a>
 
 {% if current_user.is_authenticated %}

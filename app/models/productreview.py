@@ -2,6 +2,12 @@ from flask import current_app as app
 
 import sys
 
+#uid = user's id
+#pid = product id
+#time_reviewed is generated automatically
+#rating is a float between 0 and 5, input by user
+#comments are input by user
+#votes start at 0, can be changed
 class ProductReview:
     def __init__(self, uid, pid, time_reviewed, rating, comments, votes):
         self.uid = uid
@@ -10,28 +16,33 @@ class ProductReview:
         self.rating = rating
         self.comments = comments
         self.votes = votes
-        
+
+#get all product reviews for a product        
     @staticmethod
-    def get_all_product_reviews_for_product(pid):
+    def get_all_product_reviews_for_product(pid, number):
         rows = app.db.execute('''
 SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
 ORDER BY votes DESC, time_reviewed DESC
+LIMIT 10
+OFFSET :number
 ''',
-                              pid=pid)
+                              pid=pid, number = number)
         return [ProductReview(*row) for row in rows]
-        
+
+#get total number of product reviews for product
     @staticmethod
-    def get_product_avg_rating(pid):
+    def get_total_number_product_reviews_for_product(pid):
         rows = app.db.execute('''
-SELECT MAX(uid), MAX(pid), MAX(time_reviewed), AVG(rating)::numeric(10,2) AS avg, MAX(comments), MAX(votes)
+SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE pid = :pid
 ''',
                               pid=pid)
-        return ProductReview(*(rows[0])) if rows else None
+        return len(rows)
 
+#get all review stats associated with a product
     @staticmethod
     def get_stats(pid):
         rows = app.db.execute('''
@@ -43,16 +54,19 @@ WHERE pid = :pid
         print(rows[0][3])
         return (rows[0]) if rows else None
 
+#get all product reviews by a certain user
     @staticmethod
     def get_all_product_reviews_by_user(uid):
         rows = app.db.execute('''
-SELECT pid, uid, time_reviewed, rating, comments, votes
+SELECT uid, pid, time_reviewed, rating, comments, votes
 FROM Product_Reviews
 WHERE uid = :uid
+ORDER BY time_reviewed DESC
 ''',
                               uid=uid)
         return [ProductReview(*row) for row in rows]
 
+#get all product reviews for a certain product written by a certain user
     @staticmethod
     def get_all_product_reviews_for_product_and_user(pid, uid):
         rows = app.db.execute('''
@@ -64,27 +78,15 @@ ORDER BY votes DESC
                               pid=pid, uid=uid)
         return (rows[0]) if rows else None
 
-
-    @staticmethod
-    def upvote_review(pid, uid):
-        app.db.execute('''
-    UPDATE Product_Reviews
-    SET votes = votes + 1
-    WHERE Product_Reviews.pid = :pid AND Product_Reviews.uid = :uid
-    RETURNING *
-    ''',  
-                               uid = uid, pid = pid)
-
-
-
+#add product review
     @staticmethod
     def addreview(uid, pid, time_reviewed, rating, comments, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the pid: ' + str(pid), file = sys.stderr)
+            print('this is the time_reviewed: ' + str(time_reviewed), file=sys.stderr)
+            print('this is the rating: ' + str(rating), file = sys.stderr)
             print('this is the comment: ' + comments, file=sys.stderr)
-            print('this is the rating: ' + str(rating), file=sys.stderr)
 
             rows = app.db.execute("""
 INSERT INTO Product_Reviews
@@ -98,13 +100,13 @@ RETURNING pid
                                   comments = comments,
                                   votes = votes)
 
-            print('this worked!', file = sys.stderr)
+            print('product review added!', file = sys.stderr)
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: product review not added', file = sys.stderr)
             return None
 
-
+#get rating for a product
     def get_just_rating(pid):
         rows = app.db.execute('''
 SELECT MAX(pid) as pid, AVG(rating)::numeric(10,2) AS avg
@@ -114,14 +116,15 @@ WHERE pid = :pid
         pid = pid)
         return (rows[0]) if rows else None
 
+#edit existing product review
     @staticmethod
     def editreview(uid, pid, time_reviewed, rating, comments, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the pid: ' + str(pid), file = sys.stderr)
+            print('this is the time_reviewed: ' + str(time_reviewed), file=sys.stderr)
+            print('this is the rating: ' + str(rating), file = sys.stderr)
             print('this is the comment: ' + comments, file=sys.stderr)
-            print('this is the rating: ' + str(rating), file=sys.stderr)
 
             rows = app.db.execute("""
 UPDATE Product_Reviews
@@ -136,12 +139,13 @@ RETURNING *
                                   comments = comments,
                                   votes = votes)
 
-            print('this worked!', file = sys.stderr)
+            print('product review edited!', file = sys.stderr)
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: product review not edited', file = sys.stderr)
             return None
 
+#check that a user has not already added a review for a product
     @staticmethod
     def review_check(pid, uid):
         rows = app.db.execute('''

@@ -38,7 +38,7 @@
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
         <td>{{review.votes}}
-          <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}' method="post">
+          <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}/0' method="post">
             <input type="submit" name="review_details"class="btn btn-secondary"  value="details" />
           </form>
           {% if current_user.uid == review.uid %}
@@ -51,5 +51,13 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% if number > 0 %}
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid, number = 0) }}" type="button" class="btn btn-secondary">Previous Reviews</a>
+{% endif %}
+
+{% if total > number+10%}
+<a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid, number = 0) }}" type="button" class="btn btn-secondary">More Reviews</a>
+{% endif %}
 
 {% endblock %}
