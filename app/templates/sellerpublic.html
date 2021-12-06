@@ -14,12 +14,6 @@
 
 <a href="{{ url_for('sellerreviews.SellerReviews', seller_id=slr.uid) }}" type="button" class="btn btn-secondary">See Seller Reviews</a>
 
-{% if current_user.is_authenticated %}
-                <form action='/addsellerreview/seller{{slr.uid}}/reviewer{{current_user.uid}}' method="post">
-                  <input type="submit" name="review_details" class = "btn btn-secondary" value="Add Review" />
-                </form> 
-{% endif %}
-
 
 {% if current_user.is_authenticated %}
 {% if SRcheck == false  %}

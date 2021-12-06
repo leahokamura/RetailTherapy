@@ -65,7 +65,7 @@ class UpdateProfile(FlaskForm):
     password = PasswordField(_l('Password'), validators=[DataRequired()])
     password2 = PasswordField(
         _l('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
-    address = StringField(_l('Address'), validators=[DataRequired()])
+    address = StringField(_l('Address'))
     submit = SubmitField(_l('Update Profile'))
 
     def validate_email_update(self, email):

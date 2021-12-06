@@ -31,7 +31,7 @@ def SellerReviews(seller_id):
     
     SR_check = True
     if current_user.is_authenticated:
-        SR_check = SellerReview.review_check(uid, current_user.uid)
+        SR_check = SellerReview.review_check(seller_id, current_user.uid)
 
     # render the page by adding information to the ProductReviews.html file
     return render_template('sellerreviews.html',
