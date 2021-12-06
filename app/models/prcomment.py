@@ -1,6 +1,12 @@
 from flask import current_app as app
 import sys
 
+#rid = reviewer's user id
+#uid = user's id
+#pid = product id
+#time_commented generated automatically
+#comment input by user
+#votes start at 0, can change
 class PR_Comment:
     def __init__(self, rid, uid, pid, time_commented, comment, votes):
         self.rid = rid
@@ -10,6 +16,7 @@ class PR_Comment:
         self.comment = comment
         self.votes = votes
 
+#get all comments for a particular product review
     @staticmethod
     def get_all_product_review_comments(pid, uid):
         rows = app.db.execute('''
@@ -21,6 +28,7 @@ ORDER BY votes DESC, time_commented DESC
                               pid=pid, uid=uid)
         return [PR_Comment(*row) for row in rows]
 
+#upvote product review
     @staticmethod
     def upvote_review(pid, uid):
         app.db.execute('''
@@ -30,7 +38,9 @@ ORDER BY votes DESC, time_commented DESC
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+        print('review upvoted!', file = sys.stderr)
 
+#downvote product review
     @staticmethod
     def downvote_review(pid, uid):
         app.db.execute('''
@@ -40,8 +50,9 @@ ORDER BY votes DESC, time_commented DESC
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+        print('review downvoted!', file = sys.stderr)
 
-
+#upvote comment on product review
     @staticmethod
     def upvote_comment(pid, uid, rid):
         app.db.execute('''
@@ -51,7 +62,9 @@ ORDER BY votes DESC, time_commented DESC
     RETURNING *;
     ''',  
                                uid = uid, pid = pid, rid = rid)
+        print('comment upvoted!', file = sys.stderr)
 
+#downvote comment on product review
     @staticmethod
     def downvote_comment(pid, uid, rid):
         app.db.execute('''
@@ -61,14 +74,16 @@ ORDER BY votes DESC, time_commented DESC
     RETURNING *;
     ''',  
                                uid = uid, pid = pid, rid = rid)
+        print('comment downvoted!', file = sys.stderr)
 
-
+#add comment on product review
     @staticmethod
     def addcomment(rid, uid, pid, time_commented, comment, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the rid: ' + str(rid), file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the pid: ' + str(pid), file = sys.stderr)
+            print('this is the time_commented: ' + str(time_commented), file=sys.stderr)
             print('this is the comment: ' + comment, file=sys.stderr)
 
             rows = app.db.execute("""
@@ -82,25 +97,22 @@ RETURNING pid
                                   time_commented = time_commented,
                                   comment = comment,
                                   votes = votes)
-            #product_id = rows[0][0]
-            #print('this is the pid: ' + product_id, file = sys.stderr)
-            print('this worked!')
+            print('commend added!')
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: comment not added', file = sys.stderr)
             return None
 
+#edit existing comment on product review
     @staticmethod
     def editcomment(rid, uid, pid, time_commented, comment, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the rid: ' + str(rid), file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the pid: ' + str(pid), file = sys.stderr)
+            print('this is the time_commented: ' + str(time_commented), file=sys.stderr)
             print('this is the comment: ' + comment, file=sys.stderr)
-            print('this is the rid:' + str(rid), file=sys.stderr)
-            print('this is the uid:' + str(uid), file=sys.stderr)
-            print('this is the pid:' + str(pid), file=sys.stderr)
-
+            
             rows = app.db.execute("""
 UPDATE PR_Comments
 SET time_commented = :time_commented, comment = :comment
@@ -114,12 +126,13 @@ RETURNING *
                                   comment = comment,
                                   votes = votes)
 
-            print('this worked!')
+            print('comment edited!', file = sys.stderr)
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: comment not edited', file = sys.stderr)
             return None
 
+#delete existing comment on product review
     @staticmethod
     def delete_comment(pid, uid, rid):
         app.db.execute('''
@@ -129,7 +142,9 @@ RETURNING *
     RETURNING *;
     ''',  
                                uid = uid, pid = pid, rid = rid)
+        print('comment deleted', file=sys.stderr)
 
+#delete product review
     @staticmethod
     def delete_review(pid, uid):
         app.db.execute('''
@@ -139,3 +154,4 @@ RETURNING *
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
+        print('review deleted', file=sys.stderr)

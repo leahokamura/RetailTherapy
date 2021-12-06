@@ -1,6 +1,12 @@
 from flask import current_app as app
 import sys
 
+#rid = reviewer's user id
+#uid = user's id
+#seller_id = seller's id
+#time_commented generated automatically
+#comment input by user
+#votes start at 0, can change
 class SR_Comment:
     def __init__(self, rid, uid, seller_id, time_commented, comment, votes):
         self.rid = rid
@@ -10,6 +16,7 @@ class SR_Comment:
         self.comment = comment
         self.votes = votes
 
+#get all comments for particular seller review
     @staticmethod
     def get_all_seller_review_comments(seller_id, uid):
         rows = app.db.execute('''
@@ -21,6 +28,7 @@ ORDER BY votes DESC, time_commented DESC
                               seller_id=seller_id, uid=uid)
         return [SR_Comment(*row) for row in rows]
 
+#upvote seller review
     @staticmethod
     def upvote_review(seller_id, uid):
         app.db.execute('''
@@ -31,6 +39,7 @@ ORDER BY votes DESC, time_commented DESC
     ''',  
                                uid = uid, seller_id = seller_id)
 
+#downvote seller review
     @staticmethod
     def downvote_review(seller_id, uid):
         app.db.execute('''
@@ -41,7 +50,7 @@ ORDER BY votes DESC, time_commented DESC
     ''',  
                                uid = uid, seller_id = seller_id)
 
-
+#upvote comment on seller review
     @staticmethod
     def upvote_comment(seller_id, uid, rid):
         app.db.execute('''
@@ -52,6 +61,7 @@ ORDER BY votes DESC, time_commented DESC
     ''',  
                                uid = uid, seller_id = seller_id, rid = rid)
 
+#downvote comment on seller review
     @staticmethod
     def downvote_comment(seller_id, uid, rid):
         app.db.execute('''
@@ -62,13 +72,13 @@ ORDER BY votes DESC, time_commented DESC
     ''',  
                                uid = uid, seller_id = seller_id, rid = rid)
 
-
+#add comment to seller review
     @staticmethod
     def addcomment(rid, uid, seller_id, time_reviewed, comments, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the seller_id: ' + str(seller_id), file = sys.stderr)
+            print('this is the time_commented: ' + str(time_commented), file=sys.stderr)
             print('this is the comment: ' + comments, file=sys.stderr)
 
             rows = app.db.execute("""
@@ -82,21 +92,21 @@ RETURNING seller_id
                                   time_reviewed = time_reviewed,
                                   comments = comments,
                                   votes = votes)
-            #product_id = rows[0][0]
-            #print('this is the pid: ' + product_id, file = sys.stderr)
-            print('this worked!')
+
+            print('seller review comment added!')
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: seller review comment not added', file = sys.stderr)
             return None
 
+#edit comment on seller review
     @staticmethod
     def editcomment(rid, uid, seller_id, time_commented, comment, votes):
         try:
-        #     print('this is the email: ' + email, file=sys.stderr)
-        #     print('this is the password: ' + password, file=sys.stderr)
-        #     print('this is the firstname: ' + firstname, file=sys.stderr)
-            print('this is the comment: ' + comment, file=sys.stderr)
+            print('this is the uid: ' + str(uid), file=sys.stderr)
+            print('this is the seller_id: ' + str(seller_id), file = sys.stderr)
+            print('this is the time_commented: ' + str(time_commented), file=sys.stderr)
+            print('this is the comment: ' + comments, file=sys.stderr)
 
             rows = app.db.execute("""
 UPDATE SR_Comments
@@ -110,14 +120,14 @@ RETURNING seller_id
                                   time_commented = time_commented,
                                   comment = comment,
                                   votes = votes)
-            #product_id = rows[0][0]
-            #print('this is the pid: ' + product_id, file = sys.stderr)
-            print('this worked!')
+
+            print('seller review comment edited!')
             return True
         except Exception:
-            print('bad things happening', file = sys.stderr)
+            print('Error: seller review comment not edited', file = sys.stderr)
             return None
 
+#delete comment on seller review
     @staticmethod
     def delete_comment(seller_id, uid, rid):
         app.db.execute('''
@@ -128,6 +138,7 @@ RETURNING seller_id
     ''',  
                                uid = uid, seller_id = seller_id, rid = rid)
 
+#delete seller review
     @staticmethod
     def delete_review(seller_id, uid):
         app.db.execute('''

@@ -44,5 +44,69 @@
   </tbody>
 </table>
 
+<h2>Product Reviews Given</h2>
+<table class='table table-hover table-bordered table=sort container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Date</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Comments</th>
+      <th scope="col">Votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in productreviews%}
+      <tr>
+        <th scope="row">{{review.pid}}</th>
+        <td>{{review.time_reviewed}}</td>
+        <td>{{review.rating}}</td>
+        <td>{{review.comments}}</td>
+        <td>{{review.votes}}
+          <form action='/pr_comments/product{{review.pid}}/user{{review.uid}}' method="post">
+            <input type="submit" name="review_details" class = "btn btn-secondary" value="details" />
+          </form> 
+          {% if current_user.uid == review.uid %}
+            <form action='/editproductreview/product{{review.pid}}/reviewer{{review.uid}}' method="post">
+              <input type="submit" name="review_details" class = "btn btn-secondary" value="Edit" />
+            </form> 
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
+<h2>Seller Reviews Given</h2>
+<table class='table table-hover table-bordered table=sort container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Date</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Comments</th>
+      <th scope="col">Votes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in sellerreviews%}
+      <tr>
+        <th scope="row">{{review.seller_id}}</th>
+        <td>{{review.time_reviewed}}</td>
+        <td>{{review.rating}}</td>
+        <td>{{review.comments}}</td>
+        <td>{{review.votes}}
+          <form action='/sr_comments/seller{{review.seller_id}}/user{{review.uid}}' method="post">
+            <input type="submit" name="review_details" class = "btn btn-secondary" value="details" />
+          </form> 
+          {% if current_user.uid == review.uid %}
+            <form action='/editsellerreview/seller{{review.seller_id}}/reviewer{{review.uid}}' method="post">
+              <input type="submit" name="review_details" class = "btn btn-secondary" value="Edit" />
+            </form> 
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
