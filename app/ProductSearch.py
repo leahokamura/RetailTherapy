@@ -4,6 +4,7 @@ from flask_login import current_user
 from sqlalchemy.sql.elements import Null
 from sqlalchemy.sql.expression import null, true
 
+#import models
 from .models.product import Product
 
 from flask import Blueprint
@@ -11,6 +12,7 @@ from flask import Blueprint
 import sys
 bp = Blueprint('prodsearch', __name__)
 
+#executes product search by category
 @bp.route('/prodsearch/<category>', methods=['GET', 'POST'])
 def ProductSearch(category):
     print('this is the product category we are searching for', file=sys.stderr)
@@ -24,7 +26,7 @@ def ProductSearch(category):
                             sort_criteria = 'none',
                             filter_criteria = 'none')
 
-
+#executes product search by keyword
 @bp.route('/keywordsearch/<keywords>', methods=['GET', 'POST'])
 def ProductKeywordSearch(keywords):
     keywords_original = keywords
@@ -46,7 +48,7 @@ def ProductKeywordSearch(keywords):
                             sort_criteria = 'none',
                             filter_criteria = 'none')
 
-
+#executes sorting of search
 @bp.route('/search/<keywords>/sort/<sortCriteria>/filter/<filterCriteria>/categorySearch/<category_search>', methods=['GET', 'POST'])
 def Sorting(keywords, sortCriteria, filterCriteria, category_search):
     if (category_search == 'true'):
