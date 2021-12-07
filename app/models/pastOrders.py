@@ -40,3 +40,7 @@ class pastOrders:
     ''',  
                                uid = uid, oid=oid)
         return [row for row in rows] if rows is not None else None
+
+    @staticmethod
+    def get_status(uid):
+        

@@ -21,6 +21,9 @@ bp = Blueprint('pastOrderspage', __name__)
 @bp.route('/pastOrderspage', methods=['GET', 'POST'])
 def pastOrderspage():
     orders = pastOrders.get_orders(current_user.uid)
+    for order in orders:
+        products = get_orderedProducts(current_user.uid, order.oid)
+        fulfilled = pastOrder.get_status(products)
     # if orders[0][3] == False:
     #     status = "Not Fulfilled"
     # else:
