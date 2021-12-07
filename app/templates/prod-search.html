@@ -116,12 +116,12 @@
 
 <div style="text-align: center;">
   {% if number > 0 %}
-  <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search, number = (number-9) )}}"
+  <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria=filter_criteria, category_search=category_search, number = (number-9) )}}"
     type="button" class="btn btn-secondary">Previous</a>
   {% endif %}
 
   {% if total > number+9 %}
-  <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search, number = (number+9) )}}"
+  <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria=filter_criteria, category_search=category_search, number = (number+9) )}}"
     type="button" class="btn btn-secondary">Next</a>
   {% endif %}
 </div>
