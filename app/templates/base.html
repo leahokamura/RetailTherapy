@@ -106,6 +106,7 @@
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light2">LOG OUT</a>
           <a href="{{ url_for('profile.profile') }}" type="button" class="btn btn-light2">MY PROFILE</a>
           <a href="{{ url_for('cart.cart') }}" type="button" class="btn btn-light2">CART</a>
+          <a href="{{ url_for('pastOrderspage.pastOrderspage') }}" type="button" class="btn btn-light2">ORDERS</a>
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light2">LOG IN or REGISTER</a>
         {% endif %} 

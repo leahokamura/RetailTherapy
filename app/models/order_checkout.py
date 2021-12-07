@@ -14,7 +14,7 @@ class Order:
         self.total_price = total_price
         self.fulfilled = fulfilled
         self.time_purchased = time_purchased 
-        self.oid = self.pid 
+        self.oid = self.oid
         self.fulfillment_time = fulfillment_time
 
     def addToOrders(uid, total_price, time_purchased):
