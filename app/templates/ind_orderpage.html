@@ -33,7 +33,11 @@
             {% if item.fulfilled == true %}
             <th scope="row">Fulfilled</th>
             {% endif %}
-          <th scope="row">{{item.fulfillment_time}}</th>
+          {% if not item.fulfillment_time %}
+            <th scope="row">N/A</th>
+          {% else %}
+            <th scope="row">{{item.fulfillment_time}}</th>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>

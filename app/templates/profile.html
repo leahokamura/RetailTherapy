@@ -9,7 +9,9 @@
     <h4>User ID: {{current_user.uid}}</h4>
     <h4>Email: {{current_user.email}}</h4>
     <h4>Name: {{current_user.firstname + " " + current_user.lastname}}</h4>
-    <h4>Address: {{current_user.address}}</h4>
+    {% if current_user.address %}
+      <h4>Address: {{current_user.address}}</h4>
+    {% endif %}
     <h4>Password: ********</h4>
     <h4>Balance: {{current_balance}} <a href="{{ url_for('users.updateBalance') }}" type="button" class="btn btn-light">ADD or WITHDRAW</a> </h4>
     <a href="{{ url_for('users.update') }}" type="button" class="btn btn-dark">Update Profile</a>
