@@ -1,21 +1,74 @@
+from os import name
 from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
+import random
 
-num_users = 100
+# num_users = 110
+num_users = 10
 num_products = 2000
 num_purchases = 2500
-num_sellers = 100
-num_accounts = num_users + num_sellers
+num_sellers = 4
+num_accounts = 5
 num_categories = 20
-num_carts = 3000
-num_reviews = 2500
+num_carts = 6
 
 images = [
-    "http://placehold.it/120x120&text=image1",
-    "http://placehold.it/120x120&text=image2",
-    "http://placehold.it/120x120&text=image3",
-    "http://placehold.it/120x120&text=image4",
+    "https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c=s1200",
+    "https://ih1.redbubble.net/image.482432505.2782/fposter,small,wall_texture,product,750x1000.jpg",
+    "https://www.history.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTU3ODc4NTk4NjgxNjM0NTI3/hith-art-heists-scream-2.jpg",
+    "https://art.art/wp-content/uploads/2021/09/fatcat_art.jpg",
+    "https://pyxis.nymag.com/v1/imgs/a59/90b/ed419e06a1d46f317e4bb4f26c1f0ec78b-tshirt-ODE.rsquare.w1200.jpg",
+    "https://m.media-amazon.com/images/I/71GxclaDNsL._AC_UX342_.jpg",
+    "https://imgs.michaels.com/MAM/assets/1/726D45CA1C364650A39CD1B336F03305/img/91F89859AE004153A24E7852F8666F0F/10093625_r.jpg?fit=inside|540:540",
+    "https://m.media-amazon.com/images/I/61fiCzz6rdL._AC_UY445_.jpg",
+    "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gray-sweats-1631821743.jpg?crop=1.00xw:1.00xh;0,0&resize=1200:*",
+    "https://images.boardriders.com/global/billabong-products/all/default/hi-res/m302vbap_billabong,f_nvy_frt1.jpg",
+    "https://m.media-amazon.com/images/I/61BsCX+8nIL._AC_UX385_.jpg",
+    "https://m.media-amazon.com/images/I/51JISPYJlwL._AC_UX385_.jpg",
+    "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6428/6428998_sd.jpg",
+    "https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format",
+    "https://i5.walmartimages.com/asr/ae9df631-3f57-4293-9c0c-be0f758e378a.bcd827b9231c9321f0d49a7d9b00121c.jpeg",
+    "https://i5.walmartimages.com/asr/bb3c4eb0-0ada-4cef-8b5f-97a11fa7ef0f.2d3805e39285bde9b9884e68e76e3608.jpeg",
+    "https://i.pinimg.com/474x/83/9a/08/839a0809148a30d5ac5a835dd90cb79f.jpg",
+    "https://i.insider.com/5c799c56eb3ce834ad57b632?width=750&format=jpeg&auto=webp",
+    "https://i.pinimg.com/originals/5b/b4/8b/5bb48b07fa6e3840bb3afa2bc821b882.jpg",
+    "https://i.pinimg.com/736x/7a/15/52/7a155238ab97bf76ef1509f4a55242de.jpg",
+    "https://www.simplyrecipes.com/thmb/8caxM88NgxZjz-T2aeRW3xjhzBg=/2000x1125/smart/filters:no_upscale()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2019__09__easy-pepperoni-pizza-lead-3-8f256746d649404baa36a44d271329bc.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
+    "https://www.glutenfreepalate.com/wp-content/uploads/2018/08/Gluten-Free-Pizza-3.2-480x360.jpg",
+    "https://hips.hearstapps.com/hmg-prod/images/delish-bucatinipasta-028-ls-1607552701.jpg",
+    "https://www.budgetbytes.com/wp-content/uploads/2013/07/Creamy-Spinach-Tomato-Pasta-bowl.jpg",
+    "https://www.seriouseats.com/thmb/GSqpVkulyUZu-D6sPijmbFV_f4s=/1500x1125/filters:fill(auto,1)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2020__03__20200224-carretteira-pasta-vicky-wasik-21-ffe68515b25f4b348cbde845a59d6a62.jpg",
+    "https://s23209.pcdn.co/wp-content/uploads/2013/10/IMG_4012edit1.jpg",
+    "https://therecipecritic.com/wp-content/uploads/2019/07/easy_fried_rice-1-500x500.jpg",
+    "https://images.japancentre.com/recipes/pics/18/main/makisushi.jpg?1557308201",
+    "https://media.cntraveler.com/photos/603fc7a599ab9b035e060f47/7:10/w_1260,h_1800,c_limit/OutdoorBrands-EddieBauer-2021-1.jpg",
+    "https://images.unsplash.com/photo-1543039625-14cbd3802e7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8b3V0ZG9vcnxlbnwwfHwwfHw%3D&w=1000&q=80",
+    "https://www.csun.edu/sites/default/files/AS-Earth_Month-Outdoor_Online.jpg",
+    "https://www.roanoke.edu/images/campusrec/McAfee_Olivia.jpg",
+    "https://images.squarespace-cdn.com/content/v1/5a5d344cb7411c8b282df032/1626121126360-VTU3UMXBLVKG0KJ1V4OK/unsplash-image-ITi2yqiwtBM.jpg?format=2500w",
+    "https://www.rd.com/wp-content/uploads/2021/03/GettyImages-1133605325-scaled-e1617227898456.jpg",
+    "https://www.akc.org/wp-content/uploads/2017/11/Labrador-Retriever-MP-500x486.jpg",
+    "https://static.stacker.com/s3fs-public/2020-03/English%20Lab%20Puppy%20%281%29.png",
+    "https://americanpetsalive.org/uploads/blog/Healthy-Kittens.jpg",
+    "https://spca.bc.ca/wp-content/uploads/news-kittens.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/4/40/Heyward_lines_into_double_play_%2828356212176%29.jpg"
+]
+
+categories = [
+    "art",
+"books",
+"clothing",
+"drink",
+"electronics",
+"entertainment",
+"food",
+"home",
+"outdoor",
+"pets",
+"sports",
+"other",
 ]
 
 Faker.seed(0)
@@ -88,8 +141,9 @@ def gen_product_categories(num_categories):
         print(f'{num_categories} generated')
     return
 
-#Products(pid, name, price, available, img)
+#Products(pid, name, price, available, img, description, category)
 def gen_products(num_products):
+    available_names = []
     available_pids = []
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
@@ -98,14 +152,17 @@ def gen_products(num_products):
             if pid % 100 == 0:
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=4)[:-1]
+            available_names.append(name)
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            img = fake.random_element(images)
             available = fake.random_element(elements=('true', 'false'))
+            img = fake.random_element(images)
+            description = fake.sentence(nb_words=15)[:-1]
+            category = fake.random_element(categories)
             if available == 'true':
                 available_pids.append(pid)
-            writer.writerow([pid, name, price, available, img])
+            writer.writerow([int(pid), name, price, available, img, description, category])
         print(f'{num_products} generated; {len(available_pids)} available')
-    return available_pids
+    return (available_pids, available_names)
 
 
 # NEED TO FIX GENERATED DATA!!!
@@ -123,7 +180,7 @@ def gen_cart(num_carts):
     return
 
 #InCart(cid, p_quantity, unit_price, total_price, pid, uid)
-def gen_in_cart(num_carts):
+def gen_in_cart(num_carts, names):
     with open('InCart.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('In Cart...', end=' ', flush=True)
@@ -132,13 +189,14 @@ def gen_in_cart(num_carts):
                 print(f'{cid}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_int(min=0, max=num_products-1)
+            # = fake.sentence(nb_words=4)[:-1]
+            name = random.choice(names)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity))*float(unit_price))
-            writer.writerow([cid, p_quantity, unit_price, total_price, pid, uid])
+            seller_id = fake.random_int(min=0, max=num_sellers-1)
+            writer.writerow([uid, pid, name, p_quantity, unit_price, seller_id])
         print(f'{num_purchases} generated')
     return
-
 
 #SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 def gen_save_for_later(num_carts, num_products):
@@ -166,11 +224,13 @@ def gen_orders(num_purchases, num_carts):
             if cid % 100 == 0:
                 print(f'{cid}', end=' ', flush=True)
             oid = fake.random_int(min=0, max=num_purchases-1)
+            uid = fake.random_int(min=0, max=num_users-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
             order_totalPrice = str((int(p_quantity))*float(unit_price))
             fulfilled = fake.random_element(elements=('true', 'false'))
-            writer.writerow([cid, oid, order_totalPrice, fulfilled])
+            time_purchased = fake.date_time()
+            writer.writerow([oid, uid, order_totalPrice, fulfilled, time_purchased])
         print(f'{num_purchases} generated')
     return
 
@@ -267,7 +327,7 @@ def gen_seller_reviews(num_sellers):
             if uid % 10 == 0:
                 print(f'{uid}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            seller_id = fake.random_int(max=num_sellers)
+            seller_id = fake.random_int(max=num_sellers-1)
             time = fake.date_time()
             rating = fake.random_int(min=0, max=5)
             comments = fake.sentence(nb_words=20)[:-1]
@@ -331,11 +391,11 @@ gen_users(num_users)
 gen_account(num_accounts)
 gen_purchases(num_purchases)
 
-gen_product_categories(num_categories)
-available_pids = gen_products(num_products)
+# gen_product_categories(num_categories)
+available_pids, available_name = gen_products(num_products)
 
 gen_cart(num_carts)
-gen_in_cart(num_carts)
+gen_in_cart(num_carts, available_name)
 gen_save_for_later(num_carts, num_products)
 gen_orders(num_purchases, num_carts)
 
