@@ -78,7 +78,7 @@ def additem():
 
 class AddToInventoryForm(FlaskForm):
     productname = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = DecimalField(_l('Price'), validators=[DataRequired()]) # add: places = 2
+    price = DecimalField(_l('Price'), validators=[DataRequired()])
     quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
     description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
     image = StringField(_l('Image URL'), validators=[DataRequired()])
@@ -100,7 +100,7 @@ def edititem(pid, pname):
 
 class EditInventoryForm(FlaskForm):
     productname = StringField(_l('Product Name'), validators=[DataRequired()])
-    price = DecimalField(_l('Price'), validators=[DataRequired()]) # add: places = 2
+    price = DecimalField(_l('Price'), validators=[DataRequired()])
     quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
     description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
     image = StringField(_l('Image URL'), validators=[DataRequired()])
