@@ -29,10 +29,10 @@ class Order:
         rows = app.db.execute('''
     INSERT INTO Orders(oid, uid, total_price, fulfilled, time_purchased)
     VALUES (:oid, :uid, :total_price, FALSE, :time_purchased)
-    RETURNING *;
+    RETURNING oid;
     ''',  
                                uid = uid, total_price = total_price, time_purchased = time_purchased, oid = oid)
-        print(rows)
+        return rows[0][0]
     
     @staticmethod
     def get_balance(uid):
@@ -143,3 +143,28 @@ class Order:
                                 uid = uid, 
                                 pid = pid)
         print("items deleted from cart")
+
+
+    @staticmethod
+    def addToOrderedItems(cart_items, uid, oid):
+        for item in cart_items:
+            uid = item.uid
+            pid = item.pid
+            name = item.name
+            quantity = int(item.p_quantity)
+            price = float(item.unit_price)
+            seller_id = item.seller_id
+
+    #OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
+
+            rows = app.db.execute('''
+    INSERT INTO OrderedItems 
+    VALUES (:uid, :oid, :pid, :unit_price, :quantity, FALSE, NULL)
+    RETURNING *;
+    ''',  
+                               uid = uid, 
+                               oid = oid, 
+                               pid = pid,
+                               unit_price = price,
+                               quantity = quantity)
+            print(rows[0])
