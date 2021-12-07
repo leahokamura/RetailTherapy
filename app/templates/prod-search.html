@@ -15,27 +15,28 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <!-- <li><a class="dropdown-item" href="#" onclick="sortByPriceLow('products')">Price: Low to High</a></li> -->
-    <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='high', filterCriteria=filter_criteria, category_search=category_search) }}">
-      Price: High to Low</a>
+    <li><a class="dropdown-item"
+        href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria='high', filterCriteria=filter_criteria, category_search=category_search) }}">
+        Price: High to Low</a>
     </li>
-    <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='low', filterCriteria=filter_criteria, category_search=category_search) }}">
-      Price: Low to High</a>
+    <li><a class="dropdown-item"
+        href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria='low', filterCriteria=filter_criteria, category_search=category_search) }}">
+        Price: Low to High</a>
     </li>
-    <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='high_rating', filterCriteria=filter_criteria, category_search=category_search) }}">
-      Rating: High to Low</a>
+    <li><a class="dropdown-item"
+        href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria='high_rating', filterCriteria=filter_criteria, category_search=category_search) }}">
+        Rating: High to Low</a>
     </li>
-    <li><a class="dropdown-item" 
-      href="{{ url_for('prodsearch.Sorting', keywords=category, sortCriteria='low_rating', filterCriteria=filter_criteria, category_search=category_search) }}">
-      Rating: Low to High</a>
+    <li><a class="dropdown-item"
+        href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria='low_rating', filterCriteria=filter_criteria, category_search=category_search) }}">
+        Rating: Low to High</a>
     </li>
   </ul>
 </div>
 
 
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+  aria-controls="offcanvasExample">
   Filter by...
 </button>
 
@@ -48,71 +49,72 @@
     <div>
       <h4>Price</h4>
     </div>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='under25', category_search=category_search) }}"
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='under25', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">Under $25</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='25to50', category_search=category_search) }}"
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='25to50', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">$25 to $50</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='50to100', category_search=category_search) }}"
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='50to100', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">$50 to $100</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='100to200', category_search=category_search) }}"
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='100to200', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">$100 to $200</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='200&Up', category_search=category_search) }}"
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='200&Up', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">$200 & Above</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search) }}"
-      type="button" class="btn btn-outline-secondary">Any Price</a>  
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search) }}"
+      type="button" class="btn btn-outline-secondary">Any Price</a>
     <br><br>
     <div>
       <h4>Rating</h4>
     </div>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='4&Up', category_search=category_search) }}" 
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='4&Up', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">4 <i class="bi bi-star"></i> & Up</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='3&Up', category_search=category_search) }}" 
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='3&Up', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">3 <i class="bi bi-star"></i> & Up</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='2&Up', category_search=category_search) }}" 
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='2&Up', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">2 <i class="bi bi-star"></i> & Up</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='1&Up', category_search=category_search) }}" 
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='1&Up', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">1 <i class="bi bi-star"></i> & Up</a>
-    <a href="{{ url_for('prodsearch.Filtering', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search) }}" 
+    <a href="{{ url_for('prodsearch.FilterSort', keywords=category, sortCriteria=sort_criteria, filterCriteria='none', category_search=category_search) }}"
       type="button" class="btn btn-outline-secondary">Any <i class="bi bi-star"></i></a>
     <br><br>
-    <div>
-      <h4>Available - in progress</h4>
-    </div>
-    <a href="{{ url_for('index.index') }}" type="button" class="btn btn-outline-secondary">All Products</a>
-    <a href="{{ url_for('index.index') }}" type="button" class="btn btn-outline-secondary">Available Only</a>
   </div>
 </div>
 
 <div class="album py-5 bg-light">
-    <div class="container">
-      <div class="row">
-        {% for product in products%}
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow h-100">
-            <img class="card-img-top" src="{{product.image}}" alt="Card image cap" style="max-width: 24rem; max-height: 21rem;">
-            <div class="card-body">
-              <h5 class="card-title">{{product.name}}</h5>
-              <p class="card-text">Price: {{product.price}}</p>
-              <p class="card-text">Rating: {{product.rating}}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}" class="btn btn-sm btn-outline-secondary" >View</a>
-                  <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
-                  {% if current_user.is_authenticated %}
-                
-                <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST"> 
+  <div class="container">
+    <div class="row">
+      {% for product in products%}
+      <div class="col-md-4">
+        <div class="card mb-4 box-shadow h-100">
+          <img class="card-img-top" src="{{product.image}}" alt="Card image cap"
+            style="max-width: 24rem; max-height: 21rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{product.name}}</h5>
+            <p class="card-text">Price: {{product.price}}</p>
+            <p class="card-text">Rating: {{product.rating}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}"
+                  class="btn btn-sm btn-outline-secondary">View</a>
+                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
+                {% if current_user.is_authenticated %}
+
+                <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
-                </form> 
+                </form>
                 {% endif %}
-                </div>
               </div>
             </div>
           </div>
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
   </div>
+</div>
+
+
+
+
 {% endif %}
 
 {% endblock %}
