@@ -1,10 +1,5 @@
-1,joey@example.com,Joey,Shmoey,123 Rocky Road Durham NC,test
-2,sally@example.com,Sally,Smith,800 Pasta Lane Denver CO,test
-3,suzie@example.com,Suzie,Jones,4 Seasons Drive Boston MA,test
-4,gina@example.com,Gina,Shmoey,123 Rocky Road Durham NC,test
-5,doug@example.com,Doug,Williams,20 Slippery Ave New York NY,test
-6,lucas@example.com,Lucas,Lynn,120 Science Dr. Durham, NC 27710,test
-7,jonathan@example.com,Jonathan,Browning,120 Science Dr. Durham, NC 27710,test
-8,piper@example.com,Piper,Hampsch,120 Science Dr. Durham, NC 27710,test
-9,connor@example.com,Connor,Murphy,120 Science Dr. Durham, NC 27710,test
-10,leah@example.com,Leah,Okamura,120 Science Dr. Durham, NC 27710,test
+1,icecream@tastes.good,Joey,Shmoey,123 Rocky Road Durham NC,pbkdf2:sha256:150000$vosHYmJz$01097908c48462ad54ad65bc8192fce1a7933182926f01fb3258a1bfa665f57c
+2,macaroni@and.cheese,Sally,Smith,800 Pasta Lane Denver CO,password456
+3,salt@and.pepper,Suzie,Jones,4 Seasons Drive Boston MA,password789
+4,helloworld@good.bye,Gina,Smiles,123 Rocky Road Durham NC,notpassword123
+5,email@sample.com,Doug,Williams,20 Slippery Ave New York NY,notpassword456
