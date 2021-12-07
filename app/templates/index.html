@@ -42,10 +42,8 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     {% for category in categories%}
-    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category=category) }}">{{category}}</a>
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category=category, number=0) }}">{{category}}</a>
     </li>
-    <!-- <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='drink') }}">Drink</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='art') }}">Art</a></li> -->
     {% endfor %}
   </ul>
 </div>
@@ -125,7 +123,7 @@
   function searchByKeyword() {
     let keyword = document.getElementById("keyword-search-input").value;
     console.log('this is the keyword ', keyword);
-    window.location.href = "{{ url_for('prodsearch.ProductKeywordSearch', keywords='REPLACE') }}".replace("REPLACE", keyword);
+    window.location.href = "{{ url_for('prodsearch.ProductKeywordSearch', keywords='REPLACE', number=0) }}".replace("REPLACE", keyword);
   }
 </script>
 
