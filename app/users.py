@@ -131,7 +131,7 @@ def updateBalance():
         if form.validate_on_submit():
             
             if Account.update_balance(current_user.uid, float(form.balance.data)):
-                flash('Congratulations, you have updated your balance!')
+                #flash('Congratulations, you have updated your balance!')
                 print('update worked')
                 print(form.balance.data)
                 x = Account.get_balance(current_user.uid)
