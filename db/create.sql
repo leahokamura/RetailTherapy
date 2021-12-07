@@ -17,6 +17,11 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL
 );
 
+--Affirm(uid, affirmation)
+CREATE TABLE Affirm (
+    affirmation VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
 --Account(uid, balance)
 CREATE TABLE Account (
     uid INT NOT NULL PRIMARY KEY REFERENCES Users(uid),

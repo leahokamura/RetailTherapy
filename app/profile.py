@@ -42,12 +42,6 @@ def public():
     # render the page by adding information to the public.html file
     return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
-@bp.route('/affirmations', methods=['GET', 'POST'])
-def affirmations():
-    # get profile info
-    profile_info = User.get_profile(current_user.uid)
-    # render the page by adding information to the affirmations.html file
-    return render_template('affirmations.html', current_user = profile_info)
 
 @bp.route('/seller')
 def seller():

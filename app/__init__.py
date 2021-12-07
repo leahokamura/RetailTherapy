@@ -72,4 +72,7 @@ def create_app():
     from .pastOrderspage import bp as pop_bp
     app.register_blueprint(pop_bp)
 
+    from .affirmations import bp as affirm_bp
+    app.register_blueprint(affirm_bp)
+
     return app
