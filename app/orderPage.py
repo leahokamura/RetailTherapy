@@ -44,6 +44,7 @@ def orderPage():
         return render_template(('cart.html'), message = message, items=cart_items, total = cart_total)
 
     oid = Order.addToOrders(current_user.uid, cart_total, default_time)
+    print("oid:", oid)
     Order.addToSellerOrders(current_user.uid, oid, cart_items)
 
     Order.update_stock(cart_items)

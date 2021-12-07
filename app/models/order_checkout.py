@@ -35,7 +35,7 @@ class Order:
         return rows[0][0]
 
     def addToSellerOrders(uid, oid, cart_items):
-        sellers = [item.seller_id for item in cart_items]
+        sellers = set([item.seller_id for item in cart_items])
         rows = []
         for seller in sellers:
             rows = app.db.execute(
