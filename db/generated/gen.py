@@ -145,6 +145,7 @@ def gen_product_categories(num_categories):
 def gen_products(num_products):
     available_names = []
     available_pids = []
+    available_prices = []
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
@@ -154,6 +155,7 @@ def gen_products(num_products):
             name = fake.sentence(nb_words=4)[:-1]
             available_names.append(name)
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            available_prices.append(price)
             available = fake.random_element(elements=('true', 'false'))
             img = fake.random_element(images)
             description = fake.sentence(nb_words=15)[:-1]
@@ -162,7 +164,7 @@ def gen_products(num_products):
                 available_pids.append(pid)
             writer.writerow([int(pid), name, price, available, img, description, category])
         print(f'{num_products} generated; {len(available_pids)} available')
-    return (available_pids, available_names)
+    return (available_pids, available_names, available_prices)
 
 
 # NEED TO FIX GENERATED DATA!!!
@@ -217,6 +219,7 @@ def gen_save_for_later(num_carts, num_products):
 
 #Orders(cid, oid, order_totalPrice, fulfilled)
 def gen_orders(num_purchases, num_carts):
+    available_oid = []
     with open('Orders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
@@ -224,16 +227,39 @@ def gen_orders(num_purchases, num_carts):
             if cid % 100 == 0:
                 print(f'{cid}', end=' ', flush=True)
             oid = fake.random_int(min=0, max=num_purchases-1)
+            available_oid.append(oid)
             uid = fake.random_int(min=0, max=num_users-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
+            available_prices.append(unit_price)
             order_totalPrice = str((int(p_quantity))*float(unit_price))
             fulfilled = fake.random_element(elements=('true', 'false'))
             time_purchased = fake.date_time()
             writer.writerow([oid, uid, order_totalPrice, fulfilled, time_purchased])
         print(f'{num_purchases} generated')
-    return
+    return available_oid
 
+#OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
+def gen_orderered_items(num_purchases, available_pids, available_prices, available_oids):
+    with open('OrderedItems.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Orderered Items...', end=' ', flush=True)
+        for cid in range(num_carts):
+            if cid % 100 == 0:
+                print(f'{cid}', end=' ', flush=True)
+            
+            oid = random.choice(available_oids)
+            uid = fake.random_int(min=0, max=num_users-1)
+            idx = random.randrange(len(available_pids))
+            pid = available_pids[idx]
+            unit_price = available_prices[idx]
+            p_quantity = f'{str(fake.random_int(max=100))}'
+            unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
+            fulfilled = fake.random_element(elements=('true', 'false'))
+            fulfillment_time = fake.date_time()
+            writer.writerow([oid, uid, unit_price, p_quantity, fulfilled, fulfillment_time])
+        print(f'{num_purchases} generated')
+    return
 
 #Sellers(uid)
 def gen_sellers(num_sellers):
@@ -392,12 +418,13 @@ gen_account(num_accounts)
 gen_purchases(num_purchases)
 
 # gen_product_categories(num_categories)
-available_pids, available_name = gen_products(num_products)
+available_pids, available_name, available_prices = gen_products(num_products)
 
 gen_cart(num_carts)
 gen_in_cart(num_carts, available_name)
 gen_save_for_later(num_carts, num_products)
-gen_orders(num_purchases, num_carts)
+available_oids = gen_orders(num_purchases, num_carts)
+gen_orderered_items(num_purchases, available_pids, available_prices, available_oids)
 
 gen_sellers(num_sellers)
 gen_inventory(num_sellers)

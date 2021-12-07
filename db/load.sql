@@ -15,3 +15,4 @@ SELECT pg_catalog.setval('public.users_uid_seq',
 \COPY OrderedItems FROM 'generated/OrderedItems.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY Seller_Reviews FROM 'generated/Seller_Reviews.csv' WITH DELIMITER ',' NULL '' CSV
 \COPY PR_Comments FROM 'generated/PR_Comments.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY SR_Comments FROM 'generated/SR_Comments.csv' WITH DELIMITER ',' NULL '' CSV
