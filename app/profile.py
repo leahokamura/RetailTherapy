@@ -84,9 +84,10 @@ class AddToInventoryForm(FlaskForm):
     category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
     submit = SubmitField(_l('Add to Inventory'))
 
-@bp.route('/seller/edititem-<pid>', methods=['GET', 'POST'])
-def edititem(pid):
+@bp.route('/seller/edititem-<pid>-<pname>', methods=['GET', 'POST'])
+def edititem(pid, pname):
     form = EditInventoryForm()
+    form.productname.data = pname
     if form.validate_on_submit():
         print('made it this far')
         if Seller.edit_in_inventory(pid, form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
