@@ -13,20 +13,26 @@
       <tr>
         <th scope="col">Order ID</th>
         <th scope="col">Date Ordered</th>
-        <th scope="col">Fulfilled?</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>
       {% for order in orders %}
         <tr>
             <th scope="row">{{order.oid}}
-                <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
+                <form action="{{url_for('ind_orderPage.ind_orderPage', oid = order.oid)}}" method="POST">  
                     <input type="submit" value="Details"> 
                     </form>
             </th>
 
             <th scope="row">{{order.time_purchased}}</th>
-            <th scope="row">{{order.fulfilled}}</th>
+            {% if order.fulfilled == false %}
+            <th scope="row">Not Fulfilled</th>
+            {% endif %}
+
+            {% if order.fulfilled == true %}
+            <th scope="row">Fulfilled</th>
+            {% endif %}
         </tr>
       {% endfor %}
     </tbody>

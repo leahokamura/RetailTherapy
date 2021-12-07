@@ -72,4 +72,7 @@ def create_app():
     from .pastOrderspage import bp as pop_bp
     app.register_blueprint(pop_bp)
 
+    from .ind_orderPage import bp as iop_bp
+    app.register_blueprint(iop_bp)
+    
     return app
