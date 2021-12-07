@@ -13,19 +13,27 @@ from flask import Blueprint
 import sys
 bp = Blueprint('oneproduct', __name__)
 
-#routes to individual product page
+# routes to individual product page
 @bp.route('/oneproduct/<int:product_number>', methods=['GET', 'POST'])
 def OneProducts(product_number):
-    print("this is the product number", product_number, file=sys.stderr)
-    print(product_number, file=sys.stderr)
+    # print("this is the product number", product_number, file=sys.stderr)
+    # print(product_number, file=sys.stderr)
+    
+    # get product info and product rating
     p_info = Product.get(product_number)
     p_rating = ProductReview.get_just_rating(product_number)
-    print("this is the product rating ", file=sys.stderr)
-    print(p_rating, file=sys.stderr)
-    print(p_info, file=sys.stderr)
+    
+    # print("this is the product rating ", file=sys.stderr)
+    # print(p_rating, file=sys.stderr)
+    # print(p_info, file=sys.stderr)
+    
     PR_check = True
+    
+    # check to see if user has already given product a review
     if current_user.is_authenticated:
         PR_check = ProductReview.review_check(product_number, current_user.uid)
+    
+    # return template and pertinent variables
     return render_template('ind-product-page.html',
                             productinfo = p_info,
                             product_rating = p_rating,
