@@ -38,6 +38,7 @@ def orderPage():
         return redirect(url_for('cart.cart'))
 
     oid = Order.addToOrders(current_user.uid, cart_total, default_time)
+    Order.addToSellerOrders(current_user.uid, oid, cart_items)
 
     Order.update_stock(cart_items)
     Order.update_balances(cart_items, current_user.uid, cart_total)

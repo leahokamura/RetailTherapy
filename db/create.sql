@@ -68,13 +68,6 @@ CREATE TABLE Inventory (
     in_stock INT NOT NULL
 );
 
---SellerOrders(seller_id, order_id, uid)
-CREATE TABLE SellerOrders (
-	seller_id INT NOT NULL REFERENCES Sellers(uid),
-	order_id INT NOT NULL REFERENCES Orders(oid) PRIMARY KEY,
-	uid INT NOT NULL REFERENCES Users(uid)
-);
-
 --CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --InCart(uid, pid, name, p_quantity, unit_price, seller_id)
@@ -107,6 +100,14 @@ CREATE TABLE Orders (
     fulfilled BOOLEAN DEFAULT FALSE,
     time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     PRIMARY KEY(oid, uid)
+);
+
+--SellerOrders(seller_id, order_id, uid)
+CREATE TABLE SellerOrders (
+	seller_id INT NOT NULL REFERENCES Sellers(uid),
+	order_id INT NOT NULL REFERENCES Orders(oid),
+	uid INT NOT NULL REFERENCES Users(uid),
+    PRIMARY KEY(seller_id, order_id)
 );
 
 --OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)

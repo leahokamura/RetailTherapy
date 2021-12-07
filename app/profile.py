@@ -52,7 +52,8 @@ def seller():
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
     seller = Seller.get_seller_info(current_user.uid)
-    return render_template('seller.html', slr=seller, inv=products)
+    orders = Seller.get_seller_orders(current_user.uid)
+    return render_template('seller.html', slr=seller, inv=products, ords=orders)
 
 @bp.route('/seller/sort<sort_category>')
 def sellersorted(sort_category=0):

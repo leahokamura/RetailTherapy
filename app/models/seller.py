@@ -18,7 +18,6 @@ class Seller:
         FROM Inventory, Products
         WHERE seller_id = :uid AND Inventory.pid = Products.pid
         """, uid=uid)
-        print("here:", [row for row in rows])
 
         return [row for row in rows]
 
@@ -31,6 +30,23 @@ class Seller:
         """, uid=uid)
 
         return (rows[0]) if rows else None
+    
+    @staticmethod
+    def get_seller_orders(uid):
+        rows = app.db.execute("""
+        SELECT  Orders.oid AS oid,
+                OrderedItems.pid AS pid,
+                Users.address AS shipping_address,
+                Orders.time_purchased AS purchase_date,
+                Orders.fulfilled AS status
+        FROM Orders, SellerOrders, Users, OrderedItems
+        WHERE SellerOrders.seller_id=:uid
+                AND Orders.oid=OrderedItems.oid
+                ANd SellerOrders.order_id=Orders.oid
+                AND Orders.uid=Users.uid
+                AND pid IN (SELECT Inventory.pid FROM Inventory WHERE Inventory.seller_id=:uid )
+        """, uid=uid)
+        return [row for row in rows]
 
     @staticmethod
     def add_to_inventory(productname, price, quantity, description, image, category):
