@@ -42,3 +42,104 @@ class Order:
             )
         user_balance = float(rows[0][0])
         return user_balance
+
+    @staticmethod
+    def inventory_check(cart_items):
+
+        for item in cart_items:
+            uid = item.uid
+            pid = item.pid
+            name = item.name
+            quantity = int(item.p_quantity)
+            price = float(item.unit_price)
+            seller_id = item.seller_id
+
+         #Inventory(seller_id, pid, in_stock)
+            rows = app.db.execute('''
+    SELECT in_stock
+    FROM Inventory
+    WHERE pid = :pid AND seller_id = :seller_id''',
+                    pid = pid, seller_id = seller_id)
+
+            num_stock = int(rows[0][0])
+
+            if quantity > num_stock:
+                return False
+
+    @staticmethod
+    def update_stock(cart_items):
+
+        for item in cart_items:
+            uid = item.uid
+            pid = item.pid
+            name = item.name
+            quantity = int(item.p_quantity)
+            price = float(item.unit_price)
+            seller_id = item.seller_id
+
+            rows = app.db.execute('''
+    UPDATE Inventory
+    SET in_stock = in_stock - :quantity
+    WHERE pid = :pid AND seller_id = :seller_id
+    RETURNING *
+                    ''',
+                                        pid = pid,
+                                        seller_id = seller_id,
+                                        quantity = quantity
+                )
+            print("inventory updated ", name)
+
+    @staticmethod
+    def update_balances(cart_items, uid, cart_total):
+        for item in cart_items:
+            uid = item.uid
+            pid = item.pid
+            name = item.name
+            quantity = int(item.p_quantity)
+            price = float(item.unit_price)
+            seller_id = item.seller_id
+
+            total_price = quantity*price
+        
+            #Account(uid, balance)
+            rows = app.db.execute('''
+    UPDATE Account
+    SET balance = balance + :total_price
+    WHERE uid = :seller_id
+    RETURNING balance
+                    ''',
+                                        seller_id = seller_id,
+                                        total_price = total_price)
+            print("seller balance updated:", rows[0][0])
+            
+    
+        rowsb = app.db.execute('''
+    UPDATE Account
+    SET balance = balance - :cart_total
+    WHERE uid = :uid
+    RETURNING balance
+                    ''',
+                                        uid = uid,
+                                        cart_total = cart_total)
+        print("buyer balance updated:", rowsb[0][0])
+
+
+    @staticmethod
+    def empty_cart(cart_items, uid):
+        for item in cart_items:
+            uid = item.uid
+            pid = item.pid
+            name = item.name
+            quantity = int(item.p_quantity)
+            price = float(item.unit_price)
+            seller_id = item.seller_id
+
+            app.db.execute('''
+    DELETE
+    FROM InCart
+    WHERE uid = :uid AND pid = :pid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                pid = pid)
+        print("items deleted from cart")
