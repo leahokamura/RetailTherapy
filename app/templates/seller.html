@@ -66,6 +66,38 @@
   </tbody>
 </table>
 <a href="{{ url_for('profile.additem') }}" type="button" class="btn btn-secondary">Add item to inventory</a>
+
+<h2>Your Orders:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Order ID</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Shipping Address</th>
+      <th scope="col">Date</th>
+      <th scope="col">Fulfilled?</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in ords %}
+      <tr>
+        <th scope="row">{{order.oid}}</th>
+        <th scope="row">{{order.pid}}</th>
+        <th scope="row">{{order.shipping_address}}</th>
+        <th scope="row">{{order.purchase_date}}</th>
+        <th scope="row">{{order.status}}</th>
+        {% if order.status %}
+        <th scope="row">Fulfilled!</th>
+        {% else %}
+        <th scope="row">
+          <a href="{{ url_for('index.index')}}" type="button" class="btn btn-primary">Mark fulfilled</a>
+        </th>
+        {% endif %}
+      </tr> 
+    {% endfor %}
+  </tbody>
+</table>
 {% else %}
 <p><a href="{{ url_for('users.login') }}">Log in</a> to view your seller page!</p>
 {% endif %}
