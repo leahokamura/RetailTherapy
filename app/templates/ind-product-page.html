@@ -5,7 +5,7 @@
 <br><br>
 
 <img src="{{productinfo.image}}" align="right" alt="{{productinfo.name}}">
-<a href="javascript:history.back(1)" type="button" class="btn btn-secondary">Return to Search</a>
+<a href="{{ url_for('index.index') }}" type="button" class="btn btn-secondary">Return to Products</a>
 <br><br>
 <h2>Product: {{productinfo.name}}</h2>
 <h3>Price: {{productinfo.price}}</h3>
