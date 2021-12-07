@@ -6,6 +6,7 @@ import sys
 
 import sqlalchemy
 
+# product class
 class Product:
     def __init__(self, pid, name, price, available, image, description, category):
         self.pid = pid
@@ -16,6 +17,7 @@ class Product:
         self.description = description
         self.category = category
 
+    # get product info using product id
     @staticmethod
     def get(pid):
         rows = app.db.execute('''
@@ -26,6 +28,7 @@ WHERE pid = :pid
                               pid=pid)
         return Product(*(rows[0])) if rows is not None else None
 
+    # get all available products
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
@@ -36,6 +39,7 @@ WHERE available = :available
                               available=available)
         return [Product(*row) for row in rows]
 
+    # get name of product using product id
     @staticmethod
     def get_name(pid):
         rows = app.db.execute('''
@@ -46,7 +50,7 @@ WHERE pid = :pid
                             pid=pid)
         return (rows[0]) if rows else None
 
-
+    # get the different categories that products may belong to
     @staticmethod
     def get_categories():
         rows = app.db.execute('''
@@ -54,10 +58,11 @@ SELECT DISTINCT category FROM products
 ''')
         return [(row[0]) for row in rows] if rows else None
 
-
+    # get products using category search
     @staticmethod
     def get_prod_by_cat(category, sortCriteria, filterCriteria, number):
         
+        # default descriptions for sorting and filtering
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
 
@@ -112,10 +117,11 @@ OFFSET :number
 category=category, number=number)
         return rows if rows else None
 
-
+    # get products using keyword search
     @staticmethod
     def get_by_keyword(words, sortCriteria, filterCriteria, number):
         
+        # default descriptions for sorting and filtering
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
 
@@ -170,12 +176,11 @@ OFFSET :number
 words = words, number=number)
         return rows if rows else None
 
-
-
-
+    # get total number of products for category search
     @staticmethod
     def get_total_prod_by_cat(category, sortCriteria, filterCriteria):
         
+        # default descriptions for sorting and filtering
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
 
@@ -220,13 +225,15 @@ WHERE Products.category = :category
 category=category)
         return len(rows)
 
-
+    # get total number of products for keyword search
     @staticmethod
     def get_total_by_keyword(words, sortCriteria, filterCriteria):
-        
+
+        # default descriptions for sorting and filtering
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
 
+        # all possible types of sorting
         if (sortCriteria == 'high'):
             sorting_descrip = '''price DESC'''
         if (sortCriteria == 'low'):
@@ -267,5 +274,3 @@ OR description LIKE ANY (:words)
 '''ORDER BY ''' + sorting_descrip,    
 words = words)
         return len(rows)
-
-        

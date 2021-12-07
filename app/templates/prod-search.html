@@ -95,7 +95,6 @@
               <div class="btn-group">
                 <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}"
                   class="btn btn-sm btn-outline-secondary">View</a>
-                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                 {% if current_user.is_authenticated %}
 
                 <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST">
@@ -127,17 +126,5 @@
 </div>
 
 {% endif %}
-
-{% endblock %}
-
-{% block javascript %}
-<script>
-
-  // function sortByPriceLow(products) {
-  //   for (i = 0; i < products.length; i++){
-  //     console.log("this is product ", product.name);
-  //   }
-  // }
-</script>
 
 {% endblock %}
