@@ -63,3 +63,49 @@ class Seller:
             print("Something went wrong")
             print(str(e))
 
+    @staticmethod
+    def edit_in_inventory(pid, productname, price, quantity, description, image, category):
+        print(pid, productname, price, quantity, description, image, category)
+        available = False
+        if quantity > 0:
+            available = True
+        sid = current_user.uid
+        try:
+            app.db.execute( # update Products
+                """
+                UPDATE Products
+                SET name=:productname, price=:price, available=:available, description=:description, image=:image, category=:category
+                WHERE pid = :pid
+                RETURNING pid
+                """, pid=pid, productname=productname, price=price, available=available, description=description, image=image, category=category)
+            app.db.execute( # update Inventory
+                """
+                UPDATE Inventory
+                SET in_stock=:quantity
+                WHERE pid=:pid
+                RETURNING pid
+                """, sid=sid, pid=pid, quantity=quantity
+            )
+            return 1
+        except Exception as e:
+                print("Something went wrong")
+                print(str(e))
+
+    @staticmethod
+    def delete_from_inventory(pid):
+        try:
+            app.db.execute(
+                """
+                DELETE FROM Products
+                WHERE pid = :pid
+                """, pid=pid
+            )
+            app.db.execute(
+                """
+                DELETE FROM Inventory
+                WHERE pid = :pid
+                """, pid=pid
+            )
+            return 1
+        except:
+            print("bad")

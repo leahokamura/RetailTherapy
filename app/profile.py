@@ -70,7 +70,7 @@ def additem():
     if form.validate_on_submit():
         print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
-            return redirect(url_for('profile.seller', sort_category=0))
+            return redirect(url_for('profile.seller'))
         else: 
             print('something hinky is going on')
     return render_template('additem.html', title='Add item', form=form)
@@ -83,3 +83,27 @@ class AddToInventoryForm(FlaskForm):
     image = StringField(_l('Image URL'), validators=[DataRequired()])
     category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
     submit = SubmitField(_l('Add to Inventory'))
+
+@bp.route('/seller/edititem-<pid>', methods=['GET', 'POST'])
+def edititem(pid):
+    form = EditInventoryForm()
+    if form.validate_on_submit():
+        print('made it this far')
+        if Seller.edit_in_inventory(pid, form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
+            return redirect(url_for('profile.seller'))
+        else: 
+            print('something hinky is going on')
+    return render_template('edititem.html', title='Edit item', form=form, pid=pid)
+
+class EditInventoryForm(FlaskForm):
+    productname = StringField(_l('Product Name'), validators=[DataRequired()])
+    price = DecimalField(_l('Price'), validators=[DataRequired()]) # add: places = 2
+    quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
+    description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
+    image = StringField(_l('Image URL'), validators=[DataRequired()])
+    category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
+    submit = SubmitField(_l('Save Changes'))
+
+@bp.route('/seller/deleteitem-<pid>-<pname>', methods=['GET', 'POST'])
+def deleteitem(pid, pname):
+    return render_template('deleteitem.html', pid=pid, pname=pname)
