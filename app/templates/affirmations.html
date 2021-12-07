@@ -7,9 +7,16 @@
 <div class="special">
   <h2>Affirmations Here &#128301;</h2>
   <h2>Feel free to write your own! &#128299;</h2>
-  <h2>Yeah, I'm looking at you {{current_user.firstname}} &#128064;</h2>
-  <!-- use hexcodes on here for emojis: https://www.w3schools.com/charsets/ref_emoji.asp -->
+  <h2>Yeah, I'm looking at you {{profile.firstname}} &#128064;</h2>
+
+  <br><br>
+  
+  {% for affirm in all_affirmations %}
+    <h2>{{affirm.affirmation}} &#10024;</h2>
+  {% endfor %}
+
 </div>
 
+<a href="{{ url_for('affirmations.add') }}" type="button" class="btn btn-secondary">Add Your Own!</a>
 
 {% endblock %}

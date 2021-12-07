@@ -1,5 +1,6 @@
 from flask import current_app as app
 from flask_login import current_user
+import datetime
 
 
 class Seller:
@@ -38,7 +39,7 @@ class Seller:
                 OrderedItems.pid AS pid,
                 Users.address AS shipping_address,
                 Orders.time_purchased AS purchase_date,
-                Orders.fulfilled AS status
+                OrderedItems.fulfilled AS status
         FROM Orders, SellerOrders, Users, OrderedItems
         WHERE SellerOrders.seller_id=:uid
                 AND Orders.oid=OrderedItems.oid
@@ -136,3 +137,16 @@ class Seller:
             return sorted([(row[0], row[0]) for row in rows]) if rows else None
         except Exception as e:
             print(str(e))
+    
+    @staticmethod
+    def mark_item_fulfilled(oid, pid):
+        time = datetime.datetime.now()
+        rows = app.db.execute(
+            """
+            UPDATE OrderedItems
+            SET fulfilled=TRUE, fulfillment_time=:time
+            WHERE oid=:oid AND pid=:pid
+            RETURNING *
+            """, oid=oid, pid=pid, time=time
+        )
+        return rows

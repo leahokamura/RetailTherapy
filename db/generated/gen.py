@@ -9,6 +9,7 @@ num_sellers = 100
 num_accounts = num_users + num_sellers
 num_categories = 20
 num_carts = 3000
+num_reviews = 2500
 
 images = [
     "http://placehold.it/120x120&text=image1",
@@ -275,6 +276,41 @@ def gen_seller_reviews(num_sellers):
         print(f'{num_categories} generated')
     return
 
+#SR_Comments(rid, uid, seller_id, time_commented, comment, votes)
+def gen_seller_comments(num_reviews):
+    with open('SR_Comments.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Seller Comments...', end=' ', flush=True)
+        for uid in range(num_sellers):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
+            rid = fake.random_int(min=0, max=num_users-1)
+            uid = fake.random_int(min=0, max=num_users-1)
+            seller_id = fake.random_int(max=num_sellers)
+            time = fake.date_time()
+            comments = fake.sentence(nb_words=20)[:-1]
+            votes = fake.random_int(min=0, max=num_users-1)
+            writer.writerow([rid, uid, seller_id, time, comments, votes])
+        print(f'{num_categories} generated')
+    return
+
+#PR_Comments(rid, uid, seller_id, time_commented, comment, votes)
+def gen_product_comments(num_reviews):
+    with open('PR_Comments.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Product Comments...', end=' ', flush=True)
+        for uid in range(num_sellers):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
+            rid = fake.random_int(min=0, max=num_users-1)
+            uid = fake.random_int(min=0, max=num_users-1)
+            seller_id = fake.random_int(max=num_sellers)
+            time = fake.date_time()
+            comments = fake.sentence(nb_words=20)[:-1]
+            votes = fake.random_int(min=0, max=num_users-1)
+            writer.writerow([rid, uid, seller_id, time, comments, votes])
+        print(f'{num_categories} generated')
+    return
 
 #Images_Reviews(uid, pid, img)
 def gen_images_reviews(num_products):
@@ -310,6 +346,8 @@ gen_update_submission(num_purchases)
 
 gen_product_reviews(num_products)
 gen_seller_reviews(num_sellers)
+gen_product_comments(num_products)
+gen_seller_comments(num_sellers)
 gen_images_reviews(num_products)
 
 

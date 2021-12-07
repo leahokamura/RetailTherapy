@@ -22,27 +22,6 @@
 </div>
 
 <br></br>
-<h2>History of Purchases</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Total Amount</th>
-      <th scope="col">Fulfillment Status</th>
-      <th scope="col">Order Page</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for order in orders %}
-      <tr>
-        <th scope="row">{{order.p_quantity}}</th>
-        <td>{{order.name}}</td> 
-        <!-- fullfillment -->
-        <td>{{order.pid}}</td>
-        <!-- link to order page -->
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
 
 <h2>Product Reviews Given</h2>
 <table class='table table-hover table-bordered table=sort container'>
