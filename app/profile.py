@@ -117,3 +117,8 @@ def deleteditem(pid):
     print("pid:", pid)
     Seller.delete_from_inventory(pid)
     return render_template('deleteditem.html')
+
+@bp.route('/seller/fulfillitem-<oid>-<pid>')
+def fulfillitem(oid, pid):
+    Seller.mark_item_fulfilled(oid, pid)
+    return render_template('fulfilleditem.html', oid=oid, pid=pid)

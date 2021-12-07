@@ -28,13 +28,19 @@ def orderPage():
     
     if cart_total > user_balance:
         #this flash is not working yet :(
+            
+        # raise ValidationError(_('Insufficient Balance'))
         print('Insufficient Balance')
+        #message = 'Insufficient Balance. You currently have %d dollars.' % (user_balance)
+        #flash(message)
         return redirect(url_for('cart.cart'))
 
     placed_order = Order.inventory_check(cart_items)
     if placed_order == False:
         #this flash is not working yet :(
         print('Insufficient Stock')
+        #message = 'Insufficient Stock.'
+        #raise ValidationError(message)
         return redirect(url_for('cart.cart'))
 
     oid = Order.addToOrders(current_user.uid, cart_total, default_time)
