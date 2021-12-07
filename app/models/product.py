@@ -56,7 +56,7 @@ SELECT DISTINCT category FROM products
 
 
     @staticmethod
-    def get_prod_by_cat(category, sortCriteria, filterCriteria):
+    def get_prod_by_cat(category, sortCriteria, filterCriteria, number):
         
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
@@ -105,13 +105,16 @@ prod_rating
 ON prod_rating.pid = Products.pid
 WHERE Products.category = :category
 ''' + filtering_descrip + 
-'''ORDER BY ''' + sorting_descrip, 
-category=category)
+'''ORDER BY ''' + sorting_descrip + 
+''' LIMIT 9
+OFFSET :number
+''', 
+category=category, number=number)
         return rows if rows else None
 
 
     @staticmethod
-    def get_by_keyword(words, sortCriteria, filterCriteria):
+    def get_by_keyword(words, sortCriteria, filterCriteria, number):
         
         sorting_descrip = '(SELECT NULL)'
         filtering_descrip = ''
@@ -160,6 +163,109 @@ ON prod_rating.pid = Products.pid
 WHERE (name LIKE ANY (:words)
 OR description LIKE ANY (:words)
 ) ''' + filtering_descrip + 
+'''ORDER BY ''' + sorting_descrip +
+''' LIMIT 9
+OFFSET :number
+''',    
+words = words, number=number)
+        return rows if rows else None
+
+
+
+
+    @staticmethod
+    def get_total_prod_by_cat(category, sortCriteria, filterCriteria):
+        
+        sorting_descrip = '(SELECT NULL)'
+        filtering_descrip = ''
+
+        # all possible types of sorting
+        if (sortCriteria == 'high'):
+            sorting_descrip = '''price DESC'''
+        if (sortCriteria == 'low'):
+            sorting_descrip = '''price ASC'''
+        if (sortCriteria == 'high_rating'):
+            sorting_descrip = '''rating DESC NULLS LAST'''
+        if (sortCriteria == 'low_rating'):
+            sorting_descrip = '''rating ASC NULLS LAST'''
+        
+        # filtering by price
+        if (filterCriteria == 'under25'):
+            filtering_descrip = '''AND Products.price >= 0 AND Products.price < 25'''
+        if (filterCriteria == '25to50'):
+            filtering_descrip = '''AND Products.price >= 25 AND Products.price < 50'''
+        if (filterCriteria == '50to100'):
+            filtering_descrip = '''AND Products.price >= 50 AND Products.price < 100'''
+        if (filterCriteria == '100to200'):
+            filtering_descrip = '''AND Products.price >= 100 AND Products.price < 200'''
+        if (filterCriteria == '200&Up'):
+            filtering_descrip = '''AND Products.price >= 200'''
+
+        # filtering by rating
+        if (filterCriteria == '1&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 1'''
+        if (filterCriteria == '2&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 2'''
+        if (filterCriteria == '3&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 3'''
+        if (filterCriteria == '4&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 4'''
+
+        rows = app.db.execute('''
+SELECT Products.pid, Products.name, Products.price, Products.image
+FROM Products
+WHERE Products.category = :category
+''' + filtering_descrip + 
+'''ORDER BY ''' + sorting_descrip, 
+category=category)
+        return len(rows)
+
+
+    @staticmethod
+    def get_total_by_keyword(words, sortCriteria, filterCriteria):
+        
+        sorting_descrip = '(SELECT NULL)'
+        filtering_descrip = ''
+
+        if (sortCriteria == 'high'):
+            sorting_descrip = '''price DESC'''
+        if (sortCriteria == 'low'):
+            sorting_descrip = '''price ASC'''
+        if (sortCriteria == 'high_rating'):
+            sorting_descrip = '''rating DESC NULLS LAST'''
+        if (sortCriteria == 'low_rating'):
+            sorting_descrip = '''rating ASC NULLS LAST'''
+
+        # filtering by price
+        if (filterCriteria == 'under25'):
+            filtering_descrip = '''AND (Products.price >= 0 AND Products.price < 25)'''
+        if (filterCriteria == '25to50'):
+            filtering_descrip = '''AND (Products.price >= 25 AND Products.price < 50)'''
+        if (filterCriteria == '50to100'):
+            filtering_descrip = '''AND (Products.price >= 50 AND Products.price < 100)'''
+        if (filterCriteria == '100to200'):
+            filtering_descrip = '''AND (Products.price >= 100 AND Products.price < 200)'''
+        if (filterCriteria == '200&Up'):
+            filtering_descrip = '''AND Products.price >= 200'''
+        
+        # filtering by rating
+        if (filterCriteria == '1&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 1'''
+        if (filterCriteria == '2&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 2'''
+        if (filterCriteria == '3&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 3'''
+        if (filterCriteria == '4&Up'):
+            filtering_descrip = '''AND prod_rating.avg >= 4'''
+
+        rows = app.db.execute('''
+SELECT Products.pid, Products.name, Products.price, Products.image
+FROM Products
+WHERE (name LIKE ANY (:words)
+OR description LIKE ANY (:words)
+) ''' + filtering_descrip + 
 '''ORDER BY ''' + sorting_descrip,    
 words = words)
-        return rows if rows else None
+        return len(rows)
+
+        
