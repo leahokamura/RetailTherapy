@@ -2,7 +2,7 @@ from __future__ import print_function # In python 2.7
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, IntegerField, SubmitField
+from wtforms import StringField, DecimalField, IntegerField, SelectField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
@@ -67,6 +67,7 @@ def sellersorted(sort_category=0):
 @bp.route('/seller/additem', methods=['GET', 'POST'])
 def additem():
     form = AddToInventoryForm()
+    form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
         print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
@@ -81,13 +82,14 @@ class AddToInventoryForm(FlaskForm):
     quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
     description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
     image = StringField(_l('Image URL'), validators=[DataRequired()])
-    category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
-    submit = SubmitField(_l('Add to Inventory'))
+    category = SelectField(u'Category', validators=[DataRequired()])
+    submit = SubmitField(_l('Add to Inventory'))   
 
 @bp.route('/seller/edititem-<pid>-<pname>', methods=['GET', 'POST'])
 def edititem(pid, pname):
     form = EditInventoryForm()
     form.productname.data = pname
+    form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
         print('made it this far')
         if Seller.edit_in_inventory(pid, form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
@@ -102,7 +104,7 @@ class EditInventoryForm(FlaskForm):
     quantity = IntegerField(_l('Quantity Available'), validators=[NumberRange(min=0)])
     description = StringField(_l('Description (max 2048 characters)'), validators=[DataRequired()])
     image = StringField(_l('Image URL'), validators=[DataRequired()])
-    category = StringField(_l('Category (Choose 1 From: drink, art, food)'))
+    category = SelectField(u'Category', validators=[DataRequired()])
     submit = SubmitField(_l('Save Changes'))
 
 @bp.route('/seller/deleteitem-<pid>-<pname>', methods=['GET', 'POST'])

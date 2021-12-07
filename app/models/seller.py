@@ -109,3 +109,14 @@ class Seller:
             return 1
         except Exception as e:
             print(str(e))
+    
+    @staticmethod
+    def get_choices():
+        try:
+            rows = app.db.execute("""
+            SELECT DISTINCT category
+            FROM Products
+            """)
+            return sorted([(row[0], row[0]) for row in rows]) if rows else None
+        except Exception as e:
+            print(str(e))
