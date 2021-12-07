@@ -5,6 +5,10 @@
 <br><br>
 
 <img src="{{productname.image}}" align="right" alt="">
+<form action='/oneproduct/{{productname.pid}}' method="post">
+  <input type="submit" name="productreviews" class = "btn btn-secondary" value="Back to Product Page" />
+</form>
+<br>
 <h2>{{productname.name}}</h2>
 <h3>Product ID: {{productname.pid}}</h3>
 <h3>Average Rating: {{productreviewstats.average}}/5</h3>
@@ -14,13 +18,10 @@
   {% if productreviewcheck == false  %}
 <form action='/addproductreview/product{{productname.pid}}/reviewer{{current_user.uid}}' method="post">
   <input type="submit" name="review_details" class = "btn btn-secondary" value="Add Review" />
-</form> 
+</form>
+<br> 
   {% endif %}
 {% endif %}
-
-<form action='/oneproduct/{{productname.pid}}' method="post">
-  <input type="submit" name="productreviews" class = "btn btn-secondary" value="Back to Product Page" />
-</form>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">

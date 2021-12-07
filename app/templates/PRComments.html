@@ -4,6 +4,11 @@
 
 <br><br>
 
+<form action='/productreviews/{{productname.pid}}/0' method="post">
+  <input type="submit" name="productreviews" class = "btn btn-secondary" value="Back to Product Reviews" />
+</form>
+<br>
+
 <h2>Review of {{productname.name}} by user {{productreviews.uid}}</h2>
 <h3>Rating: {{productreviews.rating}}/5</h2>
 <h3>Feedback: {{productreviews.comments}}</h3>
@@ -31,10 +36,6 @@
 
 
 {% endif %}
-
-<form action='/productreviews/{{productname.pid}}/0' method="post">
-    <input type="submit" name="productreviews" class = "btn btn-secondary" value="Back to Product Reviews" />
-</form>
 
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
