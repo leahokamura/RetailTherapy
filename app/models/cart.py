@@ -33,8 +33,10 @@ FROM InCart, Products
 WHERE InCart.pid = Products.pid AND InCart.uid = :uid
 ''', 
                             uid = uid)
-        return rows[0][0]
-
+        total = rows[0][0]
+        if total == None:
+            total = 0.00      
+        return round(total, 2)
 
 
 
