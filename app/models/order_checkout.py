@@ -33,3 +33,12 @@ class Order:
     ''',  
                                uid = uid, total_price = total_price, time_purchased = time_purchased, oid = oid)
         print(rows)
+    
+    @staticmethod
+    def get_balance(uid):
+        rows = app.db.execute('''
+    SELECT balance FROM Account WHERE uid = :uid''', 
+                uid = uid
+            )
+        user_balance = float(rows[0][0])
+        return user_balance

@@ -24,6 +24,13 @@ def orderPage():
     cart_total = Cart.get_total(current_user.uid)
     default_time = datetime.datetime.now()
     default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
-    Order.addToOrders(current_user.uid, cart_total, default_time)
-    status = "Not Fulfilled"
+    user_balance = Order.get_balance(current_user.uid)
+    
+    if cart_total <= user_balance:
+        Order.addToOrders(current_user.uid, cart_total, default_time)
+        status = "Not Fulfilled"
+    else: 
+        #this is not working yet :(
+        flash('Insufficient Balance')
+        return redirect(url_for('cart.cart'))
     return render_template('orderPage.html',items=cart_items, total = cart_total, status = status)
