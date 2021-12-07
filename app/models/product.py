@@ -98,6 +98,7 @@ SELECT DISTINCT category FROM products
         if (filterCriteria == '4&Up'):
             filtering_descrip = '''AND prod_rating.avg >= 4'''
 
+        # not vulnerable to SQL inject attacks because I control the values being inserted into the query, not the user
         rows = app.db.execute('''
 WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
@@ -156,6 +157,7 @@ category=category, number=number)
         if (filterCriteria == '4&Up'):
             filtering_descrip = '''AND prod_rating.avg >= 4'''
 
+        # not vulnerable to SQL inject attacks because I control the values being inserted into the query, not the user
         rows = app.db.execute('''
 WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
@@ -215,7 +217,8 @@ words = words, number=number)
             filtering_descrip = '''AND prod_rating.avg >= 3'''
         if (filterCriteria == '4&Up'):
             filtering_descrip = '''AND prod_rating.avg >= 4'''
-
+        
+        # not vulnerable to SQL inject attacks because I control the values being inserted into the query, not the user
         rows = app.db.execute('''
 SELECT Products.pid, Products.name, Products.price, Products.image
 FROM Products
@@ -264,7 +267,8 @@ category=category)
             filtering_descrip = '''AND prod_rating.avg >= 3'''
         if (filterCriteria == '4&Up'):
             filtering_descrip = '''AND prod_rating.avg >= 4'''
-
+        
+        # not vulnerable to SQL inject attacks because I control the values being inserted into the query, not the user
         rows = app.db.execute('''
 SELECT Products.pid, Products.name, Products.price, Products.image
 FROM Products
