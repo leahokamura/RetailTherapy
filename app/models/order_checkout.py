@@ -33,16 +33,6 @@ class Order:
     ''',  
                                uid = uid, total_price = total_price, time_purchased = time_purchased, oid = oid)
         return rows[0][0]
-    
-    @staticmethod
-    def get_orders(uid):
-        rows = app.db.execute("""
-    SELECT *
-    FROM Orders, OrderedItems
-    WHERE Orders.oid = OrderedItems.oid AND uid = :uid
-    """,
-                            uid=uid)
-        return Order(*rows) if rows else None
 
     @staticmethod
     def get_balance(uid):
