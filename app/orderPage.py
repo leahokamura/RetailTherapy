@@ -11,6 +11,8 @@ from flask_babel import _, lazy_gettext as _l
 from .models.user import User
 from .models.product import Product
 from .models.cart import Cart
+from .models.order_checkout import Order
+import datetime
  
 from flask import Blueprint
 bp = Blueprint('orderPage', __name__)
@@ -19,4 +21,9 @@ bp = Blueprint('orderPage', __name__)
 @bp.route('/orderPage', methods=['GET', 'POST'])
 def orderPage():
     cart_items = Cart.get_cart(current_user.uid)
-    return render_template('orderPage.html',items=cart_items)
+    cart_total = Cart.get_total(current_user.uid)
+    default_time = datetime.datetime.now()
+    default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
+    Order.addToOrders(current_user.uid, cart_total, default_time)
+    status = "Not Fulfilled"
+    return render_template('orderPage.html',items=cart_items, total = cart_total, status = status)

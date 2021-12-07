@@ -99,16 +99,17 @@ CREATE TABLE InCart(
 --     PRIMARY KEY(cid)
 -- );
 
---Orders(cid, oid, order_totalPrice, fulfilled)
+--Orders(oid, uid, total_price, fulfilled, time_purchased)
 CREATE TABLE Orders (
     oid INT NOT NULL UNIQUE,
     uid INT NOT NULL REFERENCES Users(uid),
-    order_totalPrice FLOAT NOT NULL,
+    total_price FLOAT NOT NULL,
     fulfilled BOOLEAN DEFAULT FALSE,
     time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     PRIMARY KEY(oid, uid)
 );
 
+--OrderedItems(oid, pid, total_price, p_quantity, fulfilled, fulfillment_time)
 CREATE TABLE OrderedItems (
     oid INT NOT NULL REFERENCES Orders(oid),
     pid INT NOT NULL REFERENCES Products(pid),
