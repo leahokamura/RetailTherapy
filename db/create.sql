@@ -20,7 +20,7 @@ CREATE TABLE Users (
 --Account(uid, balance)
 CREATE TABLE Account (
     uid INT NOT NULL PRIMARY KEY REFERENCES Users(uid),
-    balance FLOAT NOT NULL DEFAULT 0.0 CHECK (balance >= 0.0)
+    balance FLOAT NOT NULL DEFAULT 0.00 CHECK (balance >= 0.00)
 );
 
 --Purchases(oid, uid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)

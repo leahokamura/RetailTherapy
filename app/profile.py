@@ -23,7 +23,7 @@ bp = Blueprint('profile', __name__)
 def profile():
     #get profile info
     profile_info = User.get_profile(current_user.uid)
-    new_balance = Account.get_balance(current_user.uid)
+    new_balance = round(Account.get_balance(current_user.uid), 2)
     product_reviews = ProductReview.get_all_product_reviews_by_user(current_user.uid)
     seller_reviews = SellerReview.get_all_seller_reviews_by_user(current_user.uid)
     all_orders = pastOrders.get_orders(current_user.uid)

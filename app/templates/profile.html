@@ -22,27 +22,6 @@
 </div>
 
 <br></br>
-<h2>History of Purchases</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Total Price</th>
-      <th scope="col">Fulfillment Status</th>
-      <th scope="col">Order Page</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% if orders %}
-      {% for order in orders %}
-        <tr>
-          <th scope="row">{{order.total_price}}</th>
-          <td>{{order.fulfilled}}</td> 
-          <td><a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">See Order Page</a></td>
-        </tr>
-      {% endfor %}
-    {% endif %}
-  </tbody>
-</table>
 
 <h2>Product Reviews Given</h2>
 <table class='table table-hover table-bordered table=sort container'>
