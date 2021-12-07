@@ -109,15 +109,16 @@ CREATE TABLE Orders (
     PRIMARY KEY(oid, uid)
 );
 
---OrderedItems(oid, pid, total_price, p_quantity, fulfilled, fulfillment_time)
+--OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
 CREATE TABLE OrderedItems (
+    uid INT NOT NULL REFERENCES Users(uid),
     oid INT NOT NULL REFERENCES Orders(oid),
     pid INT NOT NULL REFERENCES Products(pid),
-    total_price FLOAT NOT NULL,
+    unit_price FLOAT NOT NULL,
     p_quantity INT NOT NULL,
     fulfilled BOOLEAN DEFAULT FALSE,
-    fulfillment_time timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    PRIMARY KEY (oid, pid)
+    fulfillment_time timestamp without time zone DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    PRIMARY KEY (uid, oid, pid)
     
 );
 

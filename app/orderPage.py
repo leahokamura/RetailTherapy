@@ -37,10 +37,12 @@ def orderPage():
         print('Insufficient Stock')
         return redirect(url_for('cart.cart'))
 
-    Order.addToOrders(current_user.uid, cart_total, default_time)
+    oid = Order.addToOrders(current_user.uid, cart_total, default_time)
+
     Order.update_stock(cart_items)
     Order.update_balances(cart_items, current_user.uid, cart_total)
     Order.empty_cart(cart_items, current_user.uid)
+    Order.addToOrderedItems(cart_items, current_user.uid, oid)
     status = "Not Fulfilled"
     
     return render_template('orderPage.html',items=cart_items, total = cart_total, status = status)

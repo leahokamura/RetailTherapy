@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<br><br>
+
+
+<br><br>
+<h2>Orders:</h2>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">Date Ordered</th>
+        <th scope="col">Fulfilled?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+            <th scope="row">{{order.oid}}
+                <form action="{{url_for('users.login')}}" method="POST">   <!-- fix this shiz-->
+                    <input type="submit" value="Details"> 
+                    </form>
+            </th>
+
+            <th scope="row">{{order.time_purchased}}</th>
+            <th scope="row">{{order.fulfilled}}</th>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+{% endblock %}
