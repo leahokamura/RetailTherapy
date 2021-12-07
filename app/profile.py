@@ -13,6 +13,7 @@ from .models.account import Account
 from .models.productreview import ProductReview
 from .models.sellerreview import SellerReview
 from .models.cart import Cart
+from .models.order_checkout import Order
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
@@ -24,7 +25,7 @@ def profile():
     new_balance = Account.get_balance(current_user.uid)
     product_reviews = ProductReview.get_all_product_reviews_by_user(current_user.uid)
     seller_reviews = SellerReview.get_all_seller_reviews_by_user(current_user.uid)
-    all_orders = Cart.get_cart(current_user.uid)
+    all_orders = Order.get_orders(current_user.uid)
     # render the page by adding information to the profile.html file
     return render_template('profile.html', current_user = profile_info, 
                                             current_balance = new_balance,

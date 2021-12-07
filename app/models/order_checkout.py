@@ -35,6 +35,16 @@ class Order:
         print(rows)
     
     @staticmethod
+    def get_orders(uid):
+        rows = app.db.execute("""
+    SELECT *
+    FROM Orders, OrderedItems
+    WHERE Orders.oid = OrderedItems.oid AND uid = :uid
+    """,
+                            uid=uid)
+        return Order(*rows) if rows else None
+
+    @staticmethod
     def get_balance(uid):
         rows = app.db.execute('''
     SELECT balance FROM Account WHERE uid = :uid''', 
