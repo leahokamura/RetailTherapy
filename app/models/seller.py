@@ -1,5 +1,6 @@
 from flask import current_app as app
 from flask_login import current_user
+import datetime
 
 
 class Seller:
@@ -139,12 +140,13 @@ class Seller:
     
     @staticmethod
     def mark_item_fulfilled(oid, pid):
+        time = datetime.datetime.now()
         rows = app.db.execute(
             """
             UPDATE OrderedItems
-            SET fulfilled=TRUE
+            SET fulfilled=TRUE, fulfillment_time=:time
             WHERE oid=:oid AND pid=:pid
             RETURNING *
-            """, oid=oid, pid=pid
+            """, oid=oid, pid=pid, time=time
         )
         return rows

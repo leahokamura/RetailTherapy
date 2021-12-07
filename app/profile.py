@@ -70,11 +70,8 @@ def additem():
     form = AddToInventoryForm()
     form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
-        print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
             return redirect(url_for('profile.seller'))
-        else: 
-            print('something hinky is going on')
     return render_template('additem.html', title='Add item', form=form)
 
 class AddToInventoryForm(FlaskForm):
@@ -92,7 +89,6 @@ def edititem(pid, pname):
     form.productname.data = pname
     form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
-        print('made it this far')
         if Seller.edit_in_inventory(pid, form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
             return redirect(url_for('profile.seller'))
         else: 
@@ -114,7 +110,6 @@ def deleteitem(pid, pname):
 
 @bp.route('/seller/deleteditem-<pid>')
 def deleteditem(pid):
-    print("pid:", pid)
     Seller.delete_from_inventory(pid)
     return render_template('deleteditem.html')
 
