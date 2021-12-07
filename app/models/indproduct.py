@@ -1,5 +1,6 @@
 from flask import current_app as app
 
+# individual product class
 class OneProduct:
     def __init__(self, pid, name, price, available, img):
         self.pid = pid
@@ -8,6 +9,7 @@ class OneProduct:
         self.available = available
         self.img = img
 
+    # get all basic info related to this product and return it
     @staticmethod
     def get_all_product_info(pid):
         rows = app.db.execute('''

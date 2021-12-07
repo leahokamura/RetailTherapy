@@ -37,15 +37,22 @@
         <td>{{review.time_reviewed}}</td>
         <td>{{review.rating}}</td>
         <td>{{review.comments}}</td>
-        <td>{{review.votes}}
-          <form action='/sr_comments/seller{{sellername.uid}}/user{{review.uid}}/0' method="post">
-            <input type="submit" name="review_details"class="btn btn-secondary"  value="details" />
-          </form>
-          {% if current_user.uid == review.uid %}
-          <form action='/editsellerreview/seller{{sellername.uid}}/reviewer{{review.uid}}' method="post">
-            <input type="submit" name="review_details" class = "btn btn-secondary" value="Edit" />
+        <td>
+          <div>
+            {{review.votes}}
+          </div>
+          <div style = 'float: left'>
+            <form action='/sr_comments/seller{{review.seller_id}}/user{{review.uid}}/0' method="post">
+            <input type="submit" name="review_details" class = "btn btn-secondary" value="Details" />
           </form> 
-          {% endif %} 
+          </div>
+          {% if current_user.uid == review.uid %}
+          <div style = 'float: left'>
+            <form action='/editsellerreview/seller{{review.seller_id}}/reviewer{{review.uid}}' method="post">
+              <input type="submit" name="review_details" class = "btn btn-secondary" value="Edit" />
+            </form> 
+          </div>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}

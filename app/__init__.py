@@ -75,4 +75,7 @@ def create_app():
     from .affirmations import bp as affirm_bp
     app.register_blueprint(affirm_bp)
 
+    from .ind_orderPage import bp as iop_bp
+    app.register_blueprint(iop_bp)
+    
     return app

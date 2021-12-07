@@ -48,28 +48,25 @@ def seller():
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
     seller = Seller.get_seller_info(current_user.uid)
-    return render_template('seller.html', slr=seller, inv=products)
+    orders = sorted(Seller.get_seller_orders(current_user.uid), key=lambda x: x[3], reverse=True) # sort in reverse chronological order
+    return render_template('seller.html', slr=seller, inv=products, ords=orders)
 
 @bp.route('/seller/sort<sort_category>')
 def sellersorted(sort_category=0):
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
-    # print("sort category: ", sort_category)
     products = sorted(products, key=lambda x: x[int(sort_category)])
-    # print("in order of", sort_category, products)
     seller = Seller.get_seller_info(current_user.uid)
-    return render_template('seller.html', slr=seller, inv=products)
+    orders = sorted(Seller.get_seller_orders(current_user.uid), key=lambda x: x[3], reverse=True) # sort in reverse chronological order
+    return render_template('seller.html', slr=seller, inv=products, ords=orders)
 
 @bp.route('/seller/additem', methods=['GET', 'POST'])
 def additem():
     form = AddToInventoryForm()
     form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
-        print('made it this far')
         if Seller.add_to_inventory(form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
             return redirect(url_for('profile.seller'))
-        else: 
-            print('something hinky is going on')
     return render_template('additem.html', title='Add item', form=form)
 
 class AddToInventoryForm(FlaskForm):
@@ -87,7 +84,6 @@ def edititem(pid, pname):
     form.productname.data = pname
     form.category.choices = Seller.get_choices()
     if form.validate_on_submit():
-        print('made it this far')
         if Seller.edit_in_inventory(pid, form.productname.data, form.price.data, form.quantity.data, form.description.data, form.image.data, form.category.data):
             return redirect(url_for('profile.seller'))
         else: 
@@ -109,6 +105,10 @@ def deleteitem(pid, pname):
 
 @bp.route('/seller/deleteditem-<pid>')
 def deleteditem(pid):
-    print("pid:", pid)
     Seller.delete_from_inventory(pid)
     return render_template('deleteditem.html')
+
+@bp.route('/seller/fulfillitem-<oid>-<pid>')
+def fulfillitem(oid, pid):
+    Seller.mark_item_fulfilled(oid, pid)
+    return render_template('fulfilleditem.html', oid=oid, pid=pid)

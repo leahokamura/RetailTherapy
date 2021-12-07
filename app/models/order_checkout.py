@@ -34,6 +34,19 @@ class Order:
                                uid = uid, total_price = total_price, time_purchased = time_purchased, oid = oid)
         return rows[0][0]
 
+    def addToSellerOrders(uid, oid, cart_items):
+        sellers = [item.seller_id for item in cart_items]
+        rows = []
+        for seller in sellers:
+            rows = app.db.execute(
+                """
+                INSERT INTO SellerOrders(seller_id, order_id, uid)
+                VALUES (:seller, :oid, :uid)
+                RETURNING *
+                """, seller=seller, oid=oid, uid=uid
+            )
+        return rows
+
     @staticmethod
     def get_balance(uid):
         rows = app.db.execute('''

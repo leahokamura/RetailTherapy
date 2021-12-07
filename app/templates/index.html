@@ -2,37 +2,9 @@
 
 {% block content %}
 
-<!-- <h2>Products for Sale:</h2>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in avail_products%}
-      <tr>
-        <th scope="row">{{product.pid}}</th>
-        <td>{{product.name}}</td>
-        <td>{{product.price}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table> -->
+<br><br>
 
-<!-- <div class="list-group">
-  <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-    The current link item
-  </a>
-  <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-  <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-  <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-  <a class="list-group-item list-group-item-action disabled">A disabled link item</a>
-</div> -->
-
-<h1>Product Search</h1>
+<h2>Product Search</h2>
 <div class="dropdown" style="display: inline-block;">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
     aria-expanded="false">
@@ -40,10 +12,8 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     {% for category in categories%}
-    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category=category) }}">{{category}}</a>
+    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category=category, number=0) }}">{{category}}</a>
     </li>
-    <!-- <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='drink') }}">Drink</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('prodsearch.ProductSearch', category='art') }}">Art</a></li> -->
     {% endfor %}
   </ul>
 </div>
@@ -63,7 +33,6 @@
       {% for product in avail_products%}
       <div class="col-md-4">
         <div class="card mb-4 box-shadow h-100">
-          <!-- <img class="card-img-top" src="{{url_for('static', filename='blank.png')}}" alt="Card image cap"> -->
           <img class="card-img-top" src="{{product.image}}" alt="Card image cap" style="max-width: 24rem; max-height: 21rem;">
 
           <div class="card-body">
@@ -73,7 +42,6 @@
               <div class="btn-group">
                 <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}"
                   class="btn btn-sm btn-outline-secondary">View</a>
-                <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                 {% if current_user.is_authenticated %}
 
                 <form action="{{url_for('users.addToCart', pid = product.pid, uid = current_user.uid)}}" method="POST">
@@ -95,21 +63,8 @@
 
 {% block javascript %}
 <script>
-  // let input = document.querySelector(".input-something");
-  // let button = document.querySelector(".button-something");
-  // console.log("wtf why isnt this working ")
-  // button.disabled = true;
-  // input.addEventListener("change", stateHandle);
 
-  // function stateHandle() {
-  //   console.log("is this function ever being reached");
-  //   if (document.querySelector(".input-something").value === "") {
-  //     button.disabled = true;
-  //   } else {
-  //     button.disabled = false;
-  //   }
-  // }
-
+  // don't allow someone to click the search button until they have entered text
   $('#keyword-search-input').on("keyup", action);
   function action() {
     if ($('#keyword-search-input').val().length > 0) {
@@ -119,10 +74,11 @@
     }
   }
 
+  // allows for button to call href
   function searchByKeyword() {
     let keyword = document.getElementById("keyword-search-input").value;
-    console.log('this is the keyword ', keyword);
-    window.location.href = "{{ url_for('prodsearch.ProductKeywordSearch', keywords='REPLACE') }}".replace("REPLACE", keyword);
+    // console.log('this is the keyword ', keyword);
+    window.location.href = "{{ url_for('prodsearch.ProductKeywordSearch', keywords='REPLACE', number=0) }}".replace("REPLACE", keyword);
   }
 </script>
 

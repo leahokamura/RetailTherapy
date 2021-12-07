@@ -5,13 +5,14 @@
 <br><br>
 
 <img src="{{productinfo.image}}" align="right" alt="{{productinfo.name}}">
+<a href="{{ url_for('index.index') }}" type="button" class="btn btn-secondary">Return to Products</a>
+<br><br>
 <h2>Product: {{productinfo.name}}</h2>
 <h3>Price: {{productinfo.price}}</h3>
 <h3>Description: {{productinfo.description}}</h3>
 <h3>Category: {{productinfo.category}}</h3>
 <h3>Rating: {{product_rating.avg}}</h3>
 <a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = 0)}}" type="button" class="btn btn-secondary">See Product Reviews</a>
-<a href="{{ url_for('index.index') }}" type="button" class="btn btn-secondary">Back to Products</a>
 
 {% if current_user.is_authenticated %}
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
