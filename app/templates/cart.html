@@ -66,7 +66,12 @@
 
 <h3>Cart Total: {{total}}</h3> 
 
-<a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">Checkout</a>
+{% if current_user.get_address() %}
+  <a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">Checkout</a>
+{% else %}
+  <h5>Please update your profile to include a shipping address.</h5> 
+  <a href="{{ url_for('profile.profile') }}" type="button" class="btn btn-light">Update Profile</a>
+{% endif %}
 
 
 {% endblock %}

@@ -174,3 +174,13 @@ RETURNING *
                                   password=generate_password_hash(password),
                                   address=address)
 
+    def get_address(user):
+        rows = app.db.execute(
+            """
+            SELECT address
+            FROM Users
+            WHERE uid=:uid
+            """, uid=user.uid
+        )
+        return rows[0][0]
+
