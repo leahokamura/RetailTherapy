@@ -107,3 +107,9 @@ class EditInventoryForm(FlaskForm):
 @bp.route('/seller/deleteitem-<pid>-<pname>', methods=['GET', 'POST'])
 def deleteitem(pid, pname):
     return render_template('deleteitem.html', pid=pid, pname=pname)
+
+@bp.route('/seller/deleteditem-<pid>')
+def deleteditem(pid):
+    print("pid:", pid)
+    Seller.delete_from_inventory(pid)
+    return render_template('deleteditem.html')

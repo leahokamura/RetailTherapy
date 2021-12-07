@@ -96,16 +96,16 @@ class Seller:
         try:
             app.db.execute(
                 """
-                DELETE FROM Products
+                DELETE FROM Inventory
                 WHERE pid = :pid
                 """, pid=pid
             )
             app.db.execute(
                 """
-                DELETE FROM Inventory
+                DELETE FROM Products
                 WHERE pid = :pid
                 """, pid=pid
             )
             return 1
-        except:
-            print("bad")
+        except Exception as e:
+            print(str(e))

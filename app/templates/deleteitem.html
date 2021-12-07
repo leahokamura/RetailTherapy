@@ -5,7 +5,7 @@
 <h2>Delete {{pname}} (ID: {{pid}})?</h2>
 <h4>This action cannot be undone.</h4>
 
-<a href="{{ url_for('profile.seller') }}"
+<a href="{{ url_for('profile.deleteditem', pid=pid) }}"
                   class="btn btn-primary">Delete from inventory</a>
 
 {% endblock %}
