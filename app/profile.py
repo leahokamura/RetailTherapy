@@ -13,6 +13,8 @@ from .models.account import Account
 from .models.productreview import ProductReview
 from .models.sellerreview import SellerReview
 from .models.cart import Cart
+from .models.order_checkout import Order
+from .models.pastOrders import pastOrders
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
@@ -21,10 +23,10 @@ bp = Blueprint('profile', __name__)
 def profile():
     #get profile info
     profile_info = User.get_profile(current_user.uid)
-    new_balance = Account.get_balance(current_user.uid)
+    new_balance = round(Account.get_balance(current_user.uid), 2)
     product_reviews = ProductReview.get_all_product_reviews_by_user(current_user.uid)
     seller_reviews = SellerReview.get_all_seller_reviews_by_user(current_user.uid)
-    all_orders = Cart.get_cart(current_user.uid)
+    all_orders = pastOrders.get_orders(current_user.uid)
     # render the page by adding information to the profile.html file
     return render_template('profile.html', current_user = profile_info, 
                                             current_balance = new_balance,
@@ -40,12 +42,6 @@ def public():
     # render the page by adding information to the public.html file
     return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
-@bp.route('/affirmations', methods=['GET', 'POST'])
-def affirmations():
-    # get profile info
-    profile_info = User.get_profile(current_user.uid)
-    # render the page by adding information to the affirmations.html file
-    return render_template('affirmations.html', current_user = profile_info)
 
 @bp.route('/seller')
 def seller():
