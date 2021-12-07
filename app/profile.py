@@ -52,18 +52,17 @@ def seller():
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
     seller = Seller.get_seller_info(current_user.uid)
-    orders = Seller.get_seller_orders(current_user.uid)
+    orders = sorted(Seller.get_seller_orders(current_user.uid), key=lambda x: x[3], reverse=True) # sort in reverse chronological order
     return render_template('seller.html', slr=seller, inv=products, ords=orders)
 
 @bp.route('/seller/sort<sort_category>')
 def sellersorted(sort_category=0):
     User.make_seller(current_user.uid)
     products = Seller.get_seller_products(current_user.uid)
-    # print("sort category: ", sort_category)
     products = sorted(products, key=lambda x: x[int(sort_category)])
-    # print("in order of", sort_category, products)
     seller = Seller.get_seller_info(current_user.uid)
-    return render_template('seller.html', slr=seller, inv=products)
+    orders = sorted(Seller.get_seller_orders(current_user.uid), key=lambda x: x[3], reverse=True) # sort in reverse chronological order
+    return render_template('seller.html', slr=seller, inv=products, ords=orders)
 
 @bp.route('/seller/additem', methods=['GET', 'POST'])
 def additem():
