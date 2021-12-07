@@ -68,5 +68,8 @@
 
 <a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">Checkout</a>
 
+{% if message != None%}
+<h6>{{message}}</h6> 
+{% endif %}
 
 {% endblock %}

@@ -41,6 +41,23 @@ class pastOrders:
                                uid = uid, oid=oid)
         return [row for row in rows] if rows is not None else None
 
+#OrderedItems(oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
     @staticmethod
-    def get_status(uid):
-        
+    def get_status(uid, orders):
+        for order in orders:
+            oid = order.oid
+            products = pastOrders.get_orderedProducts(uid, oid)
+            NonFulfilled = 0
+            for item in products:
+                fulfilled = item.fulfilled
+                if fulfilled == False:
+                    NonFulfilled +=1 
+            if NonFulfilled == 0:
+                rows = app.db.execute('''
+    UPDATE Orders
+    SET fulfilled = TRUE
+    WHERE uid = :uid and oid = :oid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                oid = oid)
