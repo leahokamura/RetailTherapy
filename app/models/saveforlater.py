@@ -94,13 +94,13 @@ ORDER BY pid
     #                             quantity = quantity)
 
     
-    # @staticmethod
-    # def remove(pid, uid):
-    #     app.db.execute('''
-    # DELETE
-    # FROM InCart
-    # WHERE uid = :uid AND pid = :pid
-    # RETURNING *
-    # ''',
-    #                             uid = uid, 
-    #                             pid = pid)
+    @staticmethod
+    def remove(pid, uid):
+        app.db.execute('''
+    DELETE
+    FROM SaveForLater
+    WHERE uid = :uid AND pid = :pid
+    RETURNING *
+    ''',
+                                uid = uid, 
+                                pid = pid)

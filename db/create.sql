@@ -86,7 +86,7 @@ CREATE TABLE InCart(
     PRIMARY KEY(uid, pid, seller_id)
 );
 
---SaveForLater(cid, p_quantity, unit_price, total_price, pid)
+--SaveForLater(uid, pid, name, p_quantity, unit_price, seller_id)
 CREATE TABLE SaveForLater(
     uid INT NOT NULL REFERENCES Users(uid),
     pid INT NOT NULL REFERENCES Products(pid),
