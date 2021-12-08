@@ -15,7 +15,7 @@ def saveforlaterPage():
     return render_template('SaveForLater.html', items=cart_items)
 
 #adding item to save for later and deleting from cart
-@bp.route('/add_Cart/<int:pid><int:uid>', methods=['GET', 'POST'])
+@bp.route('/add_Cart/<int:pid>/<int:uid>', methods=['GET', 'POST'])
 def add_Cart(pid, uid):
     print("we are here")
     In = Later.check(pid, uid)
@@ -36,7 +36,7 @@ def add_Cart(pid, uid):
         return render_template(('cart.html'), items=cart_items, total = cart_total)
 
 #removing item from save for later and adding back to cart
-@bp.route('/remove_product/<int:pid><int:uid>', methods=['GET', 'POST'])
+@bp.route('/remove_product/<int:pid>/<int:uid>', methods=['GET', 'POST'])
 def remove_product(pid, uid):
     Later.remove(pid, current_user.uid)
     print("removed item")

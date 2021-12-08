@@ -8,7 +8,7 @@ import random
 num_users = 100
 num_products = 5000
 num_purchases = 2000
-num_sellers = 30
+num_sellers = 50
 num_accounts = 80
 num_categories = 20
 num_carts = 1000
@@ -278,16 +278,17 @@ def gen_sellers(num_sellers):
 
 
 #Inventory(seller_id, pid, quantity)
-def gen_inventory(num_sellers):
+def gen_inventory(num_products, available_pids):
     with open('db/generated/Inventory.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Inventory...', end=' ', flush=True)
-        for seller_id in range(num_sellers):
-            if seller_id % 10 == 0:
-                print(f'{seller_id}', end=' ', flush=True)
-            for pid in range(10):
-                quantity = f'{str(fake.random_int(max=100))}'
-                writer.writerow([seller_id, pid, quantity])
+        for x in range(num_products):
+            if x % 10 == 0:
+                print(f'{x}', end=' ', flush=True)
+            seller_id = f'{str(fake.random_int(max=num_sellers-1))}'
+            pid = random.choice(available_pids)
+            quantity = f'{str(fake.random_int(max=100))}'
+            writer.writerow([seller_id, pid, quantity])
         print(f'{num_sellers} generated')
     return
 
@@ -435,7 +436,7 @@ available_oids = gen_orders(num_purchases, num_carts)
 gen_orderered_items(num_purchases, available_pids, available_prices, available_oids)
 
 gen_sellers(num_sellers)
-gen_inventory(num_sellers)
+gen_inventory(num_products, available_pids)
 gen_seller_orders(num_carts)
 gen_update_submission(num_purchases)
 

@@ -43,7 +43,7 @@
                 <a href="{{ url_for('oneproduct.OneProducts', product_number=product.pid) }}"
                   class="btn btn-sm btn-outline-secondary">View</a>
                 {% if current_user.is_authenticated %}
-
+                  
                 <form action="{{url_for('users.addToCart', pid = product.pid, uid = current_user.uid)}}" method="POST">
                   <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
                 </form>

@@ -1,6 +1,6 @@
 from flask import current_app as app
 from flask_login import current_user
-
+import sys
 
 class Cart:
     def __init__(self, uid, pid, name, p_quantity, unit_price, seller_id):
@@ -21,8 +21,8 @@ WHERE uid = :uid
 ORDER BY pid
 ''',
                               uid=uid)
-        #print("got cart data")
-        #print([Cart(*row) for row in rows])
+        print("got cart data")
+        print([Cart(*row) for row in rows])
         return [Cart(*row) for row in rows] if rows is not None else None
 
     #returns cart total
@@ -50,6 +50,8 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
 #--Inventory(seller_id, pid, in_stock)
     @staticmethod
     def add(pid, uid):
+        print("pid" + str(pid))
+        print("uid" + str(uid)) 
         rows = app.db.execute('''
     INSERT INTO InCart 
     SELECT :uid, :pid, name, 1, price, seller_id
@@ -59,7 +61,7 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
-        #print([Cart(*row) for row in rows])
+        print([Cart(*row) for row in rows])
     
     @staticmethod
     def check(pid, uid):
@@ -78,6 +80,7 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     
     @staticmethod 
     def update(pid, uid, action):
+        print(str(pid) + "---" + str(uid), file = sys.stderr)
         rows = app.db.execute('''
     SELECT p_quantity
     FROM InCart
@@ -85,6 +88,7 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     ''',
                                 uid = uid, 
                                 pid = pid)
+        print(rows[0], file=sys.stderr)
         current_quantity = int(rows[0][0])
 
         if action == "add":
