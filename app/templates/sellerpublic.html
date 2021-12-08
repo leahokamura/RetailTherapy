@@ -2,10 +2,13 @@
 
 {% block content %}
 
+<a href="{{ url_for('sellers.sellers') }}" type="button" class="btn btn-secondary">Back to Sellers</a>
+
 <br></br>
 <div class="profile">
   <h2>Welcome to {{slr.firstname}} {{slr.lastname}}'s Seller Profile!</h2>
   <br></br>
+  
   <article>
     <h3>Email: {{slr.email}}</h3>
     <h3>Address: {{slr.address}}</h3>
@@ -23,7 +26,5 @@
 </form> 
 {% endif %}
 {% endif %}
-
-<a href="{{ url_for('sellers.sellers') }}" type="button" class="btn btn-secondary">Back to Sellers</a>
 
 {% endblock %}
