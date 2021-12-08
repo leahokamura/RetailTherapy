@@ -6,12 +6,12 @@ import random
 
 # num_users = 110
 num_users = 10000
-num_products = 5000
-num_purchases = 7000
-num_sellers = 4000
+num_products = 50000
+num_purchases = 15000
+num_sellers = 5000
 num_accounts = 8000
 num_categories = 20
-num_carts = 6
+num_carts = 10
 
 images = [
     "https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c=s1200",
