@@ -97,9 +97,17 @@
                   class="btn btn-sm btn-outline-secondary">View</a>
                 {% if current_user.is_authenticated %}
 
-                <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST">
-                  <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
-                </form>
+                  {% if product.available == true %}
+                  <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST">
+                    <button class="btn btn-sm btn-secondary" type="submit">Add to Cart</button>
+                  </form>
+
+                  {% else %}
+                  <form action="{{url_for('users.addToCart',  pid = product.pid, uid = current_user.uid)}}" method="POST">
+                    <button class="btn btn-sm btn-outline-secondary" type="submit" disabled>Add to Cart</button>
+                  </form>
+                  {% endif %}
+
                 {% endif %}
               </div>
             </div>

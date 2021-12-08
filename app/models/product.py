@@ -104,7 +104,7 @@ WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
 FROM Product_Reviews
 GROUP BY pid)
-SELECT Products.pid, Products.name, Products.price, Products.image, prod_rating.avg AS rating
+SELECT Products.pid, Products.name, Products.price, Products.available, Products.image, prod_rating.avg AS rating
 FROM Products
 FULL OUTER JOIN
 prod_rating
@@ -163,7 +163,7 @@ WITH prod_rating  AS (
 SELECT pid, AVG(rating)::numeric(10,2) AS avg
 FROM Product_Reviews
 GROUP BY pid)
-SELECT Products.pid, Products.name, Products.price, Products.image, prod_rating.avg AS rating
+SELECT Products.pid, Products.name, Products.available, Products.price, Products.image, prod_rating.avg AS rating
 FROM Products
 FULL OUTER JOIN
 prod_rating
