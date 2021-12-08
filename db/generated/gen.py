@@ -359,15 +359,20 @@ def gen_product_reviews(num_products):
 
 
 #Seller_Reviews(uid, seller_id, time, rating, comments, votes)
-def gen_seller_reviews(num_sellers):
+def gen_seller_reviews(num_reviews):
+    combos = []
     with open('db/generated/Seller_Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Seller Reviews...', end=' ', flush=True)
-        for uid in range(num_sellers):
-            if uid % 10 == 0:
-                print(f'{uid}', end=' ', flush=True)
+        for x in range(num_reviews-15000):
+            if x % 10 == 0:
+                print(f'{x}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             seller_id = fake.random_int(max=num_sellers-1)
+            if (uid, seller_id) in combos:
+                uid = fake.random_int(min=0, max=num_users-1)
+                seller_id = fake.random_int(max=num_sellers-1)
+            combos.append((uid, seller_id))
             time = fake.date_time()
             rating = fake.random_int(min=0, max=5)
             comments = fake.sentence(nb_words=20)[:-1]
@@ -446,7 +451,7 @@ gen_seller_orders(num_carts)
 gen_update_submission(num_purchases)
 
 gen_product_reviews(num_products)
-gen_seller_reviews(num_sellers)
+gen_seller_reviews(num_reviews)
 gen_product_comments(num_products)
 gen_seller_comments(num_sellers)
 gen_images_reviews(num_products)
