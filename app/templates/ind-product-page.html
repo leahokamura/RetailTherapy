@@ -15,9 +15,20 @@
 <a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = 0)}}" type="button" class="btn btn-secondary">See Product Reviews</a>
 
 {% if current_user.is_authenticated %}
+                
+                {% if productinfo.available == true  %}
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-secondary" type="submit">Add to Cart</button>
-                </form> 
+                </form>
+                
+                {% else %}
+                <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
+                  <button class="btn btn-secondary" type="submit" disabled>Add to Cart</button>
+                </form>
+                <h6>this product is currently out of stock</h6>
+
+                {% endif %}
+
                 {% if productreviewcheck == false  %}
 
                 <form action='/addproductreview/product{{productinfo.pid}}/reviewer{{current_user.uid}}' method="post">
