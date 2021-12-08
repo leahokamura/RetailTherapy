@@ -20,7 +20,7 @@
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-secondary" type="submit">Add to Cart</button>
                 </form>
-                
+
                 {% else %}
                 <form action="{{url_for('users.addToCart',  pid = productinfo.pid, uid = current_user.uid)}}" method="POST"> 
                   <button class="btn btn-secondary" type="submit" disabled>Add to Cart</button>
@@ -40,6 +40,25 @@
 {% endif %}
 <br>
 <a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = 0)}}" type="button" class="btn btn-secondary">See Product Reviews</a>
+
+
+<h3>Sellers</h3>
+<table class='table table-hover table-bordered table=sort container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Quantity in Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in sellers%}
+      <tr>
+        <th scope="row">{{item.seller_id}}</th>
+        <td>{{item.in_stock}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock %}

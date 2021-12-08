@@ -71,6 +71,7 @@ CREATE TABLE Inventory (
     seller_id INT NOT NULL REFERENCES Sellers(uid),
     pid INT NOT NULL REFERENCES Products(pid),
     in_stock INT NOT NULL
+    PRIMARY KEY(seller_id, pid)
 );
 
 --CARTS/ORDERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

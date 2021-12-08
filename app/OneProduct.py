@@ -33,8 +33,10 @@ def OneProducts(product_number):
     if current_user.is_authenticated:
         PR_check = ProductReview.review_check(product_number, current_user.uid)
     
+    sellers = Product.get_sellers(product_number)
     # return template and pertinent variables
     return render_template('ind-product-page.html',
                             productinfo = p_info,
                             product_rating = p_rating,
-                            productreviewcheck = PR_check)       
+                            productreviewcheck = PR_check,
+                            sellers = sellers)       
