@@ -23,9 +23,9 @@
     <p>
       {{ form.quantity.label }}<br/>
       {{ form.quantity(size=32) }}<br/>
-      {% for error in form.quantity.errors %}
-      <span style="color: red;">[{{ "Please input a number." }}]</span>
-      {% endfor %}
+      {% if form.quantity.errors %}
+      <span style="color: red;">[{{ "Please input a whole number." }}]</span>
+      {% endif %}
     </p>
     <p>
       {{ form.description.label }}<br/>
