@@ -5,11 +5,11 @@ from faker import Faker
 import random
 
 # num_users = 110
-num_users = 10
-num_products = 2000
-num_purchases = 2500
-num_sellers = 4
-num_accounts = 5
+num_users = 10000
+num_products = 5000
+num_purchases = 7000
+num_sellers = 4000
+num_accounts = 8000
 num_categories = 20
 num_carts = 6
 
