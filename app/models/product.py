@@ -39,6 +39,30 @@ WHERE available = :available
                               available=available)
         return [Product(*row) for row in rows]
 
+    # get all top rated and most reviewed products
+    @staticmethod
+    def get_top(available=True):
+        rows = app.db.execute('''
+SELECT pid, name, price, available, image, description, category
+FROM (
+WITH prod_rating  AS (
+SELECT pid, AVG(rating)::numeric(10,2) AS avg, COUNT(pid) AS count
+FROM Product_Reviews
+GROUP BY pid)
+SELECT Products.pid, name, price, available, image, description, category, prod_stats.avg AS rating, prod_stats.count AS count
+FROM Products
+RIGHT JOIN
+(SELECT pid, avg, count 
+FROM prod_rating
+WHERE count > 0) AS prod_stats
+ON prod_stats.pid = Products.pid
+WHERE available = :available
+ORDER BY rating DESC, count DESC
+LIMIT 12 ) AS foo
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
+
     # get name of product using product id
     @staticmethod
     def get_name(pid):
