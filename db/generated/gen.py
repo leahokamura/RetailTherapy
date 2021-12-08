@@ -5,11 +5,11 @@ from faker import Faker
 import random
 
 # num_users = 110
-num_users = 10000
-num_products = 50000
-num_purchases = 15000
-num_sellers = 5000
-num_accounts = 8000
+num_users = 100
+num_products = 500
+num_purchases = 150
+num_sellers = 50
+num_accounts = 75
 num_categories = 20
 num_carts = 10
 
@@ -79,7 +79,7 @@ def get_csv_writer(f):
 
 #Users(uid, email, firstname, lastname, address, password)
 def gen_users(num_users):
-    with open('Users.csv', 'w') as f:
+    with open('db/generated/Users.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Users...', end=' ', flush=True)
         for uid in range(num_users):
@@ -99,7 +99,7 @@ def gen_users(num_users):
 
 #Account(uid, balance)
 def gen_account(num_accounts):
-    with open('Account.csv', 'w') as f:
+    with open('db/generated/Account.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Account...', end=' ', flush=True)
         for uid in range(num_accounts):
@@ -112,7 +112,7 @@ def gen_account(num_accounts):
 
 #Purchases(oid, uid, time_purchased, total_amount, item_quantity, fulfillment_status, order_page)
 def gen_purchases(num_purchases):
-    with open('Purchases.csv', 'w') as f:
+    with open('db/generated/Purchases.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Purchases...', end=' ', flush=True)
         for oid in range(num_purchases):
@@ -130,7 +130,7 @@ def gen_purchases(num_purchases):
 
 #Product_Categories(category)
 def gen_product_categories(num_categories):
-    with open('Product_Categories.csv', 'w') as f:
+    with open('db/generated/Product_Categories.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Product Categories...', end=' ', flush=True)
         for categories in range(num_categories):
@@ -146,7 +146,7 @@ def gen_products(num_products):
     available_names = []
     available_pids = []
     available_prices = []
-    with open('Products.csv', 'w') as f:
+    with open('db/generated/Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
         for pid in range(num_products):
@@ -171,7 +171,7 @@ def gen_products(num_products):
 #--Cart(uid, pid, p_quantity, unit_price, seller_id)
 #Cart(cid)
 def gen_cart(num_carts):
-    with open('Cart.csv', 'w') as f:
+    with open('db/generated/Cart.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Cart...', end=' ', flush=True)
         for cid in range(num_carts):
@@ -183,7 +183,7 @@ def gen_cart(num_carts):
 
 #InCart(cid, p_quantity, unit_price, total_price, pid, uid)
 def gen_in_cart(num_carts, names):
-    with open('InCart.csv', 'w') as f:
+    with open('db/generated/InCart.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('In Cart...', end=' ', flush=True)
         for cid in range(num_carts):
@@ -202,7 +202,7 @@ def gen_in_cart(num_carts, names):
 
 #SaveForLater(cid, p_quantity, unit_price, total_price, pid)
 def gen_save_for_later(num_carts, num_products):
-    with open('SaveForLater.csv', 'w') as f:
+    with open('db/generated/SaveForLater.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Save For Later...', end=' ', flush=True)
         for cid in range(num_carts):
@@ -220,7 +220,7 @@ def gen_save_for_later(num_carts, num_products):
 #Orders(cid, oid, order_totalPrice, fulfilled)
 def gen_orders(num_purchases, num_carts):
     available_oid = []
-    with open('Orders.csv', 'w') as f:
+    with open('db/generated/Orders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
         for cid in range(num_carts):
@@ -241,7 +241,7 @@ def gen_orders(num_purchases, num_carts):
 
 #OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
 def gen_orderered_items(num_purchases, available_pids, available_prices, available_oids):
-    with open('OrderedItems.csv', 'w') as f:
+    with open('db/generated/OrderedItems.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Orderered Items...', end=' ', flush=True)
         for cid in range(num_carts):
@@ -257,13 +257,13 @@ def gen_orderered_items(num_purchases, available_pids, available_prices, availab
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
             fulfilled = fake.random_element(elements=('true', 'false'))
             fulfillment_time = fake.date_time()
-            writer.writerow([oid, uid, unit_price, p_quantity, fulfilled, fulfillment_time])
+            writer.writerow([uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time])
         print(f'{num_purchases} generated')
     return
 
 #Sellers(uid)
 def gen_sellers(num_sellers):
-    with open('Sellers.csv', 'w') as f:
+    with open('db/generated/Sellers.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Sellers...', end=' ', flush=True)
         for uid in range(num_sellers):
@@ -276,7 +276,7 @@ def gen_sellers(num_sellers):
 
 #Inventory(seller_id, pid, quantity)
 def gen_inventory(num_sellers):
-    with open('Inventory.csv', 'w') as f:
+    with open('db/generated/Inventory.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Inventory...', end=' ', flush=True)
         for seller_id in range(num_sellers):
@@ -291,7 +291,7 @@ def gen_inventory(num_sellers):
 
 #SellerOrders(seller_id, order_id, uid)
 def gen_seller_orders(num_purchases):
-    with open('SellerOrders.csv', 'w') as f:
+    with open('db/generated/SellerOrders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Seller Orders...', end=' ', flush=True)
         for order_id in range(num_purchases):
@@ -305,7 +305,7 @@ def gen_seller_orders(num_purchases):
 
 #UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, total_price)
 def gen_update_submission(num_purchases):
-    with open('UpdateSubmission.csv', 'w') as f:
+    with open('db/generated/UpdateSubmission.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Update Submission...', end=' ', flush=True)
         for oid in range(num_carts):
@@ -327,7 +327,7 @@ def gen_update_submission(num_purchases):
 
 #Product_Reviews(uid, pid, time, rating, comments, votes)
 def gen_product_reviews(num_products):
-    with open('Product_Reviews.csv', 'w') as f:
+    with open('db/generated/Product_Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Product Reviews...', end=' ', flush=True)
         for pid in range(num_products):
@@ -346,7 +346,7 @@ def gen_product_reviews(num_products):
 
 #Seller_Reviews(uid, seller_id, time, rating, comments, votes)
 def gen_seller_reviews(num_sellers):
-    with open('Seller_Reviews.csv', 'w') as f:
+    with open('db/generated/Seller_Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Seller Reviews...', end=' ', flush=True)
         for uid in range(num_sellers):
@@ -364,7 +364,7 @@ def gen_seller_reviews(num_sellers):
 
 #SR_Comments(rid, uid, seller_id, time_commented, comment, votes)
 def gen_seller_comments(num_reviews):
-    with open('SR_Comments.csv', 'w') as f:
+    with open('db/generated/SR_Comments.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Seller Comments...', end=' ', flush=True)
         for uid in range(num_sellers):
@@ -372,7 +372,7 @@ def gen_seller_comments(num_reviews):
                 print(f'{uid}', end=' ', flush=True)
             rid = fake.random_int(min=0, max=num_users-1)
             uid = fake.random_int(min=0, max=num_users-1)
-            seller_id = fake.random_int(max=num_sellers)
+            seller_id = fake.random_int(max=num_sellers-1)
             time = fake.date_time()
             comments = fake.sentence(nb_words=20)[:-1]
             votes = fake.random_int(min=0, max=num_users-1)
@@ -382,7 +382,7 @@ def gen_seller_comments(num_reviews):
 
 #PR_Comments(rid, uid, seller_id, time_commented, comment, votes)
 def gen_product_comments(num_reviews):
-    with open('PR_Comments.csv', 'w') as f:
+    with open('db/generated/PR_Comments.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Product Comments...', end=' ', flush=True)
         for uid in range(num_sellers):
@@ -400,7 +400,7 @@ def gen_product_comments(num_reviews):
 
 #Images_Reviews(uid, pid, img)
 def gen_images_reviews(num_products):
-    with open('Images_Reviews.csv', 'w') as f:
+    with open('db/generated/Images_Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Images Reviews...', end=' ', flush=True)
         for pid in range(num_products):
