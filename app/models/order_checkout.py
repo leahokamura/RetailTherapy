@@ -17,6 +17,7 @@ class Order:
         self.oid = self.oid
         self.fulfillment_time = fulfillment_time
 
+    #adds order to existing orders of user
     def addToOrders(uid, total_price, time_purchased):
         rows = app.db.execute('''
     SELECT COUNT(uid) FROM Orders
@@ -34,6 +35,7 @@ class Order:
                                uid = uid, total_price = total_price, time_purchased = time_purchased, oid = oid)
         return rows[0][0]
 
+    #adds order to existing orders of seller's products
     def addToSellerOrders(uid, oid, cart_items):
         sellers = set([item.seller_id for item in cart_items])
         rows = []
@@ -47,6 +49,7 @@ class Order:
             )
         return rows
 
+    #gets user's balance
     @staticmethod
     def get_balance(uid):
         rows = app.db.execute('''
@@ -56,6 +59,7 @@ class Order:
         user_balance = float(rows[0][0])
         return user_balance
 
+    #checks to see if cart quantity of all items are in stock respectively
     @staticmethod
     def inventory_check(cart_items):
 
@@ -67,7 +71,6 @@ class Order:
             price = float(item.unit_price)
             seller_id = item.seller_id
 
-         #Inventory(seller_id, pid, in_stock)
             rows = app.db.execute('''
     SELECT in_stock
     FROM Inventory
@@ -79,6 +82,7 @@ class Order:
             if quantity > num_stock:
                 return False
 
+    #decrements the stock for what was just ordered
     @staticmethod
     def update_stock(cart_items):
 
@@ -102,6 +106,7 @@ class Order:
                 )
             print("inventory updated ", name)
 
+    #decrements buyer's baalnce and increment seller's
     @staticmethod
     def update_balances(cart_items, uid, cart_total):
         for item in cart_items:
@@ -123,7 +128,7 @@ class Order:
                     ''',
                                         seller_id = seller_id,
                                         total_price = total_price)
-            print("seller balance updated:", rows[0][0])
+            #print("seller balance updated:", rows[0][0])
             
     
         rowsb = app.db.execute('''
@@ -134,9 +139,9 @@ class Order:
                     ''',
                                         uid = uid,
                                         cart_total = cart_total)
-        print("buyer balance updated:", rowsb[0][0])
+        #print("buyer balance updated:", rowsb[0][0])
 
-
+    #empties the cart when the order is placed
     @staticmethod
     def empty_cart(cart_items, uid):
         for item in cart_items:
@@ -155,9 +160,9 @@ class Order:
     ''',
                                 uid = uid, 
                                 pid = pid)
-        print("items deleted from cart")
+        #print("items deleted from cart")
 
-
+    #adds all products of order to the history of ordered/puchased items 
     @staticmethod
     def addToOrderedItems(cart_items, uid, oid):
         for item in cart_items:
@@ -168,7 +173,6 @@ class Order:
             price = float(item.unit_price)
             seller_id = item.seller_id
 
-    #OrderedItems(uid, oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
 
             rows = app.db.execute('''
     INSERT INTO OrderedItems 
@@ -180,4 +184,4 @@ class Order:
                                pid = pid,
                                unit_price = price,
                                quantity = quantity)
-            print(rows[0])
+            #print(rows[0])

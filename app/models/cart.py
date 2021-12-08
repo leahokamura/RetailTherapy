@@ -11,7 +11,7 @@ class Cart:
         self.unit_price = unit_price
         self.seller_id = seller_id
     
-
+    #returns all of the data in the user's cart
     @staticmethod
     def get_cart(uid):
         rows = app.db.execute('''
@@ -21,10 +21,11 @@ WHERE uid = :uid
 ORDER BY pid
 ''',
                               uid=uid)
-        print("got cart data")
-        print([Cart(*row) for row in rows])
+        #print("got cart data")
+        #print([Cart(*row) for row in rows])
         return [Cart(*row) for row in rows] if rows is not None else None
 
+    #returns cart total
     @staticmethod
     def get_total(uid):
         rows = app.db.execute('''
@@ -58,7 +59,7 @@ WHERE InCart.pid = Products.pid AND InCart.uid = :uid
     RETURNING *;
     ''',  
                                uid = uid, pid = pid)
-        print([Cart(*row) for row in rows])
+        #print([Cart(*row) for row in rows])
     
     @staticmethod
     def check(pid, uid):

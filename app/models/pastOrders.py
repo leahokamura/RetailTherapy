@@ -2,8 +2,6 @@ from flask import current_app as app
 from flask_login import current_user
 import sys
 
-#Orders(oid, uid, total_price, fulfilled, time_purchased)
-#OrderedItems(oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
 
 class pastOrders:
     def __init__(self, oid, uid, total_price, fulfilled, time_purchased, unit_price= None):
@@ -15,7 +13,7 @@ class pastOrders:
         self.unit_price = unit_price
 
         
-
+    #gets all past orders of user
     @staticmethod
     def get_orders(uid):
         rows = app.db.execute('''
@@ -28,7 +26,7 @@ class pastOrders:
                                uid = uid)
         return [pastOrders(*row) for row in rows] if rows is not None else None
 
-
+    #gets all products of past user for a specific past order
     @staticmethod
     def get_orderedProducts(uid, oid):
         rows = app.db.execute('''
@@ -41,7 +39,7 @@ class pastOrders:
                                uid = uid, oid=oid)
         return [row for row in rows] if rows is not None else None
 
-#OrderedItems(oid, pid, unit_price, p_quantity, fulfilled, fulfillment_time)
+    #updates order status if all products are fulfilled
     @staticmethod
     def get_status(uid, orders):
         for order in orders:

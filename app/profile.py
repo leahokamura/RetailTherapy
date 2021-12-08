@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, url_for
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, DecimalField, IntegerField, SelectField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
+from wtforms.validators import DataRequired, NumberRange
 from flask_babel import _, lazy_gettext as _l
 
 
@@ -12,13 +12,12 @@ from .models.seller import Seller
 from .models.account import Account
 from .models.productreview import ProductReview
 from .models.sellerreview import SellerReview
-from .models.cart import Cart
-from .models.order_checkout import Order
 from .models.pastOrders import pastOrders
 
 from flask import Blueprint
 bp = Blueprint('profile', __name__)
 
+#routes to profile page
 @bp.route('/profile', methods=['GET', 'POST'])
 def profile():
     #get profile info
@@ -34,6 +33,7 @@ def profile():
                                             sellerreviews = seller_reviews,
                                             orders = all_orders)
 
+#routes to public profile page
 @bp.route('/profile/public', methods=['GET', 'POST'])
 def public():
     #get public info
@@ -42,7 +42,7 @@ def public():
     # render the page by adding information to the public.html file
     return render_template('public.html', public_user = public_info, public_seller = public_seller)
 
-
+#routes to seller page
 @bp.route('/seller')
 def seller():
     User.make_seller(current_user.uid)

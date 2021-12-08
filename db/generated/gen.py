@@ -5,13 +5,13 @@ from faker import Faker
 import random
 
 # num_users = 110
-num_users = 10000
-num_products = 50000
-num_purchases = 20000
-num_sellers = 3000
-num_accounts = 8000
+num_users = 100
+num_products = 5000
+num_purchases = 2000
+num_sellers = 30
+num_accounts = 80
 num_categories = 20
-num_carts = 10000
+num_carts = 1000
 
 images = [
     "https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c=s1200",
@@ -168,7 +168,7 @@ def gen_products(num_products):
 
 
 # NEED TO FIX GENERATED DATA!!!
-#--Cart(uid, pid, p_quantity, unit_price, seller_id)
+#Cart(uid, pid, p_quantity, unit_price, seller_id)
 #Cart(cid)
 def gen_cart(num_carts):
     with open('db/generated/Cart.csv', 'w') as f:
@@ -181,7 +181,7 @@ def gen_cart(num_carts):
         print(f'{num_carts} generated')
     return
 
-#InCart(cid, p_quantity, unit_price, total_price, pid, uid)
+#InCart(uid, pid, name, p_quantity, unit_price, seller_id)
 def gen_in_cart(num_carts, names):
     with open('db/generated/InCart.csv', 'w') as f:
         writer = get_csv_writer(f)
@@ -193,15 +193,15 @@ def gen_in_cart(num_carts, names):
             pid = fake.random_int(min=0, max=num_products-1)
             # = fake.sentence(nb_words=4)[:-1]
             name = random.choice(names)
-            p_quantity = f'{str(fake.random_int(max=100))}'
+            p_quantity = f'{str(fake.random_int(min=1, max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
             seller_id = fake.random_int(min=0, max=num_sellers-1)
             writer.writerow([uid, pid, name, p_quantity, unit_price, seller_id])
         print(f'{num_purchases} generated')
     return
 
-#SaveForLater(cid, p_quantity, unit_price, total_price, pid, uid)
-def gen_save_for_later(num_carts, num_products):
+#SaveForLater(uid, pid, name, p_quantity, unit_price, seller_id)
+def gen_save_for_later(num_carts, num_products, available_name):
     with open('db/generated/SaveForLater.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Save For Later...', end=' ', flush=True)
@@ -210,10 +210,11 @@ def gen_save_for_later(num_carts, num_products):
                 print(f'{cid}', end=' ', flush=True)
             pid = fake.random_int(min=0, max=num_products-1)
             uid = fake.random_int(min=0, max=num_users-1)
-            p_quantity = f'{str(fake.random_int(max=100))}'
+            p_quantity = f'{str(fake.random_int(min=1, max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
-            total_price = str((int(p_quantity))*float(unit_price))
-            writer.writerow([cid, p_quantity, unit_price, total_price, pid, uid])
+            seller_id = fake.random_int(min=0, max=num_sellers-1)
+            name = random.choice(available_name)
+            writer.writerow([uid, pid, name, p_quantity, unit_price, seller_id])
         print(f'{num_purchases} generated')
     return
 
@@ -224,10 +225,11 @@ def gen_orders(num_purchases, num_carts):
     with open('db/generated/Orders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
-        for cid in range(num_carts):
-            if cid % 100 == 0:
-                print(f'{cid}', end=' ', flush=True)
+        for oid in range(num_carts):
+            if oid % 100 == 0:
+                print(f'{oid}', end=' ', flush=True)
             # oid = fake.random_int(min=0, max=num_purchases-1)
+            available_oid.append(oid)
             uid = fake.random_int(min=0, max=num_users-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
@@ -235,7 +237,7 @@ def gen_orders(num_purchases, num_carts):
             order_totalPrice = str((int(p_quantity))*float(unit_price))
             fulfilled = fake.random_element(elements=('true', 'false'))
             time_purchased = fake.date_time()
-            writer.writerow([cid, uid, order_totalPrice, fulfilled, time_purchased])
+            writer.writerow([oid, uid, order_totalPrice, fulfilled, time_purchased])
         print(f'{num_purchases} generated')
     return available_oid
 
@@ -290,17 +292,17 @@ def gen_inventory(num_sellers):
 
 
 #SellerOrders(seller_id, order_id, uid)
-def gen_seller_orders(num_purchases):
+def gen_seller_orders(num_carts):
     with open('db/generated/SellerOrders.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Seller Orders...', end=' ', flush=True)
-        for order_id in range(num_purchases):
+        for order_id in range(num_carts-1):
             if order_id % 10 == 0:
                 print(f'{order_id}', end=' ', flush=True)
-            seller_id = fake.random_int(max=num_sellers)
-            uid = fake.random_int(max=num_users)
+            seller_id = fake.random_int(max=num_sellers-1)
+            uid = fake.random_int(max=num_users-1)
             writer.writerow([seller_id, order_id, uid])
-        print(f'{num_purchases} generated')
+        print(f'{num_carts} generated')
     return
 
 #UpdateSubmission(buyer_balance, seller_balance, fulfilled_time, oid, cid, seller_id, total_price)
@@ -420,15 +422,15 @@ gen_purchases(num_purchases)
 # gen_product_categories(num_categories)
 available_pids, available_name, available_prices = gen_products(num_products)
 
-gen_cart(num_carts)
-gen_in_cart(num_carts, available_name)
-gen_save_for_later(num_carts, num_products)
+#gen_cart(num_carts)
+#gen_in_cart(num_carts, available_name)
+#gen_save_for_later(num_carts, num_products, available_name)
 available_oids = gen_orders(num_purchases, num_carts)
 gen_orderered_items(num_purchases, available_pids, available_prices, available_oids)
 
 gen_sellers(num_sellers)
 gen_inventory(num_sellers)
-gen_seller_orders(num_purchases)
+gen_seller_orders(num_carts)
 gen_update_submission(num_purchases)
 
 gen_product_reviews(num_products)
@@ -436,8 +438,3 @@ gen_seller_reviews(num_sellers)
 gen_product_comments(num_products)
 gen_seller_comments(num_sellers)
 gen_images_reviews(num_products)
-
-
-
-
-

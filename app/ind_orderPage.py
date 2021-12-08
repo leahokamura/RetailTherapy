@@ -21,8 +21,8 @@ bp = Blueprint('ind_orderPage', __name__)
 
 @bp.route('/ind_orderPage/<int:oid>', methods=['GET', 'POST'])
 def ind_orderPage(oid):
-    print('got ind order')
+    #print('got ind order')
     items = pastOrders.get_orderedProducts(current_user.uid, oid)
-    print(items)
-    print(item.name for item in items)
+    #print(items)
+    #print(item.name for item in items)
     return render_template('ind_orderpage.html', items=items)

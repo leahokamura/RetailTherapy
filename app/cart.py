@@ -8,6 +8,7 @@ from flask import Blueprint
 bp = Blueprint('cart', __name__)
 
 
+#cart page 
 @bp.route('/cart')
 def cart():
     cart_items = Cart.get_cart(current_user.uid)
