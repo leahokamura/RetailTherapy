@@ -146,7 +146,6 @@
 {% block javascript %}
 <script>
   let number = {{number|tojson}} + 9;
-  console.log('this is the number ' + number);
   let total = {{total|tojson}};
 
   document.getElementById('PaginationHelper').innerHTML = Math.min((number + 9), total)
