@@ -58,6 +58,7 @@ WHERE email = :email
 
     @staticmethod
     def email_exists_update(email, uid):
+        #checks if email exists for a user other than the current user (for updating email)
         rows = app.db.execute("""
 SELECT email
 FROM Users
@@ -84,9 +85,7 @@ RETURNING uid
                                   lastname=lastname,
                                   password=generate_password_hash(password))
             
-            # print('go wrong 1', file=sys.stderr)
             uid = rows[0][0]
-            # print('go wrong 2', file=sys.stderr)
             rows_account = app.db.execute("""
 INSERT INTO ACCOUNT(uid, balance)
 VALUES(:uid, DEFAULT)
@@ -96,8 +95,6 @@ RETURNING *
             return User.get(uid)
         except Exception as e:
             print(e)
-            # likely email already in use; better error checking and
-            # reporting needed
             return None
 
     @staticmethod
@@ -111,9 +108,9 @@ WHERE uid = :uid
                               uid=uid)
         return User(*(rows[0])) if rows else None
 
-
     @staticmethod
     def get_profile(uid):
+        #gets profile information
         rows = app.db.execute("""
 SELECT uid, email, firstname, lastname, password, address
 FROM Users
@@ -122,9 +119,9 @@ WHERE uid = :uid
                             uid=uid)
         return User(*(rows[0])) if rows else None
 
-
     @staticmethod
     def get_public(uid):
+        #gets public profile information
         rows = app.db.execute("""
 SELECT uid, email, firstname, lastname, address
 FROM Users

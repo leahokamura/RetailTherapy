@@ -5,11 +5,10 @@ from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from flask_babel import _, lazy_gettext as _l
 
 from .models.user import User
-from .models.product import Product
 from .models.cart import Cart
 from .models.account import Account
 
@@ -23,7 +22,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField(_l('Remember Me'))
     submit = SubmitField(_l('Sign In'))
 
-
+#routes to login page
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -57,7 +56,7 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError(_('Already a user with this email.'))
 
-
+#form to update profile info
 class UpdateProfile(FlaskForm):
     firstname = StringField(_l('First Name'), validators=[DataRequired()])
     lastname = StringField(_l('Last Name'), validators=[DataRequired()])
@@ -72,6 +71,7 @@ class UpdateProfile(FlaskForm):
         if User.email_exists_update(email.data, self.uid):
             raise ValidationError(_('Already a user with this email.'))
 
+#form to update balance value
 class UpdateBalance(FlaskForm):
     balance = FloatField(_l('Amount to Add (+) or Withdraw (-)'), validators=[DataRequired()])
     submit = SubmitField(_l('Update Balance'))
@@ -84,6 +84,7 @@ class UpdateBalance(FlaskForm):
             message = 'Insufficient funds. You currently have %d dollars.' % (current_balance)
             raise ValidationError(message)
 
+#routes to registration page
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -95,13 +96,12 @@ def register():
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data):
-            #flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
         else: 
             print('something messed up', file=sys.stderr)
     return render_template('register.html', title='Register', form=form)
 
-
+#routes to update profile info page
 @bp.route('/update', methods=['GET', 'POST'])
 def update():
     form = UpdateProfile()
@@ -113,7 +113,6 @@ def update():
                     form.firstname.data,
                     form.lastname.data,
                     form.address.data) 
-            #flash('Congratulations, you have updated your profile information!')
             return redirect(url_for('profile.profile'))                    
         return render_template('update.html', title='Update Profile', form=form)
     else:
@@ -124,6 +123,7 @@ def update():
         form.address.data = current_user.address
         return render_template('update.html', title='Update Profile', form=form)
 
+#routes to update balance page
 @bp.route('/update-balance', methods=['GET', 'POST'])
 def updateBalance():
     form = UpdateBalance()
@@ -139,13 +139,13 @@ def updateBalance():
                 return redirect(url_for('profile.profile'))                
     return render_template('balance.html', title='Update Balance', form=form)
 
-
+#routes to logout
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
      
-     #Leah is working on this :/
+     
 @bp.route('/addToCart/<int:pid><int:uid>', methods=['GET', 'POST'])
 def addToCart(pid, uid):
     In = Cart.check(pid, uid)
