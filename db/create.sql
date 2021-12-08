@@ -87,15 +87,15 @@ CREATE TABLE InCart(
 );
 
 --SaveForLater(cid, p_quantity, unit_price, total_price, pid)
--- CREATE TABLE SaveForLater (
---     cid INT UNIQUE NOT NULL REFERENCES Cart(cid),
---     p_quantity INT NOT NULL CHECK(p_quantity >=1),
---     unit_price FLOAT NOT NULL, --REFERENCES Products(price), --see above
---     total_price FLOAT NOT NULL,
---     pid INT UNIQUE NOT NULL REFERENCES Products(pid),
---     uid INT UNIQUE REFERENCES Users(uid),
---     PRIMARY KEY(cid)
--- );
+CREATE TABLE SaveForLater(
+    uid INT NOT NULL REFERENCES Users(uid),
+    pid INT NOT NULL REFERENCES Products(pid),
+    name VARCHAR(255) REFERENCES Products(name),
+    p_quantity INT NOT NULL CHECK(p_quantity >= 1),
+    unit_price DECIMAL(10, 2) NOT NULL CHECK(unit_price > 0),
+    seller_id INT NOT NULL REFERENCES Sellers(uid),
+    PRIMARY KEY(uid, pid, seller_id)
+);
 
 --Orders(oid, uid, total_price, fulfilled, time_purchased)
 CREATE TABLE Orders (

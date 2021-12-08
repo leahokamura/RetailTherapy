@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<br><br>
+
+
+<br><br>
+{% if current_user.is_authenticated %}
+<!-- TO FIX: PURCHASES CURRENTLY BROKEN DUE TO NAMING CONVENTIONS -->
+<h2>Save For Later:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Unit Price</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      <tr>
+        <th scope="row">{{item.pid}}</th>
+        <th scope="row">{{item.name}}</th>
+        <th scope="row">{{item.unit_price}}</th>
+
+        <th scope="row">
+          
+          <form action="{{url_for('users.remove_item', pid = item.pid, uid = current_user.uid)}}" method="POST">   
+            <input type="submit" value="Move Back to Cart"> 
+          </form>
+          </form>
+        </th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+
+ <a href="{{ url_for('orderPage.orderPage') }}" type="button" class="btn btn-light">Checkout</a>
+
+
+{% endblock %}
