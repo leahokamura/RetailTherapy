@@ -279,14 +279,19 @@ def gen_sellers(num_sellers):
 
 #Inventory(seller_id, pid, quantity)
 def gen_inventory(num_products, available_pids):
+    inventory = []
     with open('db/generated/Inventory.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Inventory...', end=' ', flush=True)
-        for x in range(num_products):
+        for x in range(len(available_pids)):
             if x % 10 == 0:
                 print(f'{x}', end=' ', flush=True)
             seller_id = f'{str(fake.random_int(max=num_sellers-1))}'
-            pid = random.choice(available_pids)
+            pid = available_pids[x]
+            if (seller_id, pid) not in inventory:
+                inventory.append((seller_id, pid))
+            else:
+                seller_id = f'{str(fake.random_int(max=num_sellers-1))}'
             quantity = f'{str(fake.random_int(max=100))}'
             writer.writerow([seller_id, pid, quantity])
         print(f'{num_sellers} generated')

@@ -302,3 +302,15 @@ OR description LIKE ANY (:words)
 '''ORDER BY ''' + sorting_descrip,    
 words = words)
         return len(rows)
+
+
+    # get all available products
+    @staticmethod
+    def get_sellers(pid):
+        rows = app.db.execute('''
+SELECT seller_id, in_stock
+FROM Inventory
+WHERE pid = :pid
+''',
+                              pid = pid)
+        return rows if rows else None
