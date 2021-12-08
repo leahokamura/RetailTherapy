@@ -226,8 +226,7 @@ def gen_orders(num_purchases, num_carts):
         for cid in range(num_carts):
             if cid % 100 == 0:
                 print(f'{cid}', end=' ', flush=True)
-            oid = fake.random_int(min=0, max=num_purchases-1)
-            available_oid.append(oid)
+            # oid = fake.random_int(min=0, max=num_purchases-1)
             uid = fake.random_int(min=0, max=num_users-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
@@ -235,7 +234,7 @@ def gen_orders(num_purchases, num_carts):
             order_totalPrice = str((int(p_quantity))*float(unit_price))
             fulfilled = fake.random_element(elements=('true', 'false'))
             time_purchased = fake.date_time()
-            writer.writerow([oid, uid, order_totalPrice, fulfilled, time_purchased])
+            writer.writerow([cid, uid, order_totalPrice, fulfilled, time_purchased])
         print(f'{num_purchases} generated')
     return available_oid
 
