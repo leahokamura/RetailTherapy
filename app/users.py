@@ -145,7 +145,7 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
      
-     
+#add an item to cart
 @bp.route('/addToCart/<int:pid><int:uid>', methods=['GET', 'POST'])
 def addToCart(pid, uid):
     In = Cart.check(pid, uid)
@@ -157,17 +157,20 @@ def addToCart(pid, uid):
         Cart.add(pid, uid)
     return redirect(url_for('index.index'))
 
+#remove item from cart
 @bp.route('/remove_item/<int:pid><int:uid>', methods=['GET', 'POST'])
 def remove_item(pid, uid):
     Cart.remove(pid, uid)
     print("removed item")
     return redirect(url_for('cart.cart'))
 
+#increments quantity by one if already in cart
 @bp.route('/Add/<int:pid><int:uid>', methods=['GET', 'POST'])
 def Add(pid, uid):
     Cart.update(pid, uid, 'add')
     return redirect(url_for('cart.cart'))
 
+#decrements quantity by one if already in cart
 @bp.route('/removeOne/<int:pid><int:uid>', methods=['GET', 'POST'])
 def removeOne(pid, uid):
     Cart.update(pid, uid, 'delete')

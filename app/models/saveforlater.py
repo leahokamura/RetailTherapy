@@ -12,6 +12,7 @@ class Later:
         self.unit_price = unit_price
         self.seller_id = seller_id
     
+    #gets all items in Save For Later for the user
     @staticmethod
     def get_cart(uid):
         rows = app.db.execute('''
@@ -25,6 +26,7 @@ ORDER BY pid
         print([row for row in rows])
         return [row for row in rows] if rows is not None else None
 
+    #adds product from cart to save for later
     @staticmethod
     def add(pid, uid):
         rows = app.db.execute('''
@@ -38,6 +40,7 @@ ORDER BY pid
                                uid = uid, pid = pid)
         print([row for row in rows])
     
+    #checks to see if product is already in save for later
     @staticmethod
     def check(pid, uid):
         rows = app.db.execute('''
@@ -52,48 +55,8 @@ ORDER BY pid
             return False
         else:
             return True 
-    
-    # @staticmethod 
-    # def update(pid, uid, action):
-    #     rows = app.db.execute('''
-    # SELECT p_quantity
-    # FROM InCart
-    # WHERE uid = :uid AND pid = :pid
-    # ''',
-    #                             uid = uid, 
-    #                             pid = pid)
-    #     current_quantity = int(rows[0][0])
 
-    #     if action == "add":
-    #         quantity = current_quantity + 1
-    #         app.db.execute('''
-    # UPDATE InCart
-    # SET p_quantity = :quantity
-    # WHERE uid = :uid AND pid = :pid
-    # RETURNING *
-    # ''',
-    #                             uid = uid, 
-    #                             pid = pid,
-    #                             quantity = quantity)
-
-    #     else: 
-
-    #         if current_quantity == 1:
-    #             Cart.remove(pid,uid)
-    #         else:
-    #             quantity = current_quantity - 1
-
-    #             app.db.execute('''
-    # UPDATE InCart
-    # SET p_quantity = :quantity
-    # WHERE uid = :uid AND pid = :pid
-    # RETURNING *
-    # ''',
-    #                             uid = uid, 
-    #                             pid = pid,
-    #                             quantity = quantity)
-
-    
+    #removes product from save for later
     @staticmethod
     def remove(pid, uid):
         app.db.execute('''

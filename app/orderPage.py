@@ -17,7 +17,7 @@ import datetime
 from flask import Blueprint
 bp = Blueprint('orderPage', __name__)
 
-
+#generates order confirmation page
 @bp.route('/orderPage', methods=['GET', 'POST'])
 def orderPage():
     cart_items = Cart.get_cart(current_user.uid)
@@ -26,25 +26,22 @@ def orderPage():
     default_time = datetime.datetime.strftime(default_time, '%Y-%m-%d %H:%M:%S')
     user_balance = Order.get_balance(current_user.uid)
     
+    #checks to see if buyer balance is sufficient 
     if cart_total > user_balance:
-        #this flash is not working yet :(
-            
-        # raise ValidationError(_('Insufficient Balance'))
+        
         message = '[Insufficient Balance]'
-        #message = 'Insufficient Balance. You currently have %d dollars.' % (user_balance)
-        #flash(message)
         return render_template(('cart.html'), message = message, items=cart_items, total = cart_total)
 
     placed_order = Order.inventory_check(cart_items)
+    
+    #checks to see if inventory stock for all products is sufficient
     if placed_order == False:
-        #this flash is not working yet :(
+  
         message = '[Insufficient Stock]'
-        #message = 'Insufficient Stock.'
-        #raise ValidationError(message)
         return render_template(('cart.html'), message = message, items=cart_items, total = cart_total)
 
     oid = Order.addToOrders(current_user.uid, cart_total, default_time)
-    print("oid:", oid)
+    #print("oid:", oid)
     Order.addToSellerOrders(current_user.uid, oid, cart_items)
 
     Order.update_stock(cart_items)

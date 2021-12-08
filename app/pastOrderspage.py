@@ -18,6 +18,7 @@ import datetime
 from flask import Blueprint
 bp = Blueprint('pastOrderspage', __name__)
 
+#gets the page of all past orders
 @bp.route('/pastOrderspage', methods=['GET', 'POST'])
 def pastOrderspage():
     orders = pastOrders.get_orders(current_user.uid)

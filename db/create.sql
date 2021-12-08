@@ -2,7 +2,7 @@
 --Jonathan Browning (Products Guru), Piper Hampsch (Users Guru), Lucas Lynn (Social Guru), Connor Murphy (Sellers Guru), Leah Okamura (Carts Guru)
 --CS 316
 --Code is arranged by what it pertains to
---There are 5 categories: (Users, Products, Carts, Sellers, Social)
+--There are 5 categories: (Users, Products, Carts/Orders, Sellers, Social)
 
 
 --USERS--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -17,7 +17,7 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL
 );
 
---Affirm(uid, affirmation)
+--Affirm(affirmation)
 CREATE TABLE Affirm (
     affirmation VARCHAR(255) NOT NULL PRIMARY KEY
 );
@@ -39,14 +39,14 @@ CREATE TABLE Purchases (
     order_page VARCHAR(2048)
 );
 
---PRODUCTS
+--PRODUCTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --Product_Categories(category)
 CREATE TABLE Product_Categories (
     category VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
---Products(pid, name, price, available, image)
+--Products(pid, name, price, available, image, description, category)
 CREATE TABLE Products (
     pid INT NOT NULL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE Inventory (
     in_stock INT NOT NULL
 );
 
---CARTS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+--CARTS/ORDERS--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --InCart(uid, pid, name, p_quantity, unit_price, seller_id)
 CREATE TABLE InCart(
@@ -142,6 +142,7 @@ CREATE TABLE Product_Reviews (
     PRIMARY KEY (uid, pid)
 );
 
+--PR_Comments(rid, uid, pid, time_commented, comment, votes)
 CREATE TABLE PR_Comments (
     rid INT NOT NULL REFERENCES Users(uid),
     uid INT NOT NULL REFERENCES Users(uid),
@@ -163,6 +164,7 @@ CREATE TABLE Seller_Reviews (
     PRIMARY KEY (uid, seller_id)
 );
 
+--SR_Comments(rid, uid, seller_id, time_commented, comment, votes)
 CREATE TABLE SR_Comments (
     rid INT NOT NULL REFERENCES Users(uid),
     uid INT NOT NULL REFERENCES Users(uid),
@@ -181,10 +183,10 @@ CREATE TABLE Images_Reviews (
 
 );
 
---PublicView(uid, firstname, seller, email, address, reviews)
+--PublicView(uid, firstname, mail, address, reviews)
 CREATE VIEW PublicView(uid, firstname, email, address, reviews) AS
-    SELECT Users.uid, firstname, email, address, rating --before 'rating' was 'reviews' - not sure if we want rating or comments?
+    SELECT Users.uid, firstname, email, address, rating 
     FROM Users, Seller_Reviews
     WHERE Users.uid = Seller_Reviews.seller_id
 ;
--- moved this one down here b/c sql got mad that Seller_Reviews hadn't been declared yet
+

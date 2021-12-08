@@ -16,12 +16,6 @@ bp = Blueprint('index', __name__)
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
-    # find the products current user has bought:
-    # TO FIX: PURCHASES IS CURRENTLY BROKEN
-    # if current_user.is_authenticated:
-    #     purchases = Purchase.get_all_by_uid_since(
-    #         current_user.uid, datetime.datetime(1980, 9, 14, 0, 0, 0))
-    # else:
     purchases = None
     categories = Product.get_categories()
     print("these are the categories", file=sys.stderr)
