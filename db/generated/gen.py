@@ -12,6 +12,7 @@ num_sellers = 30
 num_accounts = 80
 num_categories = 20
 num_carts = 1000
+num_reviews = 4000
 
 images = [
     "https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c=s1200",
@@ -329,13 +330,18 @@ def gen_update_submission(num_purchases):
 
 #Product_Reviews(uid, pid, time, rating, comments, votes)
 def gen_product_reviews(num_products):
+    combos = []
     with open('db/generated/Product_Reviews.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Product Reviews...', end=' ', flush=True)
-        for pid in range(num_products):
-            if pid % 10 == 0:
-                print(f'{pid}', end=' ', flush=True)
+        for x in range(num_reviews):
+            if x % 10 == 0:
+                print(f'{x}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
+            pid = fake.random_int(min=0, max=num_products-1)
+            if (uid, pid) in combos:
+                uid = uid + 1
+            combos.append((uid,pid))
             time = fake.date_time()
             rating = fake.random_int(min=0, max=5)
             comments = fake.sentence(nb_words=20)[:-1]
