@@ -5,14 +5,14 @@ from faker import Faker
 import random
 
 # num_users = 110
-num_users = 100
-num_products = 5000
-num_purchases = 2000
-num_sellers = 50
-num_accounts = 80
+num_users = 500
+num_products = 10000
+num_purchases = 4000
+num_sellers = 300
+num_accounts = 400
 num_categories = 20
 num_carts = 1000
-num_reviews = 4000
+num_reviews = 20000
 
 images = [
     "https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c=s1200",
