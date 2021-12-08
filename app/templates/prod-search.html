@@ -137,7 +137,7 @@
 <meta id="my-data-2" data-name="{{total}}" data-other="{{total}}">
 
 <br>
-<h5 style="text-align: center;">Products {{number}} through <span id="PaginationHelper"></span> of total {{total}} products</h5>
+<h5 style="text-align: center;">Products {{number}} through <span id="PaginationHelper"></span> of {{total}} total products</h5>
 
 {% endif %}
 
@@ -145,7 +145,7 @@
 
 {% block javascript %}
 <script>
-  let number = {{number|tojson}} + 9;
+  let number = {{number|tojson}};
   let total = {{total|tojson}};
 
   document.getElementById('PaginationHelper').innerHTML = Math.min((number + 9), total)
