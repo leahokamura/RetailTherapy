@@ -41,7 +41,7 @@
 <br>
 <a href="{{ url_for('productreviews.ProductReviews', product_number=productinfo.pid, number = 0)}}" type="button" class="btn btn-secondary">See Product Reviews</a>
 
-
+{% if productinfo.available %}
 <table class='table table-hover table-bordered table=sort container'>
   <thead class="thead-dark">
     <tr>
@@ -58,6 +58,6 @@
     {% endfor %}
   </tbody>
 </table>
-
+{% endif %}
 
 {% endblock %}
