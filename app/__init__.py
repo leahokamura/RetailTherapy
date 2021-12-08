@@ -78,4 +78,7 @@ def create_app():
     from .ind_orderPage import bp as iop_bp
     app.register_blueprint(iop_bp)
     
+    from .saveforlaterPage import bp as sfl_bp
+    app.register_blueprint(sfl_bp)
+
     return app

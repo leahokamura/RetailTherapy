@@ -200,7 +200,7 @@ def gen_in_cart(num_carts, names):
         print(f'{num_purchases} generated')
     return
 
-#SaveForLater(cid, p_quantity, unit_price, total_price, pid)
+#SaveForLater(cid, p_quantity, unit_price, total_price, pid, uid)
 def gen_save_for_later(num_carts, num_products):
     with open('db/generated/SaveForLater.csv', 'w') as f:
         writer = get_csv_writer(f)
@@ -209,10 +209,11 @@ def gen_save_for_later(num_carts, num_products):
             if cid % 100 == 0:
                 print(f'{cid}', end=' ', flush=True)
             pid = fake.random_int(min=0, max=num_products-1)
+            uid = fake.random_int(min=0, max=num_users-1)
             p_quantity = f'{str(fake.random_int(max=100))}'
             unit_price = f'{str(fake.random_int(max=5000))}.{fake.random_int(max=99):02}'
             total_price = str((int(p_quantity))*float(unit_price))
-            writer.writerow([cid, p_quantity, unit_price, total_price, pid])
+            writer.writerow([cid, p_quantity, unit_price, total_price, pid, uid])
         print(f'{num_purchases} generated')
     return
 
