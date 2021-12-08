@@ -19,6 +19,7 @@ class User(UserMixin):
         return (self.uid)
 
     def is_seller(self):
+        # returns true if a user is a seller, false otherwise
         rows = app.db.execute("""
 SELECT *
 FROM Sellers
@@ -134,6 +135,7 @@ WHERE uid = :uid
     
     @staticmethod
     def make_seller(uid):
+        # adds the specified user to the sellers table
         try:
             app.db.execute(
                 """

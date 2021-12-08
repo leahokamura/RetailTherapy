@@ -14,13 +14,11 @@ bp = Blueprint('sellers', __name__)
 
 @bp.route('/sellers', methods = ['GET', 'POST'])
 def sellers():
-    print("ahhhhh i'm here")
-    rows = app.db.execute(
+    rows = app.db.execute( # get all the info re: the sellers
         """
         SELECT Sellers.uid AS sid, Users.firstname AS firstname, Users.lastname AS lastname, Users.email AS email
         FROM Sellers, Users
         WHERE Sellers.uid = Users.uid
         """
     )
-    # TODO: create sellers.html
     return render_template('sellers.html', slrs=[row for row in rows])

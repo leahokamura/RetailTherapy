@@ -10,6 +10,7 @@ class Seller:
     
     @staticmethod
     def get_seller_products(uid):
+        # gets all the products in the inventory of a seller
         rows = app.db.execute("""
         SELECT  Inventory.pid AS pid,
                 Products.name AS name,
@@ -24,6 +25,7 @@ class Seller:
 
     @staticmethod
     def get_seller_info(uid):
+        # gets profile info of a seller
         rows = app.db.execute("""
         SELECT *
         FROM Users
@@ -34,6 +36,7 @@ class Seller:
     
     @staticmethod
     def get_seller_orders(uid):
+        # gets relevant order information for a seller
         rows = app.db.execute("""
         SELECT  Orders.oid AS oid,
                 OrderedItems.pid AS pid,
@@ -51,11 +54,12 @@ class Seller:
 
     @staticmethod
     def add_to_inventory(productname, price, quantity, description, image, category):
-        print(productname, price, quantity, description, image, category)
+        # adds a new product to inventory
         available = False
         if quantity > 0:
             available = True
         sid = current_user.uid
+        # product id of new product should be 1 greater than the current max product id
         new_pid = app.db.execute(
         """
         SELECT MAX(pid)
@@ -76,13 +80,12 @@ class Seller:
                 """, sid=sid, new_pid=new_pid, quantity=quantity
             )
             return 1
-        except Exception as e:
-            print("Something went wrong")
-            print(str(e))
+        except Exception:
+            return 0
 
     @staticmethod
     def edit_in_inventory(pid, productname, price, quantity, description, image, category):
-        print(pid, productname, price, quantity, description, image, category)
+        # edits an entry that is currently in inventory and products
         available = False
         if quantity > 0:
             available = True
@@ -105,11 +108,11 @@ class Seller:
             )
             return 1
         except Exception as e:
-                print("Something went wrong")
-                print(str(e))
+            return 0
 
     @staticmethod
     def delete_from_inventory(pid):
+        # deletes an item from inventory and products tables
         try:
             app.db.execute(
                 """
@@ -125,21 +128,23 @@ class Seller:
             )
             return 1
         except Exception as e:
-            print(str(e))
+            return 0
     
     @staticmethod
     def get_choices():
+        # gets all the available categories that a product can be, sorted alphabetically
         try:
             rows = app.db.execute("""
             SELECT DISTINCT category
             FROM Products
             """)
             return sorted([(row[0], row[0]) for row in rows]) if rows else None
-        except Exception as e:
-            print(str(e))
+        except Exception:
+            return 0
     
     @staticmethod
     def mark_item_fulfilled(oid, pid):
+        # marks an item in an order as fulfilled
         time = datetime.datetime.now()
         rows = app.db.execute(
             """
