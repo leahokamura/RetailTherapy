@@ -50,12 +50,14 @@
     </tr>
   </thead>
   <tbody>
+    {% if sellers %}
     {% for item in sellers%}
       <tr>
         <th scope="row">{{item.seller_id}}</th>
         <td>{{item.in_stock}}</td>
       </tr>
     {% endfor %}
+    {% endif %}
   </tbody>
 </table>
 {% endif %}
